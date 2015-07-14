@@ -1,0 +1,32 @@
+{
+  "name": "dkModal",
+  "version": "0.0.1",
+  "homepage": "https://github.com/dankahle/comp-dkModal",
+  "authors": [
+    "Dan Kahle <dan.kahle@gmail.com>"
+  ],
+  "description": "angular modal dialog",
+  "main": "dkModal.js",
+  "keywords": [
+    "angular",
+    "modal"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "gulpfile.js",
+    "jshingConfig.json",
+    "src/",
+    "package.json"
+  ],
+  "devDependencies": {
+    "jquery": "~2.1.4",
+    "angular": "~1.4.2",
+    "bootstrap": "~3.3.5",
+    "angular-touch": "~1.4.2"
+  }
+}
