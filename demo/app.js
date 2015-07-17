@@ -2,28 +2,42 @@
 
 var app = angular.module('app', ['ngAnimate', 'ngTouch', 'dkModal']);
 
-app.controller('ctrl', function($scope, $dkModal, util){
-	util.registerScope('ctrl', $scope);
-
+app.controller('ctrl', function($scope, $dkModal){
 	var $modal, dkModal;
 
 	dkModal = $dkModal({
-		selector: '#mymodal'
+		//selector: '.selectorModal'
+		template: 'mymodal',
+		scope: $scope
 	})
 
 	$scope.show = function() {
-		$modal = dkModal.show();
-		$modal.off('ok');
-		$modal.on('ok', function() {
-			var user = getScope('addCtrl').user;
-			console.log('got it bitch', user)
+
+/*
+		var obj = dkModal.show();
+		obj.modal.on('ok cancel', function(e) {
+			console.log(e.type)
 		})
+*/
+
+		var obj = dkModal.init();
+		obj.scope.user = {name: 'carl'};
+		obj.modal.off('ok');// if selector, need to clear old one
+		obj.modal.on('ok', function() {
+			console.log('got it bitch', obj.scope.user)
+		})
+		obj.modal.on('cancel', function(e) {
+			console.log('cancel')
+		})
+		dkModal.show();
+
+
 	}
 
 })
 
-app.controller('addCtrl', function($scope, util) {
-	util.registerScope('addCtrl', $scope);
+app.controller('addCtrl', function($scope) {
+	$scope.$parent.$regScope($scope);
 
 	$scope.user = {name: 'dank'}
 	$scope.submit = function() {
@@ -31,26 +45,3 @@ app.controller('addCtrl', function($scope, util) {
 	}
 })
 
-app.factory('util', function($rootScope) {
-	var get = {},
-		scopes = [];
-	get.registerScope = function(name, scope) {
-		scope.$regName = name; // for a debugging aid as the $id is ambiguous
-		scopes.push({name: name, scope: scope});
-	}
-
-	get.getScope = function(name) {
-		var scope;
-		scopes.filter(function(v) {
-			if(v.name.toLowerCase().trim() == name.toLowerCase().trim())
-				scope = v.scope;
-		})
-		return scope;
-	}
-
-	get.registerScope('root', $rootScope);
-
-	window.getScope = get.getScope;
-
-	return get;
-});

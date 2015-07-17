@@ -31,12 +31,12 @@
 			angular.extend(defaults, opts);
 		}
 
-		obj.$get = function ($http, $templateCache, $animate, $rootScope) {
+		obj.$get = function ($http, $templateCache, $compile, $animate, $rootScope) {
 			return function (sentInOptions) {
 				var get = {},
 					isSelector = false,
 					opts = angular.extend({}, defaults, sentInOptions),
-					$modal, $backdrop;
+					$modal, $backdrop, initObj;
 
 				function exitHandlerOk(e) {
 					$rootScope.$apply(function() {
@@ -83,17 +83,22 @@
 
 					$animate.removeClass($modal, 'open')
 						.then(function () {
+							$modal.trigger(mode);
+
 							if (isSelector)
 								$modal.hide();
 							else
 								$modal.remove();
-
-							$modal.trigger(mode);
 						})
 				};
 
-				///////////////////////// show
-				get.show = function () {
+				//////////////////////// init
+
+				get.init = function() {
+
+					function $regScope(scope) {
+						this.$modalChild =  scope;
+					}
 
 					if (!opts.selector && !opts.template)
 						throw new Error('Must set either dk-modal to selector or data-template to template');
@@ -108,6 +113,8 @@
 					else if (opts.template) {
 						if (!opts.scope)
 							throw new Error('scope is required with template option');
+						opts.scope.$regScope = $regScope; // child needs to call this on compilation
+
 						var html;
 						if ((html = $templateCache.get(opts.template))) {
 							$modal = $compile(html)(opts.scope);
@@ -124,14 +131,27 @@
 						if ($modal.length == 0)
 							throw new Error('Failed to create modal from template: ' + opts.template);
 					}
-
 					// have modal
 
-					// options precedence:
-					// defaults < provider settings < modal data attrs < service call opts (either code or via dkModalTrigger element)
-					var modalOpts = $modal.data();
-					angular.extend(opts, modalOpts, sentInOptions);// here opts is already defaults < sentInOptions, which we need in earlier code, but now have to set the precedence again as we have the modal's data attrs to set which sentInOptions overrides. Confusing, but only way to do it.
+					/* options precedence:
+					1) service call opts (either code or via dkModalTrigger element)
+					2) modal data attrs
+					3) provider settings
+					4) defaults
+				 */
 
+					// now that we have modal opts apply them, but we had already applied sentInOptions earlier (needed in the above code), still, they outrank modal opts, so need to reapply them after modal opts.
+					angular.extend(opts, $modal.data(), sentInOptions);
+
+					initObj = {modal: $modal, scope: (opts.scope && opts.scope.$modalChild) || opts.scope};
+					return (initObj);// so they can mess with modal and it's scope "before" show. If it has ng-controller (its own scope), it needs to register this with parent to be available here: $parent.$regScope(scope) call)
+				}
+
+				///////////////////////// show
+				get.show = function () {
+
+					if(!initObj)
+						get.init();
 
 					// setup $modal
 					$modal.find('.exit-ok').click(exitHandlerOk);
@@ -153,7 +173,7 @@
 					if (isSelector)
 						$modal.show()
 					else
-						body.prepend($modal)
+						$(document.body).prepend($modal)
 
 					var modalWidth = $modal.outerWidth(),
 						modalHeight = $modal.outerHeight();
@@ -251,7 +271,7 @@
 							$modal.trigger('show');
 						})
 
-					return $modal; // so they can watch its events
+					return initObj; // so they can watch its events
 				}
 
 				return get; // so they can fire up service with options and call show/hide multiple times
