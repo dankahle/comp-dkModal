@@ -20,8 +20,9 @@ app.controller('ctrl', function($scope, $dkModal){
 		})
 */
 
-		var obj = dkModal.init();
-		obj.scope.user = {name: 'carl'};
+		//var obj = dkModal.init();
+		//obj.scope.user = {name: 'carl'};
+		var obj = dkModal.show();
 		obj.modal.off('ok');// if selector, need to clear old one
 		obj.modal.on('ok', function() {
 			console.log('got it bitch', obj.scope.user)
@@ -29,7 +30,6 @@ app.controller('ctrl', function($scope, $dkModal){
 		obj.modal.on('cancel', function(e) {
 			console.log('cancel')
 		})
-		dkModal.show();
 
 
 	}
