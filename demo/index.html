@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html ng-app='app'>
+<head lang="en">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>demo</title>
+	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="../src/dkModal.css">
+	<link rel="stylesheet" href="demo.css">
+
+</head>
+<body ng-controller="ctrl">
+
+<button ng-click="show()" class="btn btn-default">show</button>
+
+<div id="mymodal" style="display:none" ng-controller="addCtrl">
+	<form>
+		name: <input ng-model="user.name" autofocus><br>
+		<footer>
+			<button type="submit" class="btn btn-default exit-cancel">Cancel</button>
+			<button class="btn btn-default exit-ok">Ok</button>
+		</footer>
+	</form>
+</div>
+
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="../bower_components/angular/angular.js"></script>
+<script src="../bower_components/angular-animate/angular-animate.js"></script>
+<script src="../bower_components/angular-touch/angular-touch.js"></script>
+<script src="../src/dkModal.js"></script>
+<script src="app.js"></script>
+<script>
+
+</script>
+</body>
+</html>

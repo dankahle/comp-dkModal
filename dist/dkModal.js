@@ -1,1 +1,0 @@
-!function(){"use strict";angular.module("dkModal",[]).factory("$dkmodal",["$rootScope",function(o){}]).directive("dkModal",function(){})}();

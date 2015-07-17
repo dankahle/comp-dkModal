@@ -1,6 +1,69 @@
 
-@color: red;
-body {
-  color: @color;
-  width: 1px;
+@import '../bower_components/bootstrap/less/variables';
+
+@transition: opacity .2s;
+
+.dk-modal-backdrop {
+  position: fixed;
+	z-index: 10000;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0,0,0,.2);
+  outline: none; // has tabindex, defeat outline
+	/* animation */
+	transition: @transition;
+	opacity: 0;
+	&.open {
+		opacity: 1;
+	}
 }
+
+.dk-modal {
+  @padding: 6px;
+  position: absolute;
+	z-index: 10001;
+  overflow: auto;
+  background: white;
+  background-image: linear-gradient(to right, rgba(255,255,255,.9), rgba(255,255,255,.7));//todo?
+  border: 1px solid lightgray;//todo?
+  border-radius: 4px;
+  box-shadow: 0 3px 8px rgba(0,0,0,.6);//todo?
+	outline: none; // has tabindex, defeat outline
+	//width
+  width: 96%;
+	@media (min-width: @screen-sm) {
+		width: 60%;
+	}
+	@media (min-width: @screen-md) {
+		width: 40%;
+	}
+	@media (min-width: @screen-lg) {
+		width: 25%;
+	}
+	// position
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+	html.no-csstransforms & {
+		top: 10%;
+		left: 10%;
+		&.input {
+			top: 0;
+		}
+	}
+	@media (max-width: @screen-xs-max) {
+		&.input {
+			top: 0;
+			transform: translateX(-50%);
+		}
+	}
+	/* animation */
+	opacity: 0;
+	transition: @transition;
+	&.open {
+		opacity: 1;
+	}
+}
+

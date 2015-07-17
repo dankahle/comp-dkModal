@@ -38,7 +38,9 @@ gulp.task('css', ['clean-dist'], function () {
 				"Safari >= 6"
 			]
 		}))
+		.pipe(gulp.dest('dist'))
 		.pipe($.csso())
+		.pipe($.extReplace('.min.css'))
 		.pipe(gulp.dest('dist'))
 });
 
