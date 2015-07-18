@@ -15,7 +15,6 @@
   opacity: 1;
 }
 .dk-modal {
-  margin-top: 50px;
   position: fixed;
   z-index: 10001;
   overflow: auto;
@@ -23,41 +22,29 @@
   border: 1px solid lightgray;
   border-radius: 4px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
-  outline: thin solid red;
-  /*
-	//width
-  width: 96%;
-	@media (min-width: @screen-sm) {
-		width: 66%;
-	}
-	@media (min-width: @screen-md) {
-		width: 50%;
-	}
-	@media (min-width: @screen-lg) {
-		width: 46%;
-	}
-	// position
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-	html.no-csstransforms & {
-		top: 10%;
-		left: 10%;
-		&.input {
-			top: 0;
-		}
-	}
-	@media (max-width: @screen-xs-max) {
-		&.input {
-			top: 0;
-			transform: translateX(-50%);
-		}
-	}
-  */
+  outline: none;
   /* animation */
   opacity: 0;
   transition: opacity 0.2s;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .dk-modal.open {
   opacity: 1;
+}
+@media (min-width: 768px) {
+  .dk-modal {
+    width: 66%;
+  }
+}
+@media (min-width: 992px) {
+  .dk-modal {
+    width: 50%;
+  }
+}
+@media (min-width: 1200px) {
+  .dk-modal {
+    width: 46%;
+  }
 }

@@ -29,8 +29,11 @@ app.controller('ctrl', function($scope, $dkModal){
 		template: 'mymodal',
 		scope: $scope,
 		target: '.one',
-		width: '400px',
-		targetVert: 'middle'
+		targetSide: 'right',
+		//width: '400px',
+		targetVert: 'middle',
+		//offsetTop: "9%",
+		//offsetLeft: "50%"
 	})
 
 	$scope.show = function() {

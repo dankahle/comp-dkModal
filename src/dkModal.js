@@ -10,6 +10,11 @@
 
 	mod.provider('$dkModal', function () {
 
+		//variables
+		var phoneMax = 767,
+			phoneMarginPercent = 2, // this is percent of width so top gap matches side gaps
+			phoneWidth = '96%' // phoneWidth + phoneMargin*2 must add to 100
+
 		var obj = {},
 			defaults = { // assume strings unless otherwise specified
 				target: undefined, // jquery object
@@ -19,11 +24,11 @@
 				click: true,
 				targetVert: 'middle', // top/middle/bottom
 				targetSide: 'right', // left/right
-				targetLeft: false,
-				offsetTop: undefined, // integer
-				offsetLeft: undefined, // integer
-				separation: 20, // integer, distance left or right of target
-				width: undefined, // string with px or %
+				offsetTop: undefined, // string px or %
+				offsetLeft: undefined, // string px or %
+				center: false, // bool
+				separation: 20, // integer (px), distance left or right of target
+				width: undefined, // string with px
 				backdropColor: undefined // rgba(0,0,0,.2), must be rgba otherwise won't be transparent
 			};
 
@@ -149,9 +154,15 @@
 
 				///////////////////////// show
 				get.show = function () {
+					var modalLeft, modalTop;
 
 					if(!initObj)
 						get.init();
+
+					var isPhone, hasInput;
+
+					isPhone =  window.innerWidth <= phoneMax;
+					hasInput = $modal.find('input, select, textarea').length > 0;
 
 					// setup $modal
 					$modal.find('.exit-ok').click(exitHandlerOk);
@@ -163,11 +174,13 @@
 					if(opts.key)
 						$modal.on('keyup', keyHandler);
 
-					if (opts.width)
-						$modal.width = opts.width;
-					if ($modal.find('input select textarea').length)
-						$modal.addClass('input');// will force to top on phone (in css)
-
+					// WIDTH/HEIGHT MUST BE SET "BEFORE" WE SHOW OFFSCREEN TO GET WIDTH/HEIGHT, so we either get our setting or the css value
+					// also, we have to reset here as well so we don't wipe out this setting later and we get the css width if there should be one.
+					// set width
+					if(opts.width)
+						$modal.css('width', opts.width);
+					else
+						$modal.css('width', '');
 
 					 // show modal offscreen so we can get accurate size readings.
 					 $modal.css('left', '-9999px')// this gets bad readings for +9999, what? If it goes off the screen to the right, (999 works on widescreen, but not on md) it gets innaccurate readings for some reason. Close mind you, but off on height by 20px on this test.
@@ -181,47 +194,67 @@
 					 $modal.css('left', '');
 
 
-/*        //todo: remove if above code keeps working
-					$modal.hide();
-					if (!isSelector)
-						$(document.body).prepend($modal)
-
-					//var modalWidth = $modal.outerWidth(),
-					//	modalHeight = $modal.outerHeight();
- */
-
-					// constrain height to viewport so scrollbars kick in if needed
-					if (modalHeight > window.innerHeight) { // constrain height to viewport
-						modalHeight = window.innerHeight;
+					// NEEDS TO BE AFTER OFFSCREEN CHECK
+					// set height (if we need to constrain to viewport so scrollbars kick in)
+					var phoneTopMargin = window.innerWidth * (phoneMarginPercent/100);// % of width so matches side margin
+					if (modalHeight + (isPhone? phoneTopMargin: 0) > window.innerHeight) { // constrain height to viewport
+						modalHeight = window.innerHeight - (isPhone? phoneTopMargin: 0);
 						$modal.css('height', modalHeight + 'px');
+						console.log('constrain height to:', modalHeight);
 					}
-					else {
+					else
 						$modal.css('height', '');
-					}
+
 
 					// clear any previous positioning
 					$modal.css('top', '');
 					$modal.css('left', '');
 					$modal.css('transform', '');
 
-					/*
-					 // position (some here some css)
-					 if phone && .input >> top, width 96% // we look for inputs and add .input
-					 if phone >> vert center width
-					 if >= @screen-sm:
-					 if offsetLeft && offsetRight position put there,
-					 if target position right of target w/ separation
-					 if target and left or right, position left or right of target w/ separation
-					 */
-
 					// positioning
-					if (opts.offsetTop && opts.offsetLeft) {// offset()
-						$modal.css('transform', 'translate(0,0)'); // clear any translation
-						$modal.offset({top: opts.offsetTop, left: opts.offsetLeft});
+
+					// css positions
+
+					if(isPhone && hasInput) {
+						$modal.css('transform', 'translate(0,0)');// clear out css translate
+						$modal.css('top', phoneTopMargin +  'px');
+						$modal.css('left', phoneMarginPercent + '%');
+						$modal.css('width', phoneWidth);
+					}
+					else if (opts.offsetTop && opts.offsetLeft) {// offset()
+						$modal.css('transform', 'translate(0,0)');// clear out css translate
+
+						var adjTop = opts.offsetTop.indexOf('%') != -1? window.innerHeight * parseInt(opts.offsetTop)/100: parseInt((opts.offsetTop));
+
+						var adjLeft = opts.offsetLeft.indexOf('%') != -1? window.innerWidth * parseInt(opts.offsetLeft)/100: parseInt((opts.offsetLeft));
+
+						if (adjTop + modalHeight < window.innerHeight)
+							var modalTop = opts.offsetTop;
+						else {
+							modalTop = (window.innerHeight - modalHeight) + 'px';
+							console.log('adj top to:', modalTop);
+						}
+
+						if (adjLeft + modalWidth < window.innerWidth)
+							var modalLeft = opts.offsetLeft;
+						else {
+							modalLeft = (window.innerWidth - modalWidth) + 'px';
+							console.log('adj left to:', modalLeft);
+						}
+
+/*
+						$modal.css('top', modalTop)
+						$modal.css('left', modalLeft)
+
+						console.log('modal width/height', modalWidth, modalHeight)
+						console.log(modalLeft, modalTop)
+*/
+
+						$modal.css('top', modalTop) // these are strings
+						$modal.css('left', modalLeft)
 					}
 					else if (opts.target) {// target left/right
-						$modal.css('color', 'red'); // clear out css transform
-						$modal.css('transform', 'translate(0,0)'); // clear any translation
+						$modal.css('transform', 'translate(0,0)');// clear out css translate
 						var side = opts.targetSide || 'right',
 							$target = $(opts.target);
 						if (!$target.length)
@@ -229,20 +262,23 @@
 
 						var targetOffset = $target.offset(),
 							targetWidth = $target.outerWidth(),
-							targetHeight = $target.outerHeight(),
-							modalLeft, modalTop;
+							targetHeight = $target.outerHeight()
 
 						if (side == 'right') {
 							if (targetOffset.left + targetWidth + opts.separation + modalWidth < window.innerWidth)
 								modalLeft = targetOffset.left + targetWidth + opts.separation;
-							else
+							else {
 								modalLeft = window.innerWidth - modalWidth;
+								console.log('adj left to:', modalLeft)
+							}
 						}
 						else if (side == 'left') {
 							if (targetOffset.left - opts.separation - modalWidth > 0)
 								modalLeft = targetOffset.left - opts.separation - modalWidth;
-							else
+							else {
 								modalLeft = 0;
+								console.log('adj left to:', modalLeft)
+							}
 						}
 
 						if(opts.targetVert == 'top')
@@ -253,21 +289,25 @@
 							modalTop = targetOffset.top - modalHeight + targetHeight;
 
 						// constrain vertically into viewport
-						if(modalTop + modalHeight > window.screenHeight)
-							modalTop = window.screenHeight - modalHeight;
+						if(modalTop < 0) {
+							modalTop = 0;
+							console.log('adj top to:', modalTop)
+						}
+						if(modalTop + modalHeight > window.innerHeight) {
+							modalTop = window.innerHeight - modalHeight;
+							console.log('adj top to:', modalTop)
+						}
 
+/*
 						console.log('targetOffset', targetOffset);
 						console.log('target width/height', targetWidth, targetHeight);
 
 						console.log('modal width/height', modalWidth, modalHeight)
 						console.log(modalLeft, modalTop)
+ */
 
-						$modal.offset({
-							top: modalTop,
-							left: modalLeft
-						})
-
-
+						$modal.css('top', modalTop + 'px')
+						$modal.css('left', modalLeft + 'px')
 					}
 
 					// backdrop
