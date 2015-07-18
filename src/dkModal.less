@@ -21,26 +21,30 @@
 }
 
 .dk-modal {
+	margin-top: 50px;
+	//height: 100px;
   @padding: 6px;
-  position: absolute;
+  position: fixed;
 	z-index: 10001;
   overflow: auto;
   background: white;
-  background-image: linear-gradient(to right, rgba(255,255,255,.9), rgba(255,255,255,.7));//todo?
   border: 1px solid lightgray;//todo?
   border-radius: 4px;
   box-shadow: 0 3px 8px rgba(0,0,0,.6);//todo?
-	outline: none; // has tabindex, defeat outline
+	outline: thin solid red;
+	//outline: none; // has tabindex, defeat outline
+
+  /*
 	//width
   width: 96%;
 	@media (min-width: @screen-sm) {
-		width: 60%;
+		width: 66%;
 	}
 	@media (min-width: @screen-md) {
-		width: 40%;
+		width: 50%;
 	}
 	@media (min-width: @screen-lg) {
-		width: 25%;
+		width: 46%;
 	}
 	// position
   top: 50%;
@@ -59,6 +63,9 @@
 			transform: translateX(-50%);
 		}
 	}
+  */
+
+
 	/* animation */
 	opacity: 0;
 	transition: @transition;

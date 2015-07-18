@@ -17,14 +17,14 @@
 				template: undefined,
 				key: true,
 				click: true,
-				right: true,
-				left: false,
+				targetVert: 'middle', // top/middle/bottom
+				targetSide: 'right', // left/right
+				targetLeft: false,
 				offsetTop: undefined, // integer
 				offsetLeft: undefined, // integer
 				separation: 20, // integer, distance left or right of target
 				width: undefined, // string with px or %
-				backdropColor: undefined,
-				backdropOpacity: undefined // int/float 0 to 1
+				backdropColor: undefined // rgba(0,0,0,.2), must be rgba otherwise won't be transparent
 			};
 
 		obj.setDefaults = function (opts) {
@@ -168,17 +168,27 @@
 					if ($modal.find('input select textarea').length)
 						$modal.addClass('input');// will force to top on phone (in css)
 
-					// show modal offscreen so we can get accurate size readings.
-					$modal.css('left', '10000px')
-					if (isSelector)
-						$modal.show()
-					else
+
+					 // show modal offscreen so we can get accurate size readings.
+					 $modal.css('left', '-9999px')// this gets bad readings for +9999, what? If it goes off the screen to the right, (999 works on widescreen, but not on md) it gets innaccurate readings for some reason. Close mind you, but off on height by 20px on this test.
+					$modal.show();
+					 if (!isSelector)
+						 $(document.body).prepend($modal)
+
+					 var modalWidth = $modal.outerWidth(),
+					 modalHeight = $modal.outerHeight();
+					 $modal.hide();
+					 $modal.css('left', '');
+
+
+/*        //todo: remove if above code keeps working
+					$modal.hide();
+					if (!isSelector)
 						$(document.body).prepend($modal)
 
-					var modalWidth = $modal.outerWidth(),
-						modalHeight = $modal.outerHeight();
-					$modal.hide();
-					$modal.css('left', '');
+					//var modalWidth = $modal.outerWidth(),
+					//	modalHeight = $modal.outerHeight();
+ */
 
 					// constrain height to viewport so scrollbars kick in if needed
 					if (modalHeight > window.innerHeight) { // constrain height to viewport
@@ -206,41 +216,57 @@
 
 					// positioning
 					if (opts.offsetTop && opts.offsetLeft) {// offset()
-						$modal.css('transform', 'none'); // clear out css transform
+						$modal.css('transform', 'translate(0,0)'); // clear any translation
 						$modal.offset({top: opts.offsetTop, left: opts.offsetLeft});
 					}
 					else if (opts.target) {// target left/right
-						$modal.css('transform', 'none'); // clear out css transform
-						var side = opts.left || opts.right,
+						$modal.css('color', 'red'); // clear out css transform
+						$modal.css('transform', 'translate(0,0)'); // clear any translation
+						var side = opts.targetSide || 'right',
 							$target = $(opts.target);
 						if (!$target.length)
 							throw new Error('Failed to locate target: ' + opts.target);
 
 						var targetOffset = $target.offset(),
 							targetWidth = $target.outerWidth(),
+							targetHeight = $target.outerHeight(),
 							modalLeft, modalTop;
 
-						$modal.css('transform', '');// clear out transform if there
-
 						if (side == 'right') {
-							modalTop = $target.offset().top;
 							if (targetOffset.left + targetWidth + opts.separation + modalWidth < window.innerWidth)
 								modalLeft = targetOffset.left + targetWidth + opts.separation;
 							else
 								modalLeft = window.innerWidth - modalWidth;
 						}
 						else if (side == 'left') {
-							modalTop = $target.offset().top;
 							if (targetOffset.left - opts.separation - modalWidth > 0)
 								modalLeft = targetOffset.left - opts.separation - modalWidth;
 							else
 								modalLeft = 0;
 						}
 
+						if(opts.targetVert == 'top')
+							modalTop = targetOffset.top;
+						else if(opts.targetVert == 'middle')
+							modalTop = targetOffset.top - modalHeight/2 + targetHeight/2;
+						else if(opts.targetVert == 'bottom')
+							modalTop = targetOffset.top - modalHeight + targetHeight;
+
+						// constrain vertically into viewport
+						if(modalTop + modalHeight > window.screenHeight)
+							modalTop = window.screenHeight - modalHeight;
+
+						console.log('targetOffset', targetOffset);
+						console.log('target width/height', targetWidth, targetHeight);
+
+						console.log('modal width/height', modalWidth, modalHeight)
+						console.log(modalLeft, modalTop)
+
 						$modal.offset({
 							top: modalTop,
 							left: modalLeft
 						})
+
 
 					}
 
@@ -248,9 +274,7 @@
 					$backdrop = $('<div tabindex="-1" class="dk-modal-backdrop"></div>');
 
 					if (opts.backgroundColor)
-						$backdrop.css('background-color', opts.backgroundColor);
-					if (opts.backgroundOpacity)
-						$backdrop.css('opacity', opts.backgroundOpacity);
+						$backdrop.css('background-color', opts.backdropColor);
 
 					// backdrop
 					if (opts.click)

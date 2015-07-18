@@ -15,50 +15,48 @@
   opacity: 1;
 }
 .dk-modal {
-  position: absolute;
+  margin-top: 50px;
+  position: fixed;
   z-index: 10001;
   overflow: auto;
   background: white;
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
   border: 1px solid lightgray;
   border-radius: 4px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
-  outline: none;
+  outline: thin solid red;
+  /*
+	//width
   width: 96%;
+	@media (min-width: @screen-sm) {
+		width: 66%;
+	}
+	@media (min-width: @screen-md) {
+		width: 50%;
+	}
+	@media (min-width: @screen-lg) {
+		width: 46%;
+	}
+	// position
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+	html.no-csstransforms & {
+		top: 10%;
+		left: 10%;
+		&.input {
+			top: 0;
+		}
+	}
+	@media (max-width: @screen-xs-max) {
+		&.input {
+			top: 0;
+			transform: translateX(-50%);
+		}
+	}
+  */
   /* animation */
   opacity: 0;
   transition: opacity 0.2s;
-}
-@media (min-width: 768px) {
-  .dk-modal {
-    width: 60%;
-  }
-}
-@media (min-width: 992px) {
-  .dk-modal {
-    width: 40%;
-  }
-}
-@media (min-width: 1200px) {
-  .dk-modal {
-    width: 25%;
-  }
-}
-html.no-csstransforms .dk-modal {
-  top: 10%;
-  left: 10%;
-}
-html.no-csstransforms .dk-modal.input {
-  top: 0;
-}
-@media (max-width: 767px) {
-  .dk-modal.input {
-    top: 0;
-    transform: translateX(-50%);
-  }
 }
 .dk-modal.open {
   opacity: 1;

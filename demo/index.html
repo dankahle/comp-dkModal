@@ -12,7 +12,8 @@
 <body ng-controller="ctrl">
 
 <button ng-click="show()" class="btn btn-default">show</button>
-
+<br><br><br><br><br><br>
+safdasdffsadfasdfasdfasdfasdfasd <span class="one">span</span>
 
 <div class="selectorModal" style="display:none;">
 	selector modal contents<br>
@@ -22,7 +23,7 @@
 
 
 <script type="text/ng-template" id="mymodal">
-	<div style="display:none" ng-controller="addCtrl">
+	<div ng-controller="addCtrl">
 		<form>
 			name: <input ng-model="user.name" autofocus><br>
 			<footer>

@@ -1,0 +1,27 @@
+
+//@import (reference) '../bower_components/bootstrap/less/bootstrap';
+//@import (reference) '../bower_components/bootstrap/less/mixins.less';
+//@import (reference) '../bower_components/bootstrap/less/variables.less';
+//@import (reference) '../bower_components/font-awesome/less/font-awesome.less';
+
+.outline {
+  outline: thin solid;
+  outline-offset: -1px;
+}
+.outline-2 { outline-offset: -2px; }
+.outline-red { .outline; outline-color: red; }
+.outline-blue { .outline; outline-color: blue; }
+.bg-blue { background: rgba(0,0,255, .1)};
+.bg-red { background: rgba(255,0,0, .1)};
+.bg-green { background: rgba(0,255,0, .1)};
+
+.clearfix {
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+  }
+  &:after {
+    clear: both;
+  }
+}
