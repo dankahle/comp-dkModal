@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html ng-app='app'>
+<html ng-app='app' ng-strict-di>
 <head lang="en">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>demo</title>
 	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
-	<link rel="stylesheet" href="../src/dkModal.css">
-	<link rel="stylesheet" href="demo.css">
+	<link rel="stylesheet" href="../tmp/css/dkModal.css">
+	<link rel="stylesheet" href="../tmp/css/demo.css">
 
 </head>
 <body ng-controller="ctrl">
@@ -23,7 +23,7 @@ safdasdffsadfasdfasdfasdfasdfasddsfsdfsdfsdfsadfsadfsdafsdfs <span class="one">s
 
 
 <script type="text/ng-template" id="mymodal">
-	<div ng-controller="addCtrl">
+	<div id="one" ng-controller="addCtrl">
 		<form>
 			name: <input ng-model="user.name"><br>
 			{{userAgent}}<br>
@@ -40,8 +40,8 @@ safdasdffsadfasdfasdfasdfasdfasddsfsdfsdfsdfsadfsadfsdafsdfs <span class="one">s
 <script src="../bower_components/angular/angular.js"></script>
 <script src="../bower_components/angular-animate/angular-animate.js"></script>
 <script src="../bower_components/angular-touch/angular-touch.js"></script>
-<script src="../src/dkModal.js"></script>
-<script src="app.js"></script>
+<script src="../tmp/js/dkModal.js"></script>
+<script src="../tmp/js/app.js"></script>
 <script>
 
 </script>

@@ -1,0 +1,56 @@
+@import '../bower_components/bootstrap/less/variables';
+
+@transition: opacity .2s;
+
+.dk-modal-backdrop {
+	position: fixed;
+	z-index: 10000;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0, 0, 0, .2);
+	outline: none; // has tabindex, defeat outline
+	/* animation */
+	transition: @transition;
+	opacity: 0;
+	&.open {
+		opacity: 1;
+	}
+}
+
+.dk-modal {
+	position: fixed;
+	z-index: 10001;
+	overflow: auto;
+	background: white;
+	border: 1px solid lightgray; //todo?
+	border-radius: 4px;
+	box-shadow: 0 3px 8px rgba(0, 0, 0, .6); //todo?
+	outline: none; // has tabindex, defeat outline
+	/* animation */
+	opacity: 0;
+	transition: @transition;
+	&.open {
+		opacity: 1;
+	}
+
+	// width
+	width: 80%;
+	@media (min-width: @screen-sm) {
+		width: 66%;
+	}
+	@media (min-width: @screen-md) {
+		width: 50%;
+	}
+	@media (min-width: @screen-lg) {
+		width: 46%;
+	}
+
+	// center
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%); // todo: needs -webkit-transform for phone
+}
+
+

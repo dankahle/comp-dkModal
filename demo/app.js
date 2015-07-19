@@ -1,73 +1,81 @@
+(function () {
+	'use strict';
 
+	var app = angular.module('app', ['ngAnimate', 'ngTouch', 'dkModal']);
 
-var app = angular.module('app', ['ngAnimate', 'ngTouch', 'dkModal']);
+	app.controller('ctrl', function ($scope, $dkModal) {
+		var $modal, dkModal;
 
-app.controller('ctrl', function($scope, $dkModal){
-	var $modal, dkModal;
+		/*
+		 target: undefined, // jquery object
+		 selector: undefined,
+		 template: undefined,
+		 key: true,
+		 click: true,
+		 targetVert: 'middle', // top/middle/bottom
+		 targetSide: 'right', // left/right
+		 targetLeft: false,
+		 offsetTop: undefined, // integer
+		 offsetLeft: undefined, // integer
+		 separation: 20, // integer, distance left or right of target
+		 width: undefined, // string with px or %
+		 backdropColor: undefined // rgba(0,0,0,.2), must be rgba otherwise won't be transparent
 
-	/*
-	 target: undefined, // jquery object
-	 selector: undefined,
-	 template: undefined,
-	 key: true,
-	 click: true,
-	 targetVert: 'middle', // top/middle/bottom
-	 targetSide: 'right', // left/right
-	 targetLeft: false,
-	 offsetTop: undefined, // integer
-	 offsetLeft: undefined, // integer
-	 separation: 20, // integer, distance left or right of target
-	 width: undefined, // string with px or %
-	 backdropColor: undefined // rgba(0,0,0,.2), must be rgba otherwise won't be transparent
+		 */
 
-	 */
+		dkModal = $dkModal({
+			//selector: '.selectorModal'
+			template: 'mymodal',
+			scope: $scope,
+			target: '.one',
+			targetSide: 'left',
+			width: '40%',
+			targetVert: 'middle',
+			//offsetTop: "9%",
+			//offsetLeft: "50%"
+		})
 
+		$scope.show = function () {
 
+			/*
+			 var obj = dkModal.show();
+			 obj.modal.on('ok cancel', function(e) {
+			 console.log(e.type)
+			 })
+			 */
 
-	dkModal = $dkModal({
-		//selector: '.selectorModal'
-		template: 'mymodal',
-		scope: $scope,
-		//target: '.one',
-		targetSide: 'right',
-		//width: '120%',
-		targetVert: 'middle',
-		//offsetTop: "9%",
-		//offsetLeft: "50%"
+			//var obj = dkModal.init();
+			//obj.scope.user = {name: 'carl'};
+			dkModal.init(function() {
+				var obj = dkModal.show();
+
+				obj.modal.off('ok');// if selector, need to clear old one
+				obj.modal.on('ok', function () {
+					console.log('got it:', obj.scope.user)
+				})
+				obj.modal.on('cancel', function (e) {
+					console.log('cancel')
+				})
+
+			});
+
+		}
+
+		window.getdim = function() {
+			var $one = $('one');
+			console.log('dim', $one.outerWidth(), $one.outerHeight())
+		}
 	})
 
-	$scope.show = function() {
+	app.controller('addCtrl', function ($scope) {
+		$scope.$parent.$regScope($scope);
 
-/*
-		var obj = dkModal.show();
-		obj.modal.on('ok cancel', function(e) {
-			console.log(e.type)
-		})
-*/
+		$scope.userAgent = window.navigator.userAgent;
+		$scope.user = {name: 'dank'}
+		$scope.submit = function () {
 
-		//var obj = dkModal.init();
-		//obj.scope.user = {name: 'carl'};
-		var obj = dkModal.show();
-		obj.modal.off('ok');// if selector, need to clear old one
-		obj.modal.on('ok', function() {
-			console.log('got it:', obj.scope.user)
-		})
-		obj.modal.on('cancel', function(e) {
-			console.log('cancel')
-		})
+		}
+	})
 
 
-	}
-
-})
-
-app.controller('addCtrl', function($scope) {
-	$scope.$parent.$regScope($scope);
-
-	$scope.userAgent = window.navigator.userAgent;
-	$scope.user = {name: 'dank'}
-	$scope.submit = function() {
-
-	}
-})
-
+})();

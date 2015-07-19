@@ -11,11 +11,9 @@
 	mod.provider('$dkModal', function () {
 
 		//settings
-		var phoneMax = 767,
+		var screen_xs = 767,
 			phoneMarginPercent = 2, // this is percent of width so top gap matches side gaps
 			phoneWidth = '96%' // phoneWidth + phoneMargin*2 must add to 100
-
-
 
 		var obj = {},
 			isMobile = window.navigator.userAgent.indexOf('Mobi') != -1;
@@ -40,7 +38,7 @@
 			angular.extend(defaults, opts);
 		}
 
-		obj.$get = function ($http, $templateCache, $compile, $animate, $rootScope) {
+		obj.$get = /*@ngInject*/ function ($http, $templateCache, $compile, $animate, $rootScope, $timeout) {
 			return function (sentInOptions) {
 				var get = {},
 					isSelector = false,
@@ -103,7 +101,7 @@
 
 				//////////////////////// init
 
-				get.init = function() {
+				get.init = function(cb) {
 
 					function $regScope(scope) {
 						this.$modalChild =  scope;
@@ -133,6 +131,7 @@
 								.then(function (resp) {
 									$templateCache.put(resp.data);
 									$modal = $compile(resp.data)(opts.scope);
+									safeDigest(opts.scope);
 								}, function (err) {
 									throw new Error('Failed to get modal template, error: ' + err.message ? err.message : err);
 								})
@@ -153,6 +152,11 @@
 					angular.extend(opts, $modal.data(), sentInOptions);
 
 					initObj = {modal: $modal, scope: (opts.scope && opts.scope.$modalChild) || opts.scope};
+
+					$timeout(function() {
+						cb(initObj);
+					})
+
 					return (initObj);// so they can mess with modal and it's scope "before" show. If it has ng-controller (its own scope), it needs to register this with parent to be available here: $parent.$regScope(scope) call)
 				}
 
@@ -165,7 +169,7 @@
 
 					var isPhone, hasInput;
 
-					isPhone =  window.innerWidth <= phoneMax;
+					isPhone =  isMobile && window.innerWidth <= screen_xs;
 					hasInput = $modal.find('input, select, textarea').length > 0;
 
 					// setup $modal
@@ -229,7 +233,7 @@
 
 					// css positions
 
-					if(isMobile && isPhone && hasInput) {
+					if(isPhone && hasInput) {
 						$modal.css('transform', 'translate(0,0)');// clear out css translate
 						$modal.css('top', phoneTopMargin +  'px');
 						$modal.css('left', phoneMarginPercent + '%');
@@ -312,13 +316,11 @@
 							console.log('adj top to:', modalTop)
 						}
 
-/*
 						console.log('targetOffset', targetOffset);
 						console.log('target width/height', targetWidth, targetHeight);
 
 						console.log('modal width/height', modalWidth, modalHeight)
 						console.log(modalLeft, modalTop)
- */
 
 						$modal.css('top', modalTop + 'px')
 						$modal.css('left', modalLeft + 'px')
@@ -382,10 +384,14 @@
 
 		$templateCache.put('dkModalTemplate.html', '');
 
-		// this will print out a script modal, but a lot of work to stringify it. The angular strap guy has a gulp module that will read the html and create a templateCache version. Grab that or better yet, write your own. Use event-stream to break the html into lines, then replace ' with /' and wrap lines in ' ', then wrap in a angular.module('dkModal').run templateCache.put command and out put a file. Watch index.html will load it and dist will concat it into dkModal.js.
+
+/*
+ // this will print out a script modal, but a lot of work to stringify it. The angular strap guy has a gulp plugin (gulp-ngtemplate) that will read the html and create a templateCache version.
+
 			setTimeout(function() {
 			console.log($templateCache.get('mymodal'))
 		}, 1000)
+*/
 
 	})
 
