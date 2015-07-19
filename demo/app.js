@@ -28,9 +28,9 @@ app.controller('ctrl', function($scope, $dkModal){
 		//selector: '.selectorModal'
 		template: 'mymodal',
 		scope: $scope,
-		target: '.one',
+		//target: '.one',
 		targetSide: 'right',
-		//width: '400px',
+		//width: '120%',
 		targetVert: 'middle',
 		//offsetTop: "9%",
 		//offsetLeft: "50%"
@@ -64,6 +64,7 @@ app.controller('ctrl', function($scope, $dkModal){
 app.controller('addCtrl', function($scope) {
 	$scope.$parent.$regScope($scope);
 
+	$scope.userAgent = window.navigator.userAgent;
 	$scope.user = {name: 'dank'}
 	$scope.submit = function() {
 

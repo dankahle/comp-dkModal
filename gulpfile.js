@@ -18,12 +18,22 @@ gulp.task('js', ['clean-dist'], function () {
 		.pipe(gulp.dest('dist'))
 })
 
-gulp.task('less', ['clean-dist'], function() {
+gulp.task('js-watch', function () {
+	del.sync('watch/*.js');
+	return gulp.src(['src/*.js'])
+		.pipe($.jshint(jshintConfig))
+		.pipe($.jshint.reporter(jshintStylish))
+		.pipe($.jshint.reporter('fail'))
+		.pipe($.ngAnnotate())
+		.pipe(gulp.dest('watch'))
+})
+
+gulp.task('copy-less', ['clean-dist'], function() {
 	gulp.src('src/dkModal.less')
 		.pipe(gulp.dest('dist'))
 });
 
-gulp.task('css', ['clean-dist'], function () {
+gulp.task('less', ['clean-dist'], function () {
 	return gulp.src(['src/dkModal.less'])
 		.pipe($.less())
 		.pipe($.autoprefixer({
@@ -44,11 +54,37 @@ gulp.task('css', ['clean-dist'], function () {
 		.pipe(gulp.dest('dist'))
 });
 
+gulp.task('less-watch', function () {
+	del('watch/*.css')
+	return gulp.src(['src/*.less'])
+		.pipe($.less())
+		.pipe($.autoprefixer({
+			browsers: [
+				"Android 2.3",
+				"Android >= 4",
+				"Chrome >= 20",
+				"Firefox >= 24",
+				"Explorer >= 8",
+				"iOS >= 6",
+				"Opera >= 12",
+				"Safari >= 6"
+			]
+		}))
+		.pipe(gulp.dest('watch'))
+});
+
 ///////////////////// dist
 
 gulp.task('clean-dist', function (cb) {
 	del('dist', cb)
 });
 
-gulp.task('build', ['js', 'css', 'less']);
+gulp.task('build', ['js', 'less', 'copy-less']);
+
+//////////////////// watch
+
+gulp.task('watch', ['js-watch', 'less-watch'], function() {
+	gulp.watch('src/*.js', ['js-watch']);
+	gulp.watch('src/*.less', ['less-watch']);
+})
 
