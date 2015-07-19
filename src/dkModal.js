@@ -19,20 +19,20 @@
 			isMobile = window.navigator.userAgent.indexOf('Mobi') != -1;
 
 		var defaults = { // assume strings unless otherwise specified
-				target: undefined, // jquery object
-				selector: undefined,
-				template: undefined,
-				key: true,
-				click: true,
-				targetVert: 'middle', // top/middle/bottom
-				targetSide: 'right', // left/right
-				offsetTop: undefined, // string px or %
-				offsetLeft: undefined, // string px or %
-				center: false, // bool
-				separation: 20, // integer (px), distance left or right of target
-				width: undefined, // string with px or %
-				backdropColor: undefined // rgba(0,0,0,.2), must be rgba otherwise won't be transparent
-			};
+			target: undefined, // jquery object
+			selector: undefined,
+			template: undefined,
+			key: true,
+			click: true,
+			targetVert: 'middle', // top/middle/bottom
+			targetSide: 'right', // left/right
+			offsetTop: undefined, // string with px or %
+			offsetLeft: undefined, // string with px or %
+			separation: 20, // integer (in px), distance left or right of target
+			width: undefined, // string with px or %
+			height: undefined, // string with px or %
+			backdropColor: undefined // rgba(0,0,0,.2), must be rgba otherwise won't be transparent
+		};
 
 		obj.setDefaults = function (opts) {
 			angular.extend(defaults, opts);
@@ -46,30 +46,31 @@
 					$modal, $backdrop, initObj;
 
 				function exitHandlerOk(e) {
-					$rootScope.$apply(function() {
+					$rootScope.$apply(function () {
 						get.hide('ok');
 					})
 					return false;
 				}
 
 				function exitHandlerCancel(e) {
-					$rootScope.$apply(function() {
+					$rootScope.$apply(function () {
 						get.hide('cancel');
 					})
 					return false;
 				}
 
 				var ESC = 27;
+
 				function keyHandler(e) {
 					if (e.which == ESC)
-						$rootScope.$apply(function() {
+						$rootScope.$apply(function () {
 							get.hide('cancel');
 						})
 					return false;
 				}
 
 				function clickHandler() {
-					$rootScope.$apply(function() {
+					$rootScope.$apply(function () {
 						get.hide('cancel');
 					})
 					return false;
@@ -84,7 +85,7 @@
 
 					// I'd rather do enter/leave, but if selector, it's already in the dom, so we'll addClass instead
 					$animate.removeClass($backdrop, 'open')
-						.then(function() {
+						.then(function () {
 							$backdrop.remove()
 						})
 
@@ -101,26 +102,28 @@
 
 				//////////////////////// init
 
-				get.init = function(cb) {
+				get.init = function () {
 
-					function $regScope(scope) {
-						this.$modalChild =  scope;
+					// $regScope: helper function for child scopes (your modal has an ngController on it,
+					// when you call this from that controller's scope, with your scope and name (see
+					// $regScope above), then the scope you passed in in options, will have a property:
+					// scope_yourName that you can use to access the child scope, to setup initial values
+					// before showing.
+					// eg: var childScope = $dkModal(opts).init().scope.scope_nameICalledRegScopeWith
+					// childScope.user = {}
+					// $dkModal.show();
+					function $regScope(scope, name) {
+						this['scope' + '_' + name] = scope;
 					}
 
 					if (!opts.selector && !opts.template)
 						throw new Error('Must set either dk-modal to selector or data-template to template');
 
 					// get modal
-					if (opts.selector) {
-						isSelector = true;
-						$modal = $(opts.selector);
-						if ($modal.length === 0)
-							throw new Error('Failed to find modal from selector: ' + opts.selector);
-					}
-					else if (opts.template) {
+					if (opts.template) {
 						if (!opts.scope)
 							throw new Error('scope is required with template option');
-						opts.scope.$regScope = $regScope; // child needs to call this on compilation
+						opts.scope.$regScope = $regScope; // attach $regScope to passed in scope for children to register with
 
 						var html;
 						if ((html = $templateCache.get(opts.template))) {
@@ -136,40 +139,65 @@
 									throw new Error('Failed to get modal template, error: ' + err.message ? err.message : err);
 								})
 						}
-						if ($modal.length === 0)
+						if (!$modal || $modal.length === 0)
 							throw new Error('Failed to create modal from template: ' + opts.template);
+					}
+					else if (opts.selector) {
+						isSelector = true;
+						$modal = $(opts.selector);
+						if ($modal.length === 0)
+							throw new Error('Failed to find modal from selector: ' + opts.selector);
 					}
 					// have modal
 
 					/* options precedence:
-					1) service call opts (either code or via dkModalTrigger element)
-					2) modal data attrs
-					3) provider settings
-					4) defaults
-				 */
+					 1) service call opts (either code or via dkModalTrigger element)
+					 2) modal data attrs
+					 3) provider settings
+					 4) defaults
+					 */
 
 					// now that we have modal opts apply them, but we had already applied sentInOptions earlier (needed in the above code), still, they outrank modal opts, so need to reapply them after modal opts.
 					angular.extend(opts, $modal.data(), sentInOptions);
 
 					initObj = {modal: $modal, scope: (opts.scope && opts.scope.$modalChild) || opts.scope};
-
-					$timeout(function() {
-						cb(initObj);
-					})
-
-					return (initObj);// so they can mess with modal and it's scope "before" show. If it has ng-controller (its own scope), it needs to register this with parent to be available here: $parent.$regScope(scope) call)
+					return initObj; // for modal/childScope manipulation before show (see $regScope)
 				}
 
 				///////////////////////// show
-				get.show = function () {
+				get.show = function (cb) {
+
+					if (!initObj)
+						get.init();
+
+					// hack alert:
+					// if we do our width/height calcs here, they'll all be off as this will be before angular binding, even though it's "after" the postlink call. It appears it needs one digest to get it together, this code provides that. After that we have accurate dimensions.
+					if (opts.template) {
+						$timeout(function () {
+							doShow();
+							if(cb)
+								cb(initObj);
+						})
+						// if template and you need to do something with modal that involves the dimentions/position, then use the callback:
+						// $dkModal.show(function(initObj) {... }
+
+					}
+					else {
+						doShow();
+						if(cb) // just in case they used callback and didn't need to
+							cb(initObj);
+					}
+
+					return initObj;
+				}
+
+				function doShow() {
 					var modalLeft, modalTop;
 
-					if(!initObj)
-						get.init();
 
 					var isPhone, hasInput;
 
-					isPhone =  isMobile && window.innerWidth <= screen_xs;
+					isPhone = isMobile && window.innerWidth <= screen_xs;
 					hasInput = $modal.find('input, select, textarea').length > 0;
 
 					// setup $modal
@@ -179,18 +207,18 @@
 					$modal.addClass('dk-modal');// in case they didn't
 					$modal.attr('tabindex', '-1');// for keyboard input
 
-					if(opts.key)
+					if (opts.key)
 						$modal.on('keyup', keyHandler);
 
 					// WIDTH/HEIGHT MUST BE SET "BEFORE" WE SHOW OFFSCREEN TO GET WIDTH/HEIGHT, so we either get our setting or the css value
-					// also, we have to reset here as well so we don't wipe out this setting later and we get the css width if there should be one.
+					// also, we have to reset here as well so we don't wipe out this setting later and we get the css width/height if there should be one.
 					// set width
-					if(opts.width) {
+					if (opts.width) {
 
-						var setWidth = opts.width.indexOf('%') != -1? window.innerWidth * parseInt(opts.width)/100: parseInt((opts.width));
-						if(setWidth > window.innerWidth) {
+						var setWidth = opts.width.indexOf('%') != -1 ? window.innerWidth * parseInt(opts.width) / 100 : parseInt((opts.width));
+						if (setWidth > window.innerWidth) {
 							setWidth = window.innerWidth + 'px';
-							console.log('constrain width to:', window.innerWidth)
+							console.log('constrain width to:', window.innerWidth, 'of: ', window.innerWidth)
 						}
 						else
 							setWidth = opts.width;
@@ -200,28 +228,46 @@
 					else
 						$modal.css('width', '');
 
-					 // show modal offscreen so we can get accurate size readings.
-					 $modal.css('left', '-9999px')// this gets bad readings for +9999, what? If it goes off the screen to the right, (999 works on widescreen, but not on md) it gets innaccurate readings for some reason. Close mind you, but off on height by 20px on this test.
-					$modal.show();
-					 if (!isSelector)
-						 $(document.body).prepend($modal)
+					var phoneTopMargin = window.innerWidth * (phoneMarginPercent / 100);// % of width so matches side margin
 
-					 var modalWidth = $modal.outerWidth(),
-					 modalHeight = $modal.outerHeight();
-					 $modal.hide();
-					 $modal.css('left', '');
+					if (opts.height) {
 
+						var setHeight = opts.height.indexOf('%') != -1 ? window.innerHeight * parseInt(opts.height) / 100 : parseInt((opts.height));
 
-					// NEEDS TO BE AFTER OFFSCREEN CHECK
-					// set height (if we need to constrain to viewport so scrollbars kick in)
-					var phoneTopMargin = window.innerWidth * (phoneMarginPercent/100);// % of width so matches side margin
-					if (modalHeight + (isPhone? phoneTopMargin: 0) > window.innerHeight) { // constrain height to viewport
-						modalHeight = window.innerHeight - (isPhone? phoneTopMargin: 0);
-						$modal.css('height', modalHeight + 'px');
-						console.log('constrain height to:', modalHeight, 'innerHeight', window.innerHeight );
+						if (isPhone && setHeight + phoneTopMargin > window.innerHeight) {
+							setHeight = (window.innerHeight - phoneTopMargin) + 'px';
+							console.log('constrain setHeight to:', setHeight, 'of', window.innerHeight)
+						}
+						else if (setHeight > window.innerHeight) {
+							setHeight = window.innerHeight + 'px';
+							console.log('constrain setHeight to:', setHeight, 'of', window.innerHeight)
+						}
+						else
+							setHeight = opts.height;
+
+						$modal.css('height', setHeight);
 					}
 					else
 						$modal.css('height', '');
+
+					// show modal offscreen so we can get accurate size readings.
+					$modal.css('left', '-9999px')// this gets bad readings for +9999, what? If it goes off the screen to the right, (999 works on widescreen, but not on md) it gets innaccurate readings for some reason. Close mind you, but off on height by 20px on this test.
+					$modal.show();
+					if (!isSelector)
+						$(document.body).prepend($modal)
+
+					var modalWidth = $modal.outerWidth(),
+						modalHeight = $modal.outerHeight();
+					$modal.hide();
+					$modal.css('left', '');
+
+					// NEEDS TO BE AFTER OFFSCREEN CHECK, this mostly applies if !opts.height, but doens't hurt to do it again after ng binding
+					// set height (if we need to constrain to viewport so scrollbars kick in)
+					if (modalHeight + (isPhone ? phoneTopMargin : 0) > window.innerHeight) { // constrain height to viewport
+						modalHeight = window.innerHeight - (isPhone ? phoneTopMargin : 0);
+						$modal.css('height', modalHeight + 'px');
+						console.log('constrain height to:', modalHeight, 'innerHeight', window.innerHeight);
+					}
 
 
 					// clear any previous positioning
@@ -233,18 +279,18 @@
 
 					// css positions
 
-					if(isPhone && hasInput) {
+					if (isPhone && hasInput) {
 						$modal.css('transform', 'translate(0,0)');// clear out css translate
-						$modal.css('top', phoneTopMargin +  'px');
+						$modal.css('top', phoneTopMargin + 'px');
 						$modal.css('left', phoneMarginPercent + '%');
 						$modal.css('width', phoneWidth);
 					}
 					else if (opts.offsetTop && opts.offsetLeft) {// offset()
 						$modal.css('transform', 'translate(0,0)');// clear out css translate
 
-						var adjTop = opts.offsetTop.indexOf('%') != -1? window.innerHeight * parseInt(opts.offsetTop)/100: parseInt((opts.offsetTop));
+						var adjTop = opts.offsetTop.indexOf('%') != -1 ? window.innerHeight * parseInt(opts.offsetTop) / 100 : parseInt((opts.offsetTop));
 
-						var adjLeft = opts.offsetLeft.indexOf('%') != -1? window.innerWidth * parseInt(opts.offsetLeft)/100: parseInt((opts.offsetLeft));
+						var adjLeft = opts.offsetLeft.indexOf('%') != -1 ? window.innerWidth * parseInt(opts.offsetLeft) / 100 : parseInt((opts.offsetLeft));
 
 						if (adjTop + modalHeight < window.innerHeight)
 							modalTop = opts.offsetTop;
@@ -260,14 +306,15 @@
 							console.log('adj left to:', modalLeft);
 						}
 
-/*
-						$modal.css('top', modalTop)
-						$modal.css('left', modalLeft)
+						/*
+						 $modal.css('top', modalTop)
+						 $modal.css('left', modalLeft)
 
-						console.log('modal width/height', modalWidth, modalHeight)
-						console.log(modalLeft, modalTop)
-*/
+						 console.log('modal width/height', modalWidth, modalHeight)
+						 console.log(modalLeft, modalTop)
+						 */
 
+						//warning: we can get inaccurate results using jquery.offset({top:xx, left:xx}) here so we'll just use css instead
 						$modal.css('top', modalTop) // these are strings
 						$modal.css('left', modalLeft)
 					}
@@ -299,29 +346,32 @@
 							}
 						}
 
-						if(opts.targetVert == 'top')
+						if (opts.targetVert == 'top')
 							modalTop = targetOffset.top;
-						else if(opts.targetVert == 'middle')
-							modalTop = targetOffset.top - modalHeight/2 + targetHeight/2;
-						else if(opts.targetVert == 'bottom')
+						else if (opts.targetVert == 'middle')
+							modalTop = targetOffset.top - modalHeight / 2 + targetHeight / 2;
+						else if (opts.targetVert == 'bottom')
 							modalTop = targetOffset.top - modalHeight + targetHeight;
 
 						// constrain vertically into viewport
-						if(modalTop < 0) {
+						if (modalTop < 0) {
 							modalTop = 0;
 							console.log('adj top to:', modalTop)
 						}
-						if(modalTop + modalHeight > window.innerHeight) {
+						if (modalTop + modalHeight > window.innerHeight) {
 							modalTop = window.innerHeight - modalHeight;
 							console.log('adj top to:', modalTop)
 						}
 
+/*
 						console.log('targetOffset', targetOffset);
 						console.log('target width/height', targetWidth, targetHeight);
 
 						console.log('modal width/height', modalWidth, modalHeight)
 						console.log(modalLeft, modalTop)
+*/
 
+						//warning: we can get inaccurate results using jquery.offset({top:xx, left:xx}) here so we'll just use css instead
 						$modal.css('top', modalTop + 'px')
 						$modal.css('left', modalLeft + 'px')
 					}
@@ -329,14 +379,14 @@
 					// backdrop
 					$backdrop = $('<div tabindex="-1" class="dk-modal-backdrop"></div>');
 
-					if (opts.backgroundColor)
+					if (opts.backdropColor)
 						$backdrop.css('background-color', opts.backdropColor);
 
 					// backdrop
 					if (opts.click)
 						$backdrop.click(clickHandler)
 
-					if(opts.key)
+					if (opts.key)
 						$backdrop.keyup(keyHandler);
 
 					// show
@@ -351,7 +401,6 @@
 							$modal.trigger('show');
 						})
 
-					return initObj; // so they can watch its events
 				}
 
 				return get; // so they can fire up service with options and call show/hide multiple times
@@ -369,9 +418,19 @@
 					var opts = $element.data();
 					if (opts.template)
 						opts.scope = $scope; // if template, they'll need scope
-					if (!opts.selector && $attrs.dkModalTrigger)
+					else if ($attrs.dkModalTrigger && /.html$/i.test($attrs.dkModalTrigger)) {
+						opts.template = $attrs.dkModalTrigger;
+						opts.scope = $scope; // if template, they'll need scope
+					}
+					else if(opts.selector == 'thisElement' || $attrs.dkModalTrigger == 'thisElement')// make this element the selector
+						opts.selector = $element;
+					else if (!opts.selector && $attrs.dkModalTrigger)
 						opts.selector = $attrs.dkModalTrigger;
-					$scope.$apply(function() {
+
+					if(!opts.template && !opts.selector)
+						throw new Error('dkModal: Must supply either a template or selector')
+
+					$scope.$apply(function () {
 						$dkModal(opts).show();
 					})
 				})
@@ -380,25 +439,25 @@
 		}
 	})
 
-	mod.run(function($templateCache) {
+	mod.run(function ($templateCache) {
 
 		$templateCache.put('dkModalTemplate.html', '');
 
 
-/*
- // this will print out a script modal, but a lot of work to stringify it. The angular strap guy has a gulp plugin (gulp-ngtemplate) that will read the html and create a templateCache version.
+		/*
+		 // this will print out a script modal, but a lot of work to stringify it. The angular strap guy has a gulp plugin (gulp-ngtemplate) that will read the html and create a templateCache version.
 
-			setTimeout(function() {
-			console.log($templateCache.get('mymodal'))
-		}, 1000)
-*/
+		 setTimeout(function() {
+		 console.log($templateCache.get('mymodal'))
+		 }, 1000)
+		 */
 
 	})
 
-	mod.directive('dkModalTemplate', function() {
+	mod.directive('dkModalTemplate', function () {
 		return {
 			templateUrl: 'dkModalTemplate.html',
-			link: function(scope, elem, attr) {
+			link: function (scope, elem, attr) {
 				scope.opts = elem.data();
 
 			}

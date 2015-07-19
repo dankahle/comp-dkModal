@@ -39,3 +39,8 @@
   text-align: center;
   line-height: 40px;
 }
+.two {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}

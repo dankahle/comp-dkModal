@@ -10,19 +10,23 @@
 
 </head>
 <body ng-controller="ctrl">
+<br><br><br><br><br><br>
+<a href="#" dk-modal-trigger="mymodal.html" >trigger</a><br>
 
 <button ng-click="show()" class="btn btn-default">show</button>
 <br><br><br><br><br><br>
-safdasdffsadfasdfasdfasdfasdfasddsfsdfsdfsdfsadfsadfsdafsdfs <span class="one">span</span>
+<div class="three">
+	safdasdffsadfasdfasdfasdfasdfasddsfsdfsdfsdfsadf<span class="one">span</span>
+</div>
 
-<div class="selectorModal" style="display:none;">
+<div id="selModal" class="selectorModal" style="display:none;">
 	selector modal contents<br>
 	<button class="exit-cancel">cancel</button>
 	<button class="exit-ok">ok</button>
 </div>
 
 
-<script type="text/ng-template" id="mymodal">
+<script type="text/ng-template" id="mymodal.html">
 	<div id="one" ng-controller="addCtrl">
 		<form>
 			name: <input ng-model="user.name"><br>
