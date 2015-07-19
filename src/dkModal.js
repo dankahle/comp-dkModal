@@ -409,7 +409,14 @@
 
 		return obj;
 	})
-
+/*
+ dkModalTrigger:
+ put this on a link or button and it autofires the chosen modal with the data attributes applied.
+ Can just do: dk-modal-trigger=".someClass/#someId/someTemplate.html"
+ if ends in .html assumes a template otherwise assumes a jquery selector. Can also use: data-selector or data-template as well.
+ data-target is the reference element for positioning, if you do: data-target="this", it will
+ set this element as the target.
+ */
 	mod.directive('dkModalTrigger', function () {
 		return {
 			restrict: 'A',
