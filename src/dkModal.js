@@ -19,15 +19,15 @@
 			isMobile = window.navigator.userAgent.indexOf('Mobi') != -1;
 
 		var defaults = { // assume strings unless otherwise specified
-			target: undefined, // jquery object
-			selector: undefined,
+			selector: undefined, // string or jquery element representing the modal
 			template: undefined,
 			key: true,
 			click: true,
-			targetVert: 'middle', // top/middle/bottom
-			targetSide: 'right', // left/right
 			offsetTop: undefined, // string with px or %
 			offsetLeft: undefined, // string with px or %
+			target: undefined, // string or jquery element for positioning the modal against
+			targetVert: 'middle', // top/middle/bottom
+			targetSide: 'right', // left/right
 			separation: 20, // integer (in px), distance left or right of target
 			width: undefined, // string with px or %
 			height: undefined, // string with px or %
@@ -422,13 +422,14 @@
 						opts.template = $attrs.dkModalTrigger;
 						opts.scope = $scope; // if template, they'll need scope
 					}
-					else if(opts.selector == 'thisElement' || $attrs.dkModalTrigger == 'thisElement')// make this element the selector
-						opts.selector = $element;
 					else if (!opts.selector && $attrs.dkModalTrigger)
 						opts.selector = $attrs.dkModalTrigger;
 
 					if(!opts.template && !opts.selector)
 						throw new Error('dkModal: Must supply either a template or selector')
+
+					if(opts.target == 'this')
+						opts.target = $element;
 
 					$scope.$apply(function () {
 						$dkModal(opts).show();
