@@ -45,8 +45,8 @@
 			template: undefined, // string url
 			key: true, // bool
 			click: true, // bool
-			offsetTop: undefined, // string with px or %
-			offsetLeft: undefined, // string with px or %
+			offsetTop: undefined, // MUST HAVE BOTH TOP AND LEFT, string with px or %
+			offsetLeft: undefined, // MUST HAVE BOTH TOP AND LEFT, string with px or %
 			target: undefined, // string or jquery element for positioning the modal against
 			targetVert: 'middle', // top/middle/bottom
 			targetSide: 'right', // left/right
