@@ -31,7 +31,8 @@
     "bootstrap": "^3.3.5"
   },
   "devDependencies": {
-    "angular-touch": "~1.4.3"
+    "angular-touch": "~1.4.3",
+    "font-awesome": "~4.3.0"
   },
   "resolutions": {
     "angular": "1.4.3",
