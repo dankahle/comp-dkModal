@@ -1,19 +1,42 @@
 
 @import 'dkMixins';
 
-#mymodal {
-	padding: 30px;
+.dk-modal {
+	@padding: 20px 32px;
+	header {
+		font-size: 23px;
+		padding: @padding;
+		& + main, & + footer {
+			padding-top: 0;
+		}
+	}
+	main {
+		padding: @padding;
+		& + footer {
+			padding-top: 0;
+		}
+	}
 	footer {
+		padding: @padding;
 		text-align: center;
-		line-height: 40px;
+	}
+	span.exit-cancel {
+		@height: 30px;
+		@font-size: 24px;
+		display: inline-block;
+		text-align: center;
+		width: @height;
+		height: @height;
+		line-height: @height - 3;
+		font-size: @font-size;
+		position:absolute;
+		top: 6px;
+		right: 8px;
+		&:hover {
+			font-weight: bold;
+			font-size: @font-size + 3;
+			cursor: pointer;
+		}
 	}
 }
 
-#one {
-	//.outline-red;
-}
-.two {
-	position: absolute;
-	left: 0;
-	bottom: 0;
-}
