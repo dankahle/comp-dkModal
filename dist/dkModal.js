@@ -42,7 +42,7 @@
 			angular.extend(defaults, opts);
 		}
 
-		obj.$get = /*@ngInject*/ function ($http, $templateCache, $compile, $animate, $rootScope, $timeout) {
+		obj.$get = /*@ngInject*/ ["$http", "$templateCache", "$compile", "$animate", "$rootScope", "$timeout", function ($http, $templateCache, $compile, $animate, $rootScope, $timeout) {
 			return function (sentInOptions) {
 				var get = {},
 					isSelector = false,
@@ -414,7 +414,7 @@
 
 				return get; // so they can fire up service with options and call show/hide multiple times
 			}
-		}
+		}]
 
 		return obj;
 	})
@@ -431,7 +431,7 @@
 	mod.directive('dkModalTrigger', function () {
 		return {
 			restrict: 'A',
-			controller: function ($scope, $element, $attrs, $dkModal) {
+			controller: ["$scope", "$element", "$attrs", "$dkModal", function ($scope, $element, $attrs, $dkModal) {
 				$element.click(function () {
 					var opts = $element.data();
 					if (opts.template)
@@ -454,7 +454,7 @@
 					})
 				})
 
-			}
+			}]
 		}
 	})
 

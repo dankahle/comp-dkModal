@@ -26,6 +26,16 @@
 
 		 */
 
+
+		$scope.$on('okMe', function() {
+			console.log('okMe event, your name is: ', $scope.scope_addCtrl.user.name)
+		})
+		$scope.$on('cancelMe', function() {
+			console.log('cancelMe event')
+		})
+
+
+
 		dkModal = $dkModal({
 			//selector: '.selectorModal'
 			template: 'mymodal.html',
