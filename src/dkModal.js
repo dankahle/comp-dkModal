@@ -145,7 +145,7 @@
 					}
 
 					if (!opts.selector && !opts.template)
-						throw new Error('Must set either dk-modal to selector or data-template to template');
+						throw new Error('Must set either selector or template');
 
 					// get modal
 					if (opts.template) {
