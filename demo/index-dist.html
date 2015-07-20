@@ -3,16 +3,16 @@
 <head lang="en">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>dist</title>
+	<title>demo</title>
 	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
-	<link rel="stylesheet" href="../dist/dkModal.min.css">
+	<link rel="stylesheet" href="../dist/dkModal.css">
 	<link rel="stylesheet" href="../tmp/css/demo.css">
 
 </head>
 <body ng-controller="ctrl">
 
 <br><br><br><br><br><br>
-<a href="#" dk-modal-trigger data-template="mymodal.html" data-target="this" data-target-vert="middle" data-cancel-event-name="cancelMe" data-ok-event-name="okMe">trigger</a><br>
+<a href="#" dk-modal-trigger=".selModal" data-target="this" data-something="5">trigger</a><br>
 <br><br><br><br><br><br>
 
 <button class="three" ng-click="show()" class="btn btn-default">show</button>
@@ -22,7 +22,7 @@
 </div>
 
 <div id="selModal" class="selModal" style="display:none;">
-	selector modal contents<br>
+	selector modal contents: {{selModalAppend}}<br>
 	<button class="exit-cancel">cancel</button>
 	<button class="exit-ok">ok</button>
 </div>
@@ -46,7 +46,7 @@
 <script src="../bower_components/angular/angular.js"></script>
 <script src="../bower_components/angular-animate/angular-animate.js"></script>
 <script src="../bower_components/angular-touch/angular-touch.js"></script>
-<script src="../dist/dkModal.min.js"></script>
+<script src="../dist/dkModal.js"></script>
 <script src="../tmp/js/app.js"></script>
 <script>
 
