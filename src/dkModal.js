@@ -35,7 +35,6 @@
 			backdropColor: undefined, // rgba(0,0,0,.2), must be rgba otherwise won't be transparent
 			cancelEventName: 'modalCancel',
 			okEventName: 'modalOk'
-
 		};
 
 		obj.setDefaults = function (opts) {

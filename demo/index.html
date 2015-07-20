@@ -12,7 +12,7 @@
 <body ng-controller="ctrl">
 
 <br><br><br><br><br><br>
-<a href="#" dk-modal-trigger data-template="mymodal.html" data-target="this" data-target-vert="bottom" data-cancel-event-name="cancelMe" data-ok-event-name="okMe">trigger</a><br>
+<a href="#" dk-modal-trigger=".selModal" data-target="this">trigger</a><br>
 <br><br><br><br><br><br>
 
 <button class="three" ng-click="show()" class="btn btn-default">show</button>
@@ -22,7 +22,7 @@
 </div>
 
 <div id="selModal" class="selModal" style="display:none;">
-	selector modal contents<br>
+	selector modal contents: {{selModalAppend}}<br>
 	<button class="exit-cancel">cancel</button>
 	<button class="exit-ok">ok</button>
 </div>
