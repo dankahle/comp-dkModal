@@ -38,18 +38,18 @@
 
 <script type="text/ng-template" id="mymodal.html">
 	<div id="one" ng-controller="addCtrl">
-		<span class="exit-cancel">&times;</span>
-		<header>Template Modal</header>
-		<main>
+		<span class="exit-cancel dk-modal-close">&times;</span>
+		<div class="dk-modal-header">Template Modal</div>
+		<div class="dk-modal-body">
 			<form id="myform">
 				name: <input ng-model="user.name"><br>
 				{{userAgent}}<br>
 			</form>
-		</main>
-			<footer>
+		</div>
+			<div class="dk-modal-footer">
 				<button type="button" form="myform" class="btn btn-default exit-cancel">Cancel</button>
 				<button type="submit" form="myform" class="btn btn-default exit-ok">Ok</button>
-			</footer>
+			</div>
 	</div>
 </script>
 

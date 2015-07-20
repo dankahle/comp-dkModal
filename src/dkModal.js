@@ -42,7 +42,7 @@
 
 		var defaults = {
 			selector: undefined, // string or jquery element representing the modal
-			template: undefined, // string url
+			templateUrl: undefined, // string url
 			key: true, // bool
 			click: true, // bool
 			offsetTop: undefined, // MUST HAVE BOTH TOP AND LEFT, string with px or %
@@ -55,7 +55,10 @@
 			height: undefined, // string with px or %
 			backdropColor: undefined, // rgba(0,0,0,.2), must be rgba otherwise won't be transparent
 			cancelEventName: 'modalCancel',
-			okEventName: 'modalOk'
+			okEventName: 'modalOk',
+			useTemplate: false,
+			templateHeader: '', // string of html text
+			templateBody: '' //string of html text
 		};
 
 		obj.setDefaults = function (opts) {
@@ -144,21 +147,21 @@
 						this['scope' + '_' + name] = scope;
 					}
 
-					if (!opts.selector && !opts.template)
-						throw new Error('Must set either selector or template');
+					if (!opts.selector && !opts.templateUrl)
+						throw new Error('Must set either selector or templateUrl');
 
 					// get modal
-					if (opts.template) {
+					if (opts.templateUrl) {
 						if (!opts.scope)
-							throw new Error('scope is required with template option');
+							throw new Error('scope is required with templateUrl option');
 						opts.scope.$regScope = $regScope; // attach $regScope to passed in scope for children to register with
 
 						var html;
-						if ((html = $templateCache.get(opts.template))) {
+						if ((html = $templateCache.get(opts.templateUrl))) {
 							$modal = $compile(html)(opts.scope);
 						}
 						else {
-							$http.get(opts.template)
+							$http.get(opts.templateUrl)
 								.then(function (resp) {
 									$templateCache.put(resp.data);
 									$modal = $compile(resp.data)(opts.scope);
@@ -168,7 +171,7 @@
 								})
 						}
 						if (!$modal || $modal.length === 0)
-							throw new Error('Failed to create modal from template: ' + opts.template);
+							throw new Error('Failed to create modal from templateUrl: ' + opts.templateUrl);
 					}
 					else if (opts.selector) {
 						isSelector = true;
@@ -201,13 +204,13 @@
 
 					// hack alert:
 					// if we do our width/height calcs here, they'll all be off as this will be before angular binding, even though it's "after" the postlink call. It appears it needs one digest to get it together, this code provides that. After that we have accurate dimensions.
-					if (opts.template) {
+					if (opts.templateUrl) {//todo: change this for template AND templateUrl??
 						$timeout(function () {
 							doShow();
 							if (cb)
 								cb(initObj);
 						})
-						// if template and you need to do something with modal that involves the dimentions/position, then use the callback:
+						// if templateUrl and you need to do something with modal that involves the dimentions/position, then use the callback:
 						// $dkModal.show(function(initObj) {... }
 
 					}
@@ -441,7 +444,7 @@
 	 dkModalTrigger:
 	 put this on a link or button and it autofires the chosen modal with the data attributes applied.
 	 Can just do: dk-modal-trigger=".someClass/#someId/someTemplate.html"
-	 if ends in .html assumes a template otherwise assumes a jquery selector. Can also use: data-selector or data-template as well.
+	 if ends in .html assumes a templateUrl otherwise assumes a jquery selector. Can also use: data-selector or data-template-url as well.
 	 data-target is the reference element for positioning, if you do: data-target="this", it will
 	 set this element as the target.
 	 */
@@ -451,17 +454,17 @@
 			controller: function ($scope, $element, $attrs, $dkModal) {
 				$element.click(function () {
 					var opts = cleanOptions($element.data());
-					if (opts.template)
-						opts.scope = $scope; // if template, they'll need scope
+					if (opts.templateUrl)
+						opts.scope = $scope; // if templateUrl, they'll need scope
 					else if ($attrs.dkModalTrigger && /.html$/i.test($attrs.dkModalTrigger)) {
-						opts.template = $attrs.dkModalTrigger;
-						opts.scope = $scope; // if template, they'll need scope
+						opts.templateUrl = $attrs.dkModalTrigger;
+						opts.scope = $scope; // if templateUrl, they'll need scope
 					}
 					else if (!opts.selector && $attrs.dkModalTrigger)
 						opts.selector = $attrs.dkModalTrigger;
 
-					if (!opts.template && !opts.selector)
-						throw new Error('dkModal: Must supply either a template or selector')
+					if (!opts.templateUrl && !opts.selector)
+						throw new Error('dkModal: Must supply either a templateUrl or selector')
 
 					if (opts.target == 'this')
 						opts.target = $element;
@@ -475,33 +478,18 @@
 		}
 	})
 
-	//todo-feature: a default template that takes a simple message or string for display and runs
-	// various modes like: yesno, okcancel, ok so all you need is a string and mode to put up
-	// messages. Will need a default template less file that places everything nicely "plus" will
-	// be reusable by others so all they have to do is use the same classes to get the same
-	// results. This would mimick bootstrap's modal where you put in the classes and wallah
-	// perfect modal.
-	/*
-	 mod.run(function ($templateCache) {
-	 //$templateCache.put('dkModalTemplate.html', '');
-
-	 // this will print out a script modal, but a lot of work to stringify it. The angular strap guy has a gulp plugin (gulp-ngtemplate) that will read the html and create a templateCache version.
-
-	 setTimeout(function() {
-	 console.log($templateCache.get('mymodal'))
-	 }, 1000)
-	 })
-
-	 mod.directive('dkModalTemplate', function () {
-	 return {
-	 templateUrl: 'dkModalTemplate.html',
-	 link: function (scope, elem, attr) {
-	 scope.opts = elem.data();
-
-	 }
-	 }
-	 })
-	 */
+var dkModalTemplate = '' +
+		'<div class="dk-modal" ng-controller="dkModalController"> ' +
+			'<span class="dk-modal-close exit-cancel">&times;</span> ' +
+			'<div class="dk-modal-header">{{dkModal.title}}</div> ' +
+			'<div class="dk-modal-body">{{dkModal.body}}</div> ' +
+			'<div class="dk-modal-footer"> ' +
+				'<button class="btn btn-default exit-cancel dk-modal-button-no">No</button> ' +
+				'<button class="btn btn-default exit-ok dk-modal-button-yes">Yes</button> ' +
+				'<button class="btn btn-default exit-cancel dk-modal-button-cancel">Cancel</button> ' +
+				'<button class="btn btn-default exit-ok dk-modal-button-ok">OK</button> ' +
+			'</div> ' +
+		'</div>';
 
 
 })();

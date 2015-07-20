@@ -46,7 +46,7 @@
 
 		dkModal = $dkModal({
 			//selector: '.selectorModal'
-			template: 'mymodal.html',
+			templateUrl: 'mymodal.html',
 			scope: $scope,
 			target: '.one',
 			targetSide: 'right',
