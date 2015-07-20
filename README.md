@@ -2,7 +2,6 @@
 
 
 
-
 //todo:
 
 ### this readme
@@ -18,5 +17,5 @@ target, targetSide, targetVert, targetOffset (with draggable target, and target 
 width, height
 key, click
 backdropColor
-cancelEventName, okEventName?? how to hook up?  
+cancelEventName, okEventName?? how to hook up?
 
