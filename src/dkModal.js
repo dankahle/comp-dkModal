@@ -6,6 +6,27 @@
 	if (!angular)
 		throw new Error('dkModal depends on angular');
 
+
+	function cleanOptions(opts) {
+
+		$.each(opts, function(key, val) {
+			if(typeof opts[key] == 'string')// jq doesn't trim
+				opts[key] = opts[key].trim();
+		});
+
+		['offsetTop', 'offSetLeft', 'width', 'height']
+			.forEach(function(v,i) {
+				if(typeof opts[v] == 'number')
+					opts[v] = opts[v] + 'px';
+			})
+
+		if(typeof opts.targetOffset == 'string' && opts.targetOffset.indexOf('px') != -1)
+			opts.targetOffset = parseFloat(opts.targetOffset);
+
+		return opts;
+	}
+
+
 	var mod = angular.module('dkModal', ['ngAnimate']);
 
 	mod.provider('$dkModal', function () {
@@ -29,7 +50,7 @@
 			target: undefined, // string or jquery element for positioning the modal against
 			targetVert: 'middle', // top/middle/bottom
 			targetSide: 'right', // left/right
-			targetOffset: 20, // integer (in px), distance left or right of target
+			targetOffset: 20, // number (in px), distance left or right of target
 			width: undefined, // string with px or %
 			height: undefined, // string with px or %
 			backdropColor: undefined, // rgba(0,0,0,.2), must be rgba otherwise won't be transparent
@@ -38,14 +59,14 @@
 		};
 
 		obj.setDefaults = function (opts) {
-			angular.extend(defaults, opts);
+			angular.extend(defaults, cleanOptions(opts));
 		}
 
 		obj.$get = /*@ngInject*/ function ($http, $templateCache, $compile, $animate, $rootScope, $timeout) {
 			return function (sentInOptions) {
 				var get = {},
 					isSelector = false,
-					opts = angular.extend({}, defaults, sentInOptions),
+					opts = angular.extend({}, defaults, cleanOptions(sentInOptions)),
 					$modal, $backdrop, initObj;
 
 				function exitHandlerOk(e) {
@@ -165,7 +186,7 @@
 					 */
 
 					// now that we have modal opts apply them, but we had already applied sentInOptions earlier (needed in the above code), still, they outrank modal opts, so need to reapply them after modal opts.
-					angular.extend(opts, $modal.data(), sentInOptions);
+					angular.extend(opts, cleanOptions($modal.data()), cleanOptions(sentInOptions));
 
 					initObj = {modal: $modal, scope: (opts.scope && opts.scope.$modalChild) || opts.scope};
 					return initObj; // for modal/childScope manipulation before show (see $regScope)
@@ -226,7 +247,7 @@
 						var setWidth = opts.width.indexOf('%') != -1 ? window.innerWidth * parseInt(opts.width) / 100 : parseInt((opts.width));
 						if (setWidth > window.innerWidth) {
 							setWidth = window.innerWidth + 'px';
-							console.log('constrain width to:', window.innerWidth, 'of: ', window.innerWidth)
+							//console.log('constrain width to:', window.innerWidth, 'of: ', window.innerWidth)
 						}
 						else
 							setWidth = opts.width;
@@ -244,11 +265,11 @@
 
 						if (isPhone && setHeight + phoneTopMargin > window.innerHeight) {
 							setHeight = (window.innerHeight - phoneTopMargin) + 'px';
-							console.log('constrain setHeight to:', setHeight, 'of', window.innerHeight)
+							//console.log('constrain setHeight to:', setHeight, 'of', window.innerHeight)
 						}
 						else if (setHeight > window.innerHeight) {
 							setHeight = window.innerHeight + 'px';
-							console.log('constrain setHeight to:', setHeight, 'of', window.innerHeight)
+							//console.log('constrain setHeight to:', setHeight, 'of', window.innerHeight)
 						}
 						else
 							setHeight = opts.height;
@@ -274,7 +295,7 @@
 					if (modalHeight + (isPhone ? phoneTopMargin : 0) > window.innerHeight) { // constrain height to viewport
 						modalHeight = window.innerHeight - (isPhone ? phoneTopMargin : 0);
 						$modal.css('height', modalHeight + 'px');
-						console.log('constrain height to:', modalHeight, 'innerHeight', window.innerHeight);
+						//console.log('constrain height to:', modalHeight, 'innerHeight', window.innerHeight);
 					}
 
 
@@ -304,20 +325,17 @@
 							modalTop = opts.offsetTop;
 						else {
 							modalTop = (window.innerHeight - modalHeight) + 'px';
-							console.log('adj top to:', modalTop);
+							//console.log('adj top to:', modalTop);
 						}
 
 						if (adjLeft + modalWidth < window.innerWidth)
 							modalLeft = opts.offsetLeft;
 						else {
 							modalLeft = (window.innerWidth - modalWidth) + 'px';
-							console.log('adj left to:', modalLeft);
+							//console.log('adj left to:', modalLeft);
 						}
 
 						/*
-						 $modal.css('top', modalTop)
-						 $modal.css('left', modalLeft)
-
 						 console.log('modal width/height', modalWidth, modalHeight)
 						 console.log(modalLeft, modalTop)
 						 */
@@ -342,7 +360,7 @@
 								modalLeft = targetOffset.left + targetWidth + opts.targetOffset;
 							else {
 								modalLeft = window.innerWidth - modalWidth;
-								console.log('adj left to:', modalLeft)
+								//console.log('adj left to:', modalLeft)
 							}
 						}
 						else if (side == 'left') {
@@ -350,7 +368,7 @@
 								modalLeft = targetOffset.left - opts.targetOffset - modalWidth;
 							else {
 								modalLeft = 0;
-								console.log('adj left to:', modalLeft)
+								//console.log('adj left to:', modalLeft)
 							}
 						}
 
@@ -364,11 +382,11 @@
 						// constrain vertically into viewport
 						if (modalTop < 0) {
 							modalTop = 0;
-							console.log('adj top to:', modalTop)
+							//console.log('adj top to:', modalTop)
 						}
 						if (modalTop + modalHeight > window.innerHeight) {
 							modalTop = window.innerHeight - modalHeight;
-							console.log('adj top to:', modalTop)
+							//console.log('adj top to:', modalTop)
 						}
 
 						/*
@@ -432,7 +450,7 @@
 			restrict: 'A',
 			controller: function ($scope, $element, $attrs, $dkModal) {
 				$element.click(function () {
-					var opts = $element.data();
+					var opts = cleanOptions($element.data());
 					if (opts.template)
 						opts.scope = $scope; // if template, they'll need scope
 					else if ($attrs.dkModalTrigger && /.html$/i.test($attrs.dkModalTrigger)) {

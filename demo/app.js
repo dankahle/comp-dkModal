@@ -3,6 +3,14 @@
 
 	var app = angular.module('app', ['ngAnimate', 'ngTouch', 'dkModal']);
 
+
+	app.config(function($dkModalProvider) {
+		$dkModalProvider.setDefaults({
+			backdropColor: 'rgba(0,0,255,.2)'
+		})
+
+	})
+
 	app.controller('ctrl', function ($scope, $dkModal) {
 		var $modal, dkModal;
 
@@ -27,11 +35,11 @@
 		 */
 
 
-		$scope.$on('okMe', function() {
-			console.log('okMe event, your name is: ', $scope.scope_addCtrl.user.name)
+		$scope.$on('modalOk', function() {
+			console.log('ok event')
 		})
-		$scope.$on('cancelMe', function() {
-			console.log('cancelMe event')
+		$scope.$on('modalCancel', function() {
+			console.log('cancel event')
 		})
 
 
