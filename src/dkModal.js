@@ -27,7 +27,7 @@
 	}
 
 
-	var mod = angular.module('dkModal', ['ngAnimate']);
+	var mod = angular.module('dkModal', ['ngAnimate', 'ngTouch', 'ngSanitize']);
 
 	mod.provider('$dkModal', function () {
 
@@ -56,9 +56,10 @@
 			backdropColor: undefined, // rgba(0,0,0,.2), must be rgba otherwise won't be transparent
 			cancelEventName: 'modalCancel',
 			okEventName: 'modalOk',
-			useTemplate: false,
-			templateHeader: '', // string of html text
-			templateBody: '' //string of html text
+			defaultClose: true, // bool, show close icon/text upper right
+			defaultHeader: undefined, // $eval() value, so "'val'" for string or "val" for scope property, , if undefined/empty will hide header
+			defaultBody: '', // $eval() value, so "'val'" for string or "val" for scope property
+			defaultFooter: undefined // ok, okcancel, yesno, if undefined/empty hide footer
 		};
 
 		obj.setDefaults = function (opts) {
@@ -155,6 +156,17 @@
 						if (!opts.scope)
 							throw new Error('scope is required with templateUrl option');
 						opts.scope.$regScope = $regScope; // attach $regScope to passed in scope for children to register with
+
+						if(opts.templateUrl == 'dkModalTemplate.html') { // setup scope for default template
+							var newScope = opts.scope.$new(); // new scope so we don't junk up other scope
+							newScope.close = opts.defaultClose;
+							newScope.header = opts.scope.$eval(opts.defaultHeader);// allow it to be scope driven
+							newScope.body = opts.scope.$eval(opts.defaultBody);// allow it to be scope driven
+							newScope.footer = opts.defaultFooter;
+							opts.scope = newScope;
+							//todo: remove below
+							window.testScope = newScope;
+						}
 
 						var html;
 						if ((html = $templateCache.get(opts.templateUrl))) {
@@ -478,19 +490,26 @@
 		}
 	})
 
-var dkModalTemplate = '' +
-		'<div class="dk-modal" ng-controller="dkModalController"> ' +
-			'<span class="dk-modal-close exit-cancel">&times;</span> ' +
-			'<div class="dk-modal-header">{{dkModal.title}}</div> ' +
-			'<div class="dk-modal-body">{{dkModal.body}}</div> ' +
-			'<div class="dk-modal-footer"> ' +
-				'<button class="btn btn-default exit-cancel dk-modal-button-no">No</button> ' +
-				'<button class="btn btn-default exit-ok dk-modal-button-yes">Yes</button> ' +
-				'<button class="btn btn-default exit-cancel dk-modal-button-cancel">Cancel</button> ' +
-				'<button class="btn btn-default exit-ok dk-modal-button-ok">OK</button> ' +
+var defaultTemplate = '' +
+		'<div class="dk-modal"> ' +
+			'<span class="dk-modal-close exit-cancel" ng-show="close">&times;</span> ' +
+			'<div class="dk-modal-header" ng-show="header" ng-bind-html="header"></div> ' +
+			'<div class="dk-modal-body" ng-bind-html="body"></div> ' +
+			'<div class="dk-modal-footer" ng-show="footer"> ' +
+				'<button class="btn btn-default exit-cancel dk-modal-button-no" ' +
+															'ng-show="footer == \'yesno\'">No</button> ' +
+				'<button class="btn btn-default exit-ok dk-modal-button-yes" ' +
+															'ng-show="footer == \'yesno\'">Yes</button> ' +
+				'<button class="btn btn-default exit-cancel dk-modal-button-cancel" ' +
+															'ng-show="footer == \'okcancel\'">Cancel</button> ' +
+				'<button class="btn btn-default exit-ok dk-modal-button-ok" ' +
+	'                           ng-show="footer == \'okcancel\' || footer == \'ok\'">OK</button> ' +
 			'</div> ' +
 		'</div>';
 
+mod.run(function($templateCache) {
+	$templateCache.put('dkModalTemplate.html', defaultTemplate);
+})
 
 })();
 

@@ -6,7 +6,7 @@
 
 	app.config(function($dkModalProvider) {
 		$dkModalProvider.setDefaults({
-			backdropColor: 'rgba(0,0,255,.2)'
+			//backdropColor: 'rgba(0,0,255,.2)'
 		})
 
 	})
@@ -34,6 +34,9 @@
 
 		 */
 
+		$scope.defBody = 'parent <i>body</i> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia'
+		$scope.defHeader = 'Parent Default <b>Modal</b>'
+
 
 		$scope.$on('modalOk', function() {
 			console.log('ok event')
@@ -53,7 +56,6 @@
 			width: '40%',
 			height: undefined,
 			targetVert: 'middle',
-			backdropColor: 'rgba(255,0,0,.1)'
 			//offsetTop: "9%",
 			//offsetLeft: "50%"
 		})
