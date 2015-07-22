@@ -49,7 +49,7 @@
 
 		dkModal = $dkModal({
 			//selector: '.selectorModal'
-			templateUrl: 'mymodal.html',
+			templateUrl: 'mymodal2.html',
 			scope: $scope,
 			target: '.one',
 			targetSide: 'right',
@@ -72,16 +72,18 @@
 			//var obj = dkModal.init();
 			//obj.scope.user = {name: 'carl'};
 
-			var initObj = dkModal.show();
-
-			initObj.modal.off('ok');// if selector, need to clear old one
-			initObj.modal.on('ok', function () {
-				console.log('got it:', initObj.scope.user)
-			})
-			initObj.modal.on('cancel', function (e) {
-				console.log('cancel')
-			})
-
+			dkModal.show('init')
+				.then(function(initObj) {
+					initObj.modal.off('ok');// if selector, need to clear old one
+					initObj.modal.on('ok', function () {
+						console.log('got it:', initObj.scope.user)
+					})
+					initObj.modal.on('cancel', function (e) {
+						console.log('cancel')
+					})
+				}, function(err) {
+					throw err;
+				})
 
 		}
 

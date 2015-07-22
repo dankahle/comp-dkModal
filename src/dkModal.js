@@ -9,18 +9,18 @@
 
 	function cleanOptions(opts) {
 
-		$.each(opts, function(key, val) {
-			if(typeof opts[key] == 'string')// jq doesn't trim
+		$.each(opts, function (key, val) {
+			if (typeof opts[key] == 'string')// jq doesn't trim
 				opts[key] = opts[key].trim();
 		});
 
 		['offsetTop', 'offSetLeft', 'width', 'height']
-			.forEach(function(v,i) {
-				if(typeof opts[v] == 'number')
+			.forEach(function (v, i) {
+				if (typeof opts[v] == 'number')
 					opts[v] = opts[v] + 'px';
 			})
 
-		if(typeof opts.targetOffset == 'string' && opts.targetOffset.indexOf('px') != -1)
+		if (typeof opts.targetOffset == 'string' && opts.targetOffset.indexOf('px') != -1)
 			opts.targetOffset = parseFloat(opts.targetOffset);
 
 		return opts;
@@ -66,7 +66,7 @@
 			angular.extend(defaults, cleanOptions(opts));
 		}
 
-		obj.$get = /*@ngInject*/ function ($http, $templateCache, $compile, $animate, $rootScope, $timeout) {
+		obj.$get = /*@ngInject*/ function ($http, $templateCache, $compile, $animate, $rootScope, $timeout, $q) {
 			return function (sentInOptions) {
 				var get = {},
 					isSelector = false,
@@ -134,7 +134,14 @@
 
 				//////////////////////// init
 
+				// We allow them to call init for modal/childScope manipulation before show (see $regScope)
 				get.init = function () {
+
+					var defAjax = $q.defer(), // if one path is async (templateUrl) it's an async function
+						promiseAjax = defAjax.promise,
+						defSpin = $q.defer(),
+						promiseSpin = defSpin.promise;
+
 
 					// $regScope: helper function for child scopes (your modal has an ngController on it,
 					// when you call this from that controller's scope, with your scope and name (see
@@ -157,7 +164,7 @@
 							throw new Error('scope is required with templateUrl option');
 						opts.scope.$regScope = $regScope; // attach $regScope to passed in scope for children to register with
 
-						if(opts.templateUrl == 'dkModalTemplate.html') { // setup scope for default template
+						if (opts.templateUrl == 'dkModalTemplate.html') { // setup scope for default template
 							var newScope = opts.scope.$new(); // new scope so we don't junk up other scope
 							newScope.close = opts.defaultClose;
 							newScope.header = opts.scope.$eval(opts.defaultHeader);// allow it to be scope driven
@@ -171,68 +178,85 @@
 						var html;
 						if ((html = $templateCache.get(opts.templateUrl))) {
 							$modal = $compile(html)(opts.scope);
+							if (!$modal || $modal.length === 0)
+								defAjax.reject(new Error('Failed to get compile modal for templateUrl: ' + opts.templateUrl));
+							defAjax.resolve();
 						}
 						else {
 							$http.get(opts.templateUrl)
 								.then(function (resp) {
 									$templateCache.put(resp.data);
 									$modal = $compile(resp.data)(opts.scope);
-									safeDigest(opts.scope);
+									if (!$modal || $modal.length === 0)
+										defAjax.reject(new Error('Failed to get compile modal for templateUrl: ' + opts.templateUrl));
+									defAjax.resolve();
 								}, function (err) {
-									throw new Error('Failed to get modal template, error: ' + err.message ? err.message : err);
+									defAjax.reject(new Error('Failed to get modal for template: ' + opts.templateUrl));
 								})
 						}
-						if (!$modal || $modal.length === 0)
-							throw new Error('Failed to create modal from templateUrl: ' + opts.templateUrl);
 					}
 					else if (opts.selector) {
 						isSelector = true;
 						$modal = $(opts.selector);
 						if ($modal.length === 0)
-							throw new Error('Failed to find modal from selector: ' + opts.selector);
+							defAjax.reject(new Error('Failed to find modal from selector: ' + opts.selector));
+						defAjax.resolve();
 					}
-					// have modal
 
-					/* options precedence:
-					 1) service call opts (either code or via dkModalTrigger element)
-					 2) modal data attrs
-					 3) provider settings
-					 4) defaults
-					 */
+					promiseAjax.then(function () {
+						// have $modal, we could pass it in, but it's in scope so why bother, just needed to wait for it is all.
 
-					// now that we have modal opts apply them, but we had already applied sentInOptions earlier (needed in the above code), still, they outrank modal opts, so need to reapply them after modal opts.
-					angular.extend(opts, cleanOptions($modal.data()), cleanOptions(sentInOptions));
+						/* options precedence:
+						 1) service call opts (either code or via dkModalTrigger element)
+						 2) modal data attrs
+						 3) provider settings
+						 4) defaults
+						 */
 
-					initObj = {modal: $modal, scope: (opts.scope && opts.scope.$modalChild) || opts.scope};
-					return initObj; // for modal/childScope manipulation before show (see $regScope)
+						// now that we have modal opts apply them, but we had already applied sentInOptions earlier (needed in the above code), still, they outrank modal opts, so need to reapply them after modal opts.
+						angular.extend(opts, cleanOptions($modal.data()), cleanOptions(sentInOptions));
+
+						initObj = {modal: $modal, scope: (opts.scope && opts.scope.$modalChild) || opts.scope};
+
+						// we need to spin for a cycle to get a digest loop in for our templates (not our selector modal), if we don't the heights can be off, calculated on the handlebars instead of their contents. We're already async in this function so we'll just spin here instead of in show()
+
+						$timeout(function () {
+							defSpin.resolve(initObj); // pass back modal and scope for manipulation before show
+						})
+
+					}, function (err) {
+						return defSpin.reject(err);
+					});
+
+					return promiseSpin;
 				}
 
 
 				///////////////////////// show
-				get.show = function (cb) {
+				/*
+				show:
+				if calling init first, call empty or with false as init has already happened. If you didn't call init first, pass in truthy so we init. We could just check if(initObj), but it will be around from last time we showed the modal. We need to init "every time we show the modal", our databinding is in init.
+				 */
+				get.show = function (init) {
 
-					if (!initObj)
-						get.init();
+					var def = $q.defer(),
+						promise = def.promise;
 
-					// hack alert:
-					// if we do our width/height calcs here, they'll all be off as this will be before angular binding, even though it's "after" the postlink call. It appears it needs one digest to get it together, this code provides that. After that we have accurate dimensions.
-					if (opts.templateUrl) {//todo: change this for template AND templateUrl??
-						$timeout(function () {
-							doShow();
-							if (cb)
-								cb(initObj);
-						})
-						// if templateUrl and you need to do something with modal that involves the dimentions/position, then use the callback:
-						// $dkModal.show(function(initObj) {... }
-
+					if (init || !initObj) {
+						get.init()
+							.then(function () {
+								doShow();
+								def.resolve(initObj);// pass back initObj for modal/scope access
+							}, function (err) {
+								def.reject(err);
+							})
 					}
 					else {
 						doShow();
-						if (cb) // just in case they used callback and didn't need to
-							cb(initObj);
+						def.resolve(initObj);// pass back initObj for modal/scope access
 					}
 
-					return initObj;
+					return promise;
 				}
 
 				function doShow() {
@@ -490,26 +514,26 @@
 		}
 	})
 
-var defaultTemplate = '' +
+	var defaultTemplate = '' +
 		'<div class="dk-modal"> ' +
-			'<span class="dk-modal-close exit-cancel" ng-show="close">&times;</span> ' +
-			'<div class="dk-modal-header" ng-show="header" ng-bind-html="header"></div> ' +
-			'<div class="dk-modal-body" ng-bind-html="body"></div> ' +
-			'<div class="dk-modal-footer" ng-show="footer"> ' +
-				'<button class="btn btn-default exit-cancel dk-modal-button-no" ' +
-															'ng-show="footer == \'yesno\'">No</button> ' +
-				'<button class="btn btn-default exit-ok dk-modal-button-yes" ' +
-															'ng-show="footer == \'yesno\'">Yes</button> ' +
-				'<button class="btn btn-default exit-cancel dk-modal-button-cancel" ' +
-															'ng-show="footer == \'okcancel\'">Cancel</button> ' +
-				'<button class="btn btn-default exit-ok dk-modal-button-ok" ' +
-	'                           ng-show="footer == \'okcancel\' || footer == \'ok\'">OK</button> ' +
-			'</div> ' +
+		'<span class="dk-modal-close exit-cancel" ng-show="close">&times;</span> ' +
+		'<div class="dk-modal-header" ng-show="header" ng-bind-html="header"></div> ' +
+		'<div class="dk-modal-body" ng-bind-html="body"></div> ' +
+		'<div class="dk-modal-footer" ng-show="footer"> ' +
+		'<button class="btn btn-default exit-cancel dk-modal-button-no" ' +
+		'ng-show="footer == \'yesno\'">No</button> ' +
+		'<button class="btn btn-default exit-ok dk-modal-button-yes" ' +
+		'ng-show="footer == \'yesno\'">Yes</button> ' +
+		'<button class="btn btn-default exit-cancel dk-modal-button-cancel" ' +
+		'ng-show="footer == \'okcancel\'">Cancel</button> ' +
+		'<button class="btn btn-default exit-ok dk-modal-button-ok" ' +
+		'                           ng-show="footer == \'okcancel\' || footer == \'ok\'">OK</button> ' +
+		'</div> ' +
 		'</div>';
 
-mod.run(function($templateCache) {
-	$templateCache.put('dkModalTemplate.html', defaultTemplate);
-})
+	mod.run(function ($templateCache) {
+		$templateCache.put('dkModalTemplate.html', defaultTemplate);
+	})
 
 })();
 
