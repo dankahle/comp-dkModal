@@ -50,8 +50,8 @@
 
 		dkModal = $dkModal({
 			//selector: '.selectorModal'
-			//templateUrl: 'mymodal2.html', // mymodal.html (in cached) mymodal2.html (in file)
-			template: '<div>My template:<br><br> {{stringTemplateVal}}</div>',
+			templateUrl: 'mymodal2.html', // mymodal.html (in cached) mymodal2.html (in file)
+			//template: '<div>My template:<br><br> {{stringTemplateVal}}</div>',
 			scope: $scope,
 			target: '.one',
 			targetSide: 'right',

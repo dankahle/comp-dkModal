@@ -227,11 +227,14 @@
 
 						initObj = {modal: $modal, scope: (opts.scope && opts.scope.$modalChild) || opts.scope};
 
-						// we need to spin for a cycle to get a digest loop in for our templates (not our selector modal), if we don't the heights can be off, calculated on the handlebars instead of their contents. We're already async in this function so we'll just spin here instead of in show()
+						// for angular templates we need to spin for a cycle to get a digest loop in for our templates (not our selector modal), if we don't the heights can be off, calculated on the handlebars instead of their contents. We're already async in this function so we'll just spin here instead of in show()
 
-						$timeout(function () {
+						if(opts.template || opts.templateUrl)
+							$timeout(function () {
+								defSpin.resolve(initObj); // pass back modal and scope for manipulation before show
+							})
+						else
 							defSpin.resolve(initObj); // pass back modal and scope for manipulation before show
-						})
 
 					}, function (err) {
 						return defSpin.reject(err);
@@ -515,7 +518,7 @@
 						opts.target = $element;
 
 					$scope.$apply(function () {
-						$dkModal(opts).show();
+						$dkModal(opts).show('init');
 					})
 				})
 
