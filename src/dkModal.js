@@ -42,6 +42,7 @@
 
 		var defaults = {
 			selector: undefined, // string or jquery element representing the modal
+			template: undefined,
 			templateUrl: undefined, // string url
 			key: true, // bool
 			click: true, // bool
@@ -155,11 +156,19 @@
 						this['scope' + '_' + name] = scope;
 					}
 
-					if (!opts.selector && !opts.templateUrl)
+					if (!opts.selector && !opts.template && !opts.templateUrl)
 						throw new Error('Must set either selector or templateUrl');
 
 					// get modal
-					if (opts.templateUrl) {
+					if(opts.template) {
+						if (!opts.scope)
+							throw new Error('Scope is required with template option');
+						$modal = $compile(opts.template)(opts.scope);
+						if (!$modal || $modal.length === 0)
+							defAjax.reject(new Error('Failed to get compile modal for template'));
+						defAjax.resolve();
+					}
+					else if (opts.templateUrl) {
 						if (!opts.scope)
 							throw new Error('scope is required with templateUrl option');
 						opts.scope.$regScope = $regScope; // attach $regScope to passed in scope for children to register with
