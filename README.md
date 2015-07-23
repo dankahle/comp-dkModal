@@ -29,3 +29,11 @@ backdropColor
 **tests**
 
 
+
+////////////////////////////////////////
+
+features:
+
+mobile phone:
+width 100%
+placement at top of screen for mobile phone with input, else where specified

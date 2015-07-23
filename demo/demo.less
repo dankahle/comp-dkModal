@@ -1,4 +1,87 @@
 
+@import (reference) '../bower_components/bootstrap/less/bootstrap';
 @import 'dkMixins';
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+	display: none !important;
+}
 
+.demo {
+
+	body {
+		//height: 1500px; // so you can test modal with target out of view
+	}
+
+
+	.target {
+		display: none;
+		transistion: opacity .2s;
+		.active {
+			opacity: 1;
+			display: inline-block;
+			position: absolute;
+			.center-block;
+		}
+	}
+
+	.status {
+		position: fixed;
+		right: 12px;
+		bottom: 10px;
+		font-size: 22px;
+		& span.screenMobile:before {
+			content: 'phone';
+			@media (min-width: @screen-sm) { content: 'portrait'; }
+			@media (min-width: @screen-md) { content: 'landscape'; }
+			@media (min-width: @screen-lg) { content: 'widescreen'; }
+		}
+		& span.screenDesktop:before {
+			content: 'x-small';
+			@media (min-width: @screen-sm) { content: 'small'; }
+			@media (min-width: @screen-md) { content: 'medium'; }
+			@media (min-width: @screen-lg) { content: 'large'; }
+		}
+	}
+
+	.showBar {
+		@height: 60px;
+		height: @height;
+		line-height: @height;
+		text-align: center;
+	}
+
+	.options {
+		width: 320px;
+		.clearfix;
+		padding: 15px;
+		border-radius: 4px;
+		background: linear-gradient(to right, rgba(0,0,255,.15), rgba(0,0,255,.05));
+		fieldset legend {
+			font-size: 18px;
+			margin-bottom: 5px;
+		}
+		form:not(:last-child) {
+			margin-bottom: 10px;
+		}
+		.positionDetails {
+			.details {
+				clear: both;
+				margin-bottom: 5px;
+			}
+			label.input {
+				line-height: 30px;
+			}
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+}

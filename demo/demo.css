@@ -1,3 +1,126 @@
+.thumbnail > img,
+.thumbnail a > img,
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.btn-group-lg > .btn {
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.3333333;
+  border-radius: 6px;
+}
+.btn-group-sm > .btn {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+.btn-group-xs > .btn {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+.dl-horizontal dd:before,
+.dl-horizontal dd:after,
+.container:before,
+.container:after,
+.container-fluid:before,
+.container-fluid:after,
+.row:before,
+.row:after,
+.form-horizontal .form-group:before,
+.form-horizontal .form-group:after,
+.btn-toolbar:before,
+.btn-toolbar:after,
+.btn-group-vertical > .btn-group:before,
+.btn-group-vertical > .btn-group:after,
+.nav:before,
+.nav:after,
+.navbar:before,
+.navbar:after,
+.navbar-header:before,
+.navbar-header:after,
+.navbar-collapse:before,
+.navbar-collapse:after,
+.pager:before,
+.pager:after,
+.panel-body:before,
+.panel-body:after,
+.modal-footer:before,
+.modal-footer:after {
+  content: " ";
+  display: table;
+}
+.dl-horizontal dd:after,
+.container:after,
+.container-fluid:after,
+.row:after,
+.form-horizontal .form-group:after,
+.btn-toolbar:after,
+.btn-group-vertical > .btn-group:after,
+.nav:after,
+.navbar:after,
+.navbar-header:after,
+.navbar-collapse:after,
+.pager:after,
+.panel-body:after,
+.modal-footer:after {
+  clear: both;
+}
+.clearfix:before,
+.clearfix:after,
+.dl-horizontal dd:before,
+.dl-horizontal dd:after,
+.container:before,
+.container:after,
+.container-fluid:before,
+.container-fluid:after,
+.row:before,
+.row:after,
+.form-horizontal .form-group:before,
+.form-horizontal .form-group:after,
+.btn-toolbar:before,
+.btn-toolbar:after,
+.btn-group-vertical > .btn-group:before,
+.btn-group-vertical > .btn-group:after,
+.nav:before,
+.nav:after,
+.navbar:before,
+.navbar:after,
+.navbar-header:before,
+.navbar-header:after,
+.navbar-collapse:before,
+.navbar-collapse:after,
+.pager:before,
+.pager:after,
+.panel-body:before,
+.panel-body:after,
+.modal-footer:before,
+.modal-footer:after {
+  content: " ";
+  display: table;
+}
+.clearfix:after,
+.dl-horizontal dd:after,
+.container:after,
+.container-fluid:after,
+.row:after,
+.form-horizontal .form-group:after,
+.btn-toolbar:after,
+.btn-group-vertical > .btn-group:after,
+.nav:after,
+.navbar:after,
+.navbar-header:after,
+.navbar-collapse:after,
+.pager:after,
+.panel-body:after,
+.modal-footer:after {
+  clear: both;
+}
 .outline {
   outline: thin solid;
   outline-offset: -1px;
@@ -25,10 +148,179 @@
   background: rgba(0, 255, 0, 0.1);
 }
 .clearfix:before,
-.clearfix:after {
+.clearfix:after,
+.dl-horizontal dd:before,
+.dl-horizontal dd:after,
+.container:before,
+.container:after,
+.container-fluid:before,
+.container-fluid:after,
+.row:before,
+.row:after,
+.form-horizontal .form-group:before,
+.form-horizontal .form-group:after,
+.btn-toolbar:before,
+.btn-toolbar:after,
+.btn-group-vertical > .btn-group:before,
+.btn-group-vertical > .btn-group:after,
+.nav:before,
+.nav:after,
+.navbar:before,
+.navbar:after,
+.navbar-header:before,
+.navbar-header:after,
+.navbar-collapse:before,
+.navbar-collapse:after,
+.pager:before,
+.pager:after,
+.panel-body:before,
+.panel-body:after,
+.modal-footer:before,
+.modal-footer:after {
   content: " ";
   display: table;
 }
-.clearfix:after {
+.clearfix:after,
+.dl-horizontal dd:after,
+.container:after,
+.container-fluid:after,
+.row:after,
+.form-horizontal .form-group:after,
+.btn-toolbar:after,
+.btn-group-vertical > .btn-group:after,
+.nav:after,
+.navbar:after,
+.navbar-header:after,
+.navbar-collapse:after,
+.pager:after,
+.panel-body:after,
+.modal-footer:after {
   clear: both;
+}
+.center-block {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+[ng\:cloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+  display: none !important;
+}
+.demo .target {
+  display: none;
+  transistion: opacity .2s;
+}
+.demo .target .active {
+  opacity: 1;
+  display: inline-block;
+  position: absolute;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.demo .status {
+  position: fixed;
+  right: 12px;
+  bottom: 10px;
+  font-size: 22px;
+}
+.demo .status span.screenMobile:before {
+  content: 'phone';
+}
+@media (min-width: 768px) {
+  .demo .status span.screenMobile:before {
+    content: 'portrait';
+  }
+}
+@media (min-width: 992px) {
+  .demo .status span.screenMobile:before {
+    content: 'landscape';
+  }
+}
+@media (min-width: 1200px) {
+  .demo .status span.screenMobile:before {
+    content: 'widescreen';
+  }
+}
+.demo .status span.screenDesktop:before {
+  content: 'x-small';
+}
+@media (min-width: 768px) {
+  .demo .status span.screenDesktop:before {
+    content: 'small';
+  }
+}
+@media (min-width: 992px) {
+  .demo .status span.screenDesktop:before {
+    content: 'medium';
+  }
+}
+@media (min-width: 1200px) {
+  .demo .status span.screenDesktop:before {
+    content: 'large';
+  }
+}
+.demo .showBar {
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+}
+.demo .options {
+  width: 320px;
+  padding: 15px;
+  border-radius: 4px;
+  background: linear-gradient(to right, rgba(0, 0, 255, 0.15), rgba(0, 0, 255, 0.05));
+}
+.demo .options:before,
+.demo .options:after {
+  content: " ";
+  display: table;
+}
+.demo .options:after {
+  clear: both;
+}
+.demo .options:before,
+.demo .options:after {
+  content: " ";
+  display: table;
+}
+.demo .options:after {
+  clear: both;
+}
+.demo .options:before,
+.demo .options:after {
+  content: " ";
+  display: table;
+}
+.demo .options:after {
+  clear: both;
+}
+.demo .options:before,
+.demo .options:after {
+  content: " ";
+  display: table;
+}
+.demo .options:after {
+  clear: both;
+}
+.demo .options fieldset legend {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+.demo .options form:not(:last-child) {
+  margin-bottom: 10px;
+}
+.demo .options .positionDetails .details {
+  clear: both;
+  margin-bottom: 5px;
+}
+.demo .options .positionDetails label.input {
+  line-height: 30px;
 }

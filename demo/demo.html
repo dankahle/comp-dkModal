@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html ng-app='app' ng-strict-di  class="demo">
+<head lang="en">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>dk-modal</title>
+	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css">
+	<link rel="stylesheet" href="../tmp/css/dkModal.css">
+	<link rel="stylesheet" href="../tmp/css/demo.css">
+
+</head>
+<body ng-controller="bodyCtrl" class="container-fluid">
+<button class="target" class="btn btn-warning btn-sm target">Draggable Target</button>
+<div class="status">
+	<span>{{opts.test.mode}}</span>
+	<span class="screenMobile" ng-show="opts.test.mode == 'mobile'"></span>
+	<span class="screenDesktop" ng-show="opts.test.mode == 'desktop'"></span>
+</div>
+<div class="showBar">
+	<button ng-click="showDefault()" class="btn btn-default">Default Template Modal</button>
+	<button ng-click="showSelector()" class="btn btn-default">Selector Modal</button>
+	<button ng-click="showTemplateUrl()" class="btn btn-default">TemplateUrl Modal</button>
+</div>
+
+<div class="options">
+	<form class="form">
+		<fieldset>
+			<legend>device mode</legend>
+			<div class="radio-inline">
+				<label><input type="radio" ng-model="opts.test.mode" value="mobile"> mobile</label>
+			</div>
+			<div class="radio-inline">
+				<label><input type="radio" ng-model="opts.test.mode" value="desktop"> desktop</label>
+			</div>
+		</fieldset>
+	</form>
+	<form class="form">
+		<fieldset>
+			<legend>position</legend>
+			<div class="radio-inline">
+				<label><input type="radio" ng-model="position" value="default"> default</label>
+			</div>
+			<div class="radio-inline">
+				<label><input type="radio" ng-model="position" value="offset"> offset</label>
+			</div>
+			<div class="radio-inline">
+				<label><input type="radio" ng-model="position" value="target"> target</label>
+			</div>
+		</fieldset>
+		<div class="positionDetails form-group-sm">
+			<div ng-cloak ng-show="position == 'offset'">
+				<div class="form-group details">
+					<label class="col-xs-2 control-label input">top</label>
+					<div class="col-xs-6">
+						<input class="form-control" ng-model="user.name">
+					</div>
+				</div>
+				<div class="form-group details">
+					<label class="col-xs-2 control-label input">left</label>
+					<div class="col-xs-6">
+						<input class="form-control" ng-model="user.name">
+					</div>
+				</div>
+			</div>
+			<div ng-cloak ng-show="position == 'target'">
+				<div class="form-group details">
+					<div class="col-xs-12">
+						<div class="radio-inline">
+							<label><input type="radio" ng-model="opts.targetSide" value="left"> left</label>
+						</div>
+						<div class="radio-inline">
+							<label><input type="radio" ng-model="opts.targetSide" value="right"> right</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group details">
+					<div class="col-xs-12">
+						<div class="radio-inline">
+							<label><input type="radio" ng-model="opts.targetVert" value="top"> top</label>
+						</div>
+						<div class="radio-inline">
+							<label><input type="radio" ng-model="opts.targetVert" value="middle"> middle</label>
+						</div>
+						<div class="radio-inline">
+							<label><input type="radio" ng-model="opts.targetVert" value="bottom"> bottom</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group details">
+					<label class="col-xs-2 control-label input">offset</label>
+					<div class="col-xs-6">
+						<input class="form-control" ng-model="opts.targetOffset">
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</form>
+</div>
+
+<br><br><br><br><br><br>
+<a href="#" dk-modal-trigger=".selModal" data-target="this" data-something="5">trigger</a><br>
+<br><br><br>
+
+<div class="three">
+	safdasdffsadfasdfasdfasdfasdfasddsfsdfsdfsdfsadf<span class="one">span</span>
+</div>
+<br><br><br>
+
+<div class="selModal" style="display:none;">
+	<span class="dk-modal-close exit-cancel">&times;</span>
+	<div class="dk-modal-header">Selector Modal</div>
+	<div class="dk-modal-body">
+		selector modal contents: {{selModalAppend}}
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia
+	</div>
+	<div class="dk-modal-footer">
+		<button class="btn btn-default exit-cancel">No</button>
+		<button class="btn btn-primary exit-ok">Yes</button>
+	</div>
+</div>
+
+
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="../bower_components/angular/angular.js"></script>
+<script src="../bower_components/angular-animate/angular-animate.js"></script>
+<script src="../bower_components/angular-touch/angular-touch.js"></script>
+<script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="../tmp/js/dkModal.js"></script>
+<script src="../tmp/js/demoapp.js"></script>
+<script>
+
+</script>
+</body>
+</html>

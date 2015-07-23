@@ -53,4 +53,48 @@
 	transform: translate(-50%, -50%); // todo: needs -webkit-transform for phone
 }
 
+// template
+.dk-modal {
+	@dk-modal-padding: 20px 32px;
 
+	.dk-modal-header {
+		font-size: 21px;
+		padding: @dk-modal-padding;
+		& + .dk-modal-body, & + .dk-modal-footer {
+			padding-top: 0;
+		}
+	}
+	.dk-modal-body {
+		padding: @dk-modal-padding;
+		& + .dk-modal-footer {
+			padding-top: 0;
+		}
+	}
+	.dk-modal-footer {
+		padding: @dk-modal-padding;
+		text-align: center;
+		.btn {
+			margin-right: 6px;
+			min-width: 67px;// width of cancel, so ok/cancel are same size, not cool for yes/no though
+		}
+	}
+	// we could do this with :before, but this makes it easier to add icon classes instead
+	.dk-modal-close {
+		@height: 30px;
+		@font-size: 24px;
+		display: inline-block;
+		text-align: center;
+		width: @height;
+		height: @height;
+		line-height: @height - 3;
+		font-size: @font-size;
+		position:absolute;
+		top: 6px;
+		right: 8px;
+		&:hover {
+			font-weight: bold;
+			font-size: @font-size + 3;
+			cursor: pointer;
+		}
+	}
+}

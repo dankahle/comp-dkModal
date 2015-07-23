@@ -57,3 +57,41 @@
     width: 46%;
   }
 }
+.dk-modal .dk-modal-header {
+  font-size: 21px;
+  padding: 20px 32px;
+}
+.dk-modal .dk-modal-header + .dk-modal-body,
+.dk-modal .dk-modal-header + .dk-modal-footer {
+  padding-top: 0;
+}
+.dk-modal .dk-modal-body {
+  padding: 20px 32px;
+}
+.dk-modal .dk-modal-body + .dk-modal-footer {
+  padding-top: 0;
+}
+.dk-modal .dk-modal-footer {
+  padding: 20px 32px;
+  text-align: center;
+}
+.dk-modal .dk-modal-footer .btn {
+  margin-right: 6px;
+  min-width: 67px;
+}
+.dk-modal .dk-modal-close {
+  display: inline-block;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  line-height: 27px;
+  font-size: 24px;
+  position: absolute;
+  top: 6px;
+  right: 8px;
+}
+.dk-modal .dk-modal-close:hover {
+  font-weight: bold;
+  font-size: 27px;
+  cursor: pointer;
+}
