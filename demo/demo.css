@@ -210,11 +210,11 @@
 .x-ng-cloak {
   display: none !important;
 }
-.demo .target {
+.target {
   display: none;
   transistion: opacity .2s;
 }
-.demo .target .active {
+.target .active {
   opacity: 1;
   display: inline-block;
   position: absolute;
@@ -225,102 +225,107 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.demo .status {
+.status {
   position: fixed;
   right: 12px;
   bottom: 10px;
   font-size: 22px;
 }
-.demo .status span.screenMobile:before {
+.status span.screenMobile:before {
   content: 'phone';
 }
 @media (min-width: 768px) {
-  .demo .status span.screenMobile:before {
+  .status span.screenMobile:before {
     content: 'portrait';
   }
 }
 @media (min-width: 992px) {
-  .demo .status span.screenMobile:before {
+  .status span.screenMobile:before {
     content: 'landscape';
   }
 }
 @media (min-width: 1200px) {
-  .demo .status span.screenMobile:before {
+  .status span.screenMobile:before {
     content: 'widescreen';
   }
 }
-.demo .status span.screenDesktop:before {
+.status span.screenDesktop:before {
   content: 'x-small';
 }
 @media (min-width: 768px) {
-  .demo .status span.screenDesktop:before {
+  .status span.screenDesktop:before {
     content: 'small';
   }
 }
 @media (min-width: 992px) {
-  .demo .status span.screenDesktop:before {
+  .status span.screenDesktop:before {
     content: 'medium';
   }
 }
 @media (min-width: 1200px) {
-  .demo .status span.screenDesktop:before {
+  .status span.screenDesktop:before {
     content: 'large';
   }
 }
-.demo .showBar {
+.showBar {
   height: 60px;
   line-height: 60px;
   text-align: center;
 }
-.demo .options {
+.options {
   width: 320px;
+  float: left;
   padding: 15px;
   border-radius: 4px;
   background: linear-gradient(to right, rgba(0, 0, 255, 0.15), rgba(0, 0, 255, 0.05));
 }
-.demo .options:before,
-.demo .options:after {
+.options:before,
+.options:after {
   content: " ";
   display: table;
 }
-.demo .options:after {
+.options:after {
   clear: both;
 }
-.demo .options:before,
-.demo .options:after {
+.options:before,
+.options:after {
   content: " ";
   display: table;
 }
-.demo .options:after {
+.options:after {
   clear: both;
 }
-.demo .options:before,
-.demo .options:after {
+.options:before,
+.options:after {
   content: " ";
   display: table;
 }
-.demo .options:after {
+.options:after {
   clear: both;
 }
-.demo .options:before,
-.demo .options:after {
+.options:before,
+.options:after {
   content: " ";
   display: table;
 }
-.demo .options:after {
+.options:after {
   clear: both;
 }
-.demo .options fieldset legend {
+.options fieldset legend {
   font-size: 18px;
   margin-bottom: 5px;
 }
-.demo .options form:not(:last-child) {
+.options form:not(:last-child) {
   margin-bottom: 10px;
 }
-.demo .options .positionDetails .details {
+.options .positionDetails .details {
   clear: both;
   margin-bottom: 5px;
 }
-.demo .options .positionDetails label.input {
+.options .positionDetails label.input {
   line-height: 30px;
+}
+.main {
+  overflow: hidden;
+  height: 200px;
 }
