@@ -10,8 +10,15 @@
 
 </head>
 <body ng-controller="ctrl">
+<!--[if lt IE 9]>
+<script>
+	alert('This application requires Internet Explorer 9 or greater');
+</script>
+<![endif]-->
 
-<button dk-modal-trigger="dkModalTemplate.html" data-default-header="defHeader" data-default-body="defBody" data-default-footer="yesno">default</button>
+<button dk-modal-trigger="dkModalTemplate.html" data-default-footer="ok" data-default-header="'Default Title'"  data-default-body="defBody" data-width="50%">default</button>
+
+<!--<button dk-modal-trigger="dkModalTemplate.html" data-default-header="defHeader" data-default-body="defBody" data-default-footer="yesno">default</button>-->
 
 <br><br><br><br><br><br>
 <a href="#" dk-modal-trigger=".selModal" data-target="this" data-something="5">trigger</a><br>

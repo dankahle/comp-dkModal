@@ -377,36 +377,6 @@
 						$modal.css('left', phoneMarginPercent + '%');
 						$modal.css('width', phoneWidth);
 					}
-					else if (opts.offsetTop && opts.offsetLeft) {// offset()
-						$modal.css('transform', 'translate(0,0)');// clear out css translate
-
-						var adjTop = opts.offsetTop.indexOf('%') != -1 ? window.innerHeight * parseInt(opts.offsetTop) / 100 : parseInt((opts.offsetTop));
-
-						var adjLeft = opts.offsetLeft.indexOf('%') != -1 ? window.innerWidth * parseInt(opts.offsetLeft) / 100 : parseInt((opts.offsetLeft));
-
-						if (adjTop + modalHeight < window.innerHeight)
-							modalTop = opts.offsetTop;
-						else {
-							modalTop = (window.innerHeight - modalHeight) + 'px';
-							//console.log('adj top to:', modalTop);
-						}
-
-						if (adjLeft + modalWidth < window.innerWidth)
-							modalLeft = opts.offsetLeft;
-						else {
-							modalLeft = (window.innerWidth - modalWidth) + 'px';
-							//console.log('adj left to:', modalLeft);
-						}
-
-						/*
-						 console.log('modal width/height', modalWidth, modalHeight)
-						 console.log(modalLeft, modalTop)
-						 */
-
-						//warning: we can get inaccurate results using jquery.offset({top:xx, left:xx}) here so we'll just use css instead
-						$modal.css('top', modalTop) // these are strings
-						$modal.css('left', modalLeft)
-					}
 					else if (opts.target) {// target left/right
 						$modal.css('transform', 'translate(0,0)');// clear out css translate
 						var side = opts.targetSide || 'right',
@@ -463,6 +433,36 @@
 						//warning: we can get inaccurate results using jquery.offset({top:xx, left:xx}) here so we'll just use css instead
 						$modal.css('top', modalTop + 'px')
 						$modal.css('left', modalLeft + 'px')
+					}
+					else if (opts.offsetTop && opts.offsetLeft) {// offset()
+						$modal.css('transform', 'translate(0,0)');// clear out css translate
+
+						var adjTop = opts.offsetTop.indexOf('%') != -1 ? window.innerHeight * parseInt(opts.offsetTop) / 100 : parseInt((opts.offsetTop));
+
+						var adjLeft = opts.offsetLeft.indexOf('%') != -1 ? window.innerWidth * parseInt(opts.offsetLeft) / 100 : parseInt((opts.offsetLeft));
+
+						if (adjTop + modalHeight < window.innerHeight)
+							modalTop = opts.offsetTop;
+						else {
+							modalTop = (window.innerHeight - modalHeight) + 'px';
+							//console.log('adj top to:', modalTop);
+						}
+
+						if (adjLeft + modalWidth < window.innerWidth)
+							modalLeft = opts.offsetLeft;
+						else {
+							modalLeft = (window.innerWidth - modalWidth) + 'px';
+							//console.log('adj left to:', modalLeft);
+						}
+
+						/*
+						 console.log('modal width/height', modalWidth, modalHeight)
+						 console.log(modalLeft, modalTop)
+						 */
+
+						//warning: we can get inaccurate results using jquery.offset({top:xx, left:xx}) here so we'll just use css instead
+						$modal.css('top', modalTop) // these are strings
+						$modal.css('left', modalLeft)
 					}
 
 					// backdrop

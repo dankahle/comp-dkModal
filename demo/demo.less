@@ -11,6 +11,16 @@
 		height: 100%;
 	}
 
+	@bodyLosesPadding: 349px;
+
+	body {
+		@media (max-width: @bodyLosesPadding) {
+			&.container-fluid {
+				padding: 0 !important;
+			}
+		}
+	}
+
 	.status {
 		position: fixed;
 		right: 12px;
@@ -30,21 +40,43 @@
 		}
 	}
 
-	.show-bar {
-		@height: 60px;
+.target {
+	opacity: 0;
+	transition: opacity .2s;
+	//display: inline-block;
+	position: absolute;
+	top: 40%;
+	left: 60%;
+	transform: translate(-50px, -50px);
+	&.active {
+		opacity: 1;
+	}
+}
+
+
+.show-bar {
+		@height: 50px;
 		height: @height;
 		line-height: @height;
 		text-align: left;
-		margin-bottom: 20px;
+		margin-bottom: 0px;
 		@media (min-width: @screen-sm) {
+			@height: 60px;
+			height: @height;
+			line-height: @height;
 			text-align: center;
+			margin-bottom: 12px;
 		}
 		button {
-			margin-right: 1px;
+			margin-right: 4px;
+			@media (max-width: @bodyLosesPadding) {
+				&:first-child { margin-left: 4px; }
+			}
 		}
 	}
 
 	.options {
+		color: #424242;
 		width: 320px;
 		float: left;
 		.clearfix;
@@ -54,13 +86,14 @@
 		fieldset {
 			clear: both;
 			 legend {
+				 color: maroon;
 				font-size: 20px;
 				margin-bottom: 5px;
 				 border-bottom-color: #d0d0d0;
 			}
 		}
 		fieldset:not(:last-child) {
-			margin-bottom: 10px;
+			margin-bottom: 16px;
 		}
 		span.loose-label {
 			font-weight: bold;
@@ -75,6 +108,11 @@
 			label.input {
 				line-height: 30px;
 			}
+			span.units {
+				line-height: 30px;
+				margin-left: -8px;
+				font-size: .9em;
+			}
 		}
 	}
 
@@ -82,20 +120,6 @@
 		overflow: hidden;
 		height: 100%;
 		position: relative;
-
-		.target {
-			opacity: 0;
-			transition: opacity .2s;
-			//display: inline-block;
-			position: absolute;
-			top: 41%;
-			left: 30%;
-			transform: translate(-50px, -50px);
-			&.active {
-				opacity: 1;
-			}
-		}
-
 	}
 
 

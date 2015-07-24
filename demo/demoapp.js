@@ -63,8 +63,13 @@
 		 }
 		 */
 
-		$scope.defBody = '<p>This modal uses the dk-modal default template, which allows you to specify a header (data-bound html), body (data-bound html), and footer (ok/okcancel/yesno/none) displayed in the default template. If no header, header is hidden, if no footer, footer is hidden. Close icon in upper/right is optional.'
-		var defHeader = $scope.defHeader = 'Default <i>Modal</i>'
+		$scope.defBody = '<p>This modal uses the dk-modal default template, which allows you to specify a data-bound header/body and footer mode. Header, footer, close icon are optional.';
+
+		var defHeader = $scope.defHeader = 'Default Modal';
+
+		$scope.selectorModalBody = "This modal is a dom element on the page. It's accessed with a jquery selector. Default positioning: center with width at set % base on breakpoint.";
+
+		$scope.templateModalBody = "This modal is loaded from html file, then compiled/linked against the chosen scope. It has an input element, so will be positioned near top of screen for mobile phone.";
 
 		window.$scope = $scope;//todo: remove
 
@@ -80,6 +85,8 @@
 		$scope.showHeader = true;
 
 		var opts = $scope.opts = {
+			key: true,
+			click: true,
 			scope: $scope,
 			targetSide: 'right',
 			targetVert: 'middle',
@@ -87,7 +94,7 @@
 			defaultClose: true,
 			defaultFooter: 'ok',
 			test: {
-				mode: 'desktop'
+				mode: navigator.userAgent.indexOf('Mobi') === -1? 'desktop': 'mobile'
 			}
 		};
 
@@ -118,6 +125,7 @@
 			opts.target = '.target';
 			$('.target').addClass('active');
 		}
+
 		$scope.hideTarget = function() {
 			opts.target = undefined;
 			$('.target').removeClass('active');
