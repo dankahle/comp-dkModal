@@ -51,20 +51,19 @@
 }
 .dk-modal .dk-modal-header {
   font-size: 21px;
-  padding: 20px 32px;
+  padding: 20px 32px 0;
+  margin-bottom: 20px;
 }
-.dk-modal .dk-modal-header + .dk-modal-body,
-.dk-modal .dk-modal-header + .dk-modal-footer {
-  padding-top: 0;
+.dk-modal .dk-modal-header[class*=' ng-hide'] + .dk-modal-body {
+  padding-top: 9px;
 }
 .dk-modal .dk-modal-body {
-  padding: 20px 32px;
-}
-.dk-modal .dk-modal-body + .dk-modal-footer {
-  padding-top: 0;
+  padding: 0 32px;
+  margin: 20px 0;
 }
 .dk-modal .dk-modal-footer {
-  padding: 20px 32px;
+  padding: 0 32px 20px;
+  margin-top: 20px;
   text-align: center;
 }
 .dk-modal .dk-modal-footer .btn {

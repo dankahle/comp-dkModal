@@ -17,13 +17,13 @@
 				opts[key] = opts[key].trim();
 		});
 
-		['offsetTop', 'offSetLeft', 'width', 'height']
+		['offsetTop', 'offsetLeft', 'width', 'height']
 			.forEach(function (v, i) {
-				if (typeof opts[v] == 'number')
+				if (typeof opts[v] == 'number' || (typeof opts[v] == 'string' && /^\d+$/.test(opts[v])))
 					opts[v] = opts[v] + 'px';
 			})
 
-		if (typeof opts.targetOffset == 'string' && opts.targetOffset.indexOf('px') != -1)
+		if (typeof opts.targetOffset == 'string')
 			opts.targetOffset = parseFloat(opts.targetOffset);
 
 		// testing overrides

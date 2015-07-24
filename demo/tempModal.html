@@ -1,19 +1,16 @@
 <div id="one" ng-controller="tempCtrl">
 	<span class="exit-cancel dk-modal-close">&times;</span>
-	<div class="dk-modal-header">Template Modal</div>
+	<div class="dk-modal-header">TemplateUrl Modal</div>
 	<div class="dk-modal-body">
+		<p>
+			This modal is loaded from html file, then compiled/linked against the chosen scope. It has an input element, so will be positioned near top of screen for mobile phone. It's child scope (there's an ng-controller in the template) is accessible from the sent in scope. This e.g. accesses that scope after calling init() to modify its contents before calling show.
+		</p>
 		<div class="row">
 			<form id="myform" class="form form-horizontal col-sm-8">
 				<div class="form-group">
 					<label for="user_name" class="col-sm-2 control-label">Name</label>
 					<div class="col-sm-10">
 						<input class="form-control" id="user_name" ng-model="user.name">
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="user_age" class="col-sm-2 control-label">Age</label>
-					<div class="col-sm-10">
-						<input class="form-control" id="user_age" ng-model="user.age">
 					</div>
 				</div>
 			</form>

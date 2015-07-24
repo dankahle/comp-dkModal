@@ -55,23 +55,24 @@
 
 // template
 .dk-modal {
-	@dk-modal-padding: 20px 32px;
+	@pad-vert: 20px;
+	@pad-horiz: 32px;
 
 	.dk-modal-header {
 		font-size: 21px;
-		padding: @dk-modal-padding;
-		& + .dk-modal-body, & + .dk-modal-footer {
-			padding-top: 0;
+		padding: @pad-vert @pad-horiz 0;
+		margin-bottom: @pad-vert;
+		&[class*=' ng-hide'] + .dk-modal-body {
+			padding-top: 9px;
 		}
 	}
 	.dk-modal-body {
-		padding: @dk-modal-padding;
-		& + .dk-modal-footer {
-			padding-top: 0;
-		}
+		padding: 0 @pad-horiz;
+		margin: @pad-vert 0;
 	}
 	.dk-modal-footer {
-		padding: @dk-modal-padding;
+		padding: 0 @pad-horiz @pad-vert;
+		margin-top: @pad-vert;
 		text-align: center;
 		.btn {
 			margin-right: 6px;

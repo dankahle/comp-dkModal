@@ -7,20 +7,8 @@
 }
 
 
-	body {
-		//height: 1500px; // so you can test modal with target out of view
-	}
-
-
-	.target {
-		display: none;
-		transistion: opacity .2s;
-		.active {
-			opacity: 1;
-			display: inline-block;
-			position: absolute;
-			.center-block;
-		}
+	html, body {
+		height: 100%;
 	}
 
 	.status {
@@ -42,11 +30,18 @@
 		}
 	}
 
-	.showBar {
+	.show-bar {
 		@height: 60px;
 		height: @height;
 		line-height: @height;
-		text-align: center;
+		text-align: left;
+		margin-bottom: 20px;
+		@media (min-width: @screen-sm) {
+			text-align: center;
+		}
+		button {
+			margin-right: 1px;
+		}
 	}
 
 	.options {
@@ -56,17 +51,26 @@
 		padding: 15px;
 		border-radius: 4px;
 		background: linear-gradient(to right, rgba(0,0,255,.15), rgba(0,0,255,.05));
-		fieldset legend {
-			font-size: 18px;
-			margin-bottom: 5px;
+		fieldset {
+			clear: both;
+			 legend {
+				font-size: 20px;
+				margin-bottom: 5px;
+				 border-bottom-color: #d0d0d0;
+			}
 		}
-		form:not(:last-child) {
+		fieldset:not(:last-child) {
 			margin-bottom: 10px;
 		}
-		.positionDetails {
-			.details {
-				clear: both;
-				margin-bottom: 5px;
+		span.loose-label {
+			font-weight: bold;
+		}
+		.details {
+			clear: both;
+			margin-bottom: 5px;
+			> div[class^="col-"], div[class*=" col-"],
+			> label[class^="col-"], label[class*=" col-"]{
+				padding-left: 0;
 			}
 			label.input {
 				line-height: 30px;
@@ -76,7 +80,22 @@
 
 	.main {
 		overflow: hidden;
-		height: 200px;
+		height: 100%;
+		position: relative;
+
+		.target {
+			opacity: 0;
+			transition: opacity .2s;
+			//display: inline-block;
+			position: absolute;
+			top: 41%;
+			left: 30%;
+			transform: translate(-50px, -50px);
+			&.active {
+				opacity: 1;
+			}
+		}
+
 	}
 
 

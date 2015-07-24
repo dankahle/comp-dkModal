@@ -3,7 +3,7 @@
 
 
 	// draggable target
-	$('#target').mousedown(function (e) {
+	$('.target').mousedown(function (e) {
 		var $this;
 		if (e.which == 1) {
 			$this = $(this);
@@ -38,27 +38,35 @@
 
 		$scope.log = console.log.bind(console)
 		/*
-		 var defaults = { // assume strings unless otherwise specified
-		 target: undefined, // jquery object
-		 selector: undefined,
+		 selector: undefined, // string or jquery element representing the modal
 		 template: undefined,
-		 key: true,
-		 click: true,
-		 targetVert: 'middle', // top/middle/bottom
+		 templateUrl: undefined, // string url
+		 key: true, // bool
+		 click: true, // bool
+		 offsetTop: undefined, // MUST HAVE BOTH TOP AND LEFT, string with px or %
+		 offsetLeft: undefined, // MUST HAVE BOTH TOP AND LEFT, string with px or %
+		 target: undefined, // string or jquery element for positioning the modal against
 		 targetSide: 'right', // left/right
-		 offsetTop: undefined, // string px or %
-		 offsetLeft: undefined, // string px or %
-		 separation: 20, // integer (px), distance left or right of target
+		 targetVert: 'middle', // top/middle/bottom
+		 targetOffset: 20, // number (in px), distance left or right of target
 		 width: undefined, // string with px or %
 		 height: undefined, // string with px or %
-		 backdropColor: undefined // rgba(0,0,0,.2), must be rgba otherwise won't be transparent
-		 };
-
+		 backdropColor: undefined, // rgba(0,0,0,.2), must be rgba otherwise won't be transparent
+		 cancelEventName: 'modalCancel',
+		 okEventName: 'modalOk',
+		 defaultClose: true, // bool, show close icon/text upper right
+		 defaultHeader: undefined, // $eval() value, so "'val'" for string or "val" for scope property, , if undefined/empty will hide header
+		 defaultBody: '', // $eval() value, so "'val'" for string or "val" for scope property
+		 defaultFooter: undefined, // ok, okcancel, yesno, if undefined/empty hide footer
+		 test: {
+		 mobileView: false
+		 }
 		 */
 
-		$scope.defBody = 'scope bound <i>hmtl</i>. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia'
-		$scope.defHeader = 'Default <i>Modal</i>'
+		$scope.defBody = '<p>This modal uses the dk-modal default template, which allows you to specify a header (data-bound html), body (data-bound html), and footer (ok/okcancel/yesno/none) displayed in the default template. If no header, header is hidden, if no footer, footer is hidden. Close icon in upper/right is optional.'
+		var defHeader = $scope.defHeader = 'Default <i>Modal</i>'
 
+		window.$scope = $scope;//todo: remove
 
 		$scope.$on('modalOk', function () {
 			console.log('ok event')
@@ -67,8 +75,17 @@
 			console.log('cancel event')
 		})
 
+		// defaults
+		$scope.position = 'default';
+		$scope.showHeader = true;
+
 		var opts = $scope.opts = {
 			scope: $scope,
+			targetSide: 'right',
+			targetVert: 'middle',
+			targetOffset: 20,
+			defaultClose: true,
+			defaultFooter: 'ok',
 			test: {
 				mode: 'desktop'
 			}
@@ -78,8 +95,7 @@
 			$dkModal($.extend({}, opts, {
 				templateUrl: 'dkModalTemplate.html',
 				defaultHeader: 'defHeader',
-				defaultBody: 'defBody',
-				defaultFooter: 'okcancel'
+				defaultBody: 'defBody'
 			})).show('init');
 		}
 
@@ -91,15 +107,30 @@
 			var temp_dkModal = $dkModal($.extend({}, opts, {templateUrl: 'tempModal.html'}));
 			temp_dkModal.init()
 				.then(function(initObj) {
-					initObj.scope.scope_tempCtrl.user = {name: 'Jim', age: 40}; // changing scope data before show
+					initObj.scope.scope_tempCtrl.user = {name: 'dank'}; // changing scope data before show
 					temp_dkModal.show();// falsey here, as we've already called init
 				}, function(err) {
 					throw err;
 				})
 		}
 
+		$scope.showTarget = function() {
+			opts.target = '.target';
+			$('.target').addClass('active');
+		}
+		$scope.hideTarget = function() {
+			opts.target = undefined;
+			$('.target').removeClass('active');
+		}
 
-		$scope.stringTemplateVal = 'string template binding';
+		$scope.$watch('showHeader', function(val) {
+			if(val === undefined)
+				return;
+			if(val)
+				$scope.defHeader = defHeader;
+			else
+				$scope.defHeader = undefined;
+		})
 
 
 		$scope.show = function () {
@@ -137,7 +168,7 @@
 
 	app.controller('tempCtrl', function ($scope) {
 		$scope.$parent.$regScope($scope, 'tempCtrl');
-		$scope.user = {name: 'dank', age: 50};
+		$scope.user = {name: 'jim'};
 	})
 
 

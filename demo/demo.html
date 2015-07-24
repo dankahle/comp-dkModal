@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html ng-app='app' ng-strict-di  class="demo">
+<html ng-app='app' ng-strict-di class="demo">
 <head lang="en">
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<title>dk-modal</title>
 	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
 	<link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css">
@@ -11,106 +11,151 @@
 
 </head>
 <body ng-controller="bodyCtrl" class="container-fluid">
-<button class="target" class="btn btn-warning btn-sm target">Draggable Target</button>
 <div class="status">
 	<span>{{opts.test.mode}}</span>
 	<span class="screenMobile" ng-show="opts.test.mode == 'mobile'"></span>
 	<span class="screenDesktop" ng-show="opts.test.mode == 'desktop'"></span>
 </div>
-<div class="showBar">
-	<button ng-click="showDefault()" class="btn btn-default">Default Template Modal</button>
-	<button ng-click="showSelector()" class="btn btn-default">Selector Modal</button>
-	<button ng-click="showTemplateUrl()" class="btn btn-default">TemplateUrl Modal</button>
+<div class="show-bar">
+	<button ng-click="showDefault()" class="btn btn-default">Default Template</button>
+	<button ng-click="showSelector()" class="btn btn-default">Selector</button>
+	<button ng-click="showTemplateUrl()" class="btn btn-default">TemplateUrl</button>
 </div>
 
 
 <div class="options">
-	<form class="form">
-		<fieldset>
-			<legend>device mode</legend>
-			<div class="radio-inline">
-				<label><input type="radio" ng-model="opts.test.mode" value="mobile"> mobile</label>
-			</div>
-			<div class="radio-inline">
-				<label><input type="radio" ng-model="opts.test.mode" value="desktop"> desktop</label>
-			</div>
-		</fieldset>
-	</form>
-	<form class="form">
-		<fieldset>
-			<legend>position</legend>
-			<div class="radio-inline">
-				<label><input type="radio" ng-model="position" value="default"> default</label>
-			</div>
-			<div class="radio-inline">
-				<label><input type="radio" ng-model="position" value="offset"> offset</label>
-			</div>
-			<div class="radio-inline">
-				<label><input type="radio" ng-model="position" value="target"> target</label>
-			</div>
-		</fieldset>
-		<div class="positionDetails form-group-sm">
-			<div ng-cloak ng-show="position == 'offset'">
-				<div class="form-group details">
-					<label class="col-xs-2 control-label input">top</label>
-					<div class="col-xs-6">
-						<input class="form-control" ng-model="user.name">
-					</div>
-				</div>
-				<div class="form-group details">
-					<label class="col-xs-2 control-label input">left</label>
-					<div class="col-xs-6">
-						<input class="form-control" ng-model="user.name">
-					</div>
-				</div>
-			</div>
-			<div ng-cloak ng-show="position == 'target'">
-				<div class="form-group details">
-					<div class="col-xs-12">
-						<div class="radio-inline">
-							<label><input type="radio" ng-model="opts.targetSide" value="left"> left</label>
-						</div>
-						<div class="radio-inline">
-							<label><input type="radio" ng-model="opts.targetSide" value="right"> right</label>
-						</div>
-					</div>
-				</div>
-				<div class="form-group details">
-					<div class="col-xs-12">
-						<div class="radio-inline">
-							<label><input type="radio" ng-model="opts.targetVert" value="top"> top</label>
-						</div>
-						<div class="radio-inline">
-							<label><input type="radio" ng-model="opts.targetVert" value="middle"> middle</label>
-						</div>
-						<div class="radio-inline">
-							<label><input type="radio" ng-model="opts.targetVert" value="bottom"> bottom</label>
-						</div>
-					</div>
-				</div>
-				<div class="form-group details">
-					<label class="col-xs-2 control-label input">offset</label>
-					<div class="col-xs-6">
-						<input class="form-control" ng-model="opts.targetOffset">
-					</div>
-				</div>
-			</div>
-
+	<fieldset>
+		<legend>device mode</legend>
+		<div class="radio-inline">
+			<label><input type="radio" ng-model="opts.test.mode" value="mobile"> mobile</label>
 		</div>
-	</form>
-</div> <!--options-->
+		<div class="radio-inline">
+			<label><input type="radio" ng-model="opts.test.mode" value="desktop"> desktop</label>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<legend>position</legend>
+		<div class="radio-inline">
+			<label><input type="radio" ng-model="position" value="default" ng-click="hideTarget()"> default</label>
+		</div>
+		<div class="radio-inline">
+			<label><input type="radio" ng-model="position" value="offset" ng-click="hideTarget()"> offset</label>
+		</div>
+		<div class="radio-inline">
+			<label><input type="radio" ng-model="position" value="target" ng-click="showTarget()"> target</label>
+		</div>
+	<div class="positionDetails form-group-sm">
+
+		<div ng-cloak ng-show="position == 'offset'">
+			<div class="form-group details">
+				<label class="col-xs-2 control-label input">top</label>
+
+				<div class="col-xs-4">
+					<input class="form-control" ng-model="opts.offsetTop">
+				</div>
+			</div>
+			<div class="form-group details">
+				<label class="col-xs-2 control-label input">left</label>
+
+				<div class="col-xs-4">
+					<input class="form-control" ng-model="opts.offsetLeft">
+				</div>
+			</div>
+		</div>
+
+		<div ng-cloak ng-show="position == 'target'">
+			<div class="form-group details">
+				<div class="col-xs-12">
+					<div class="radio-inline">
+						<label><input type="radio" ng-model="opts.targetSide" value="left"> left</label>
+					</div>
+					<div class="radio-inline">
+						<label><input type="radio" ng-model="opts.targetSide" value="right"> right</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group details">
+				<div class="col-xs-12">
+					<div class="radio-inline">
+						<label><input type="radio" ng-model="opts.targetVert" value="top"> top</label>
+					</div>
+					<div class="radio-inline">
+						<label><input type="radio" ng-model="opts.targetVert" value="middle"> middle</label>
+					</div>
+					<div class="radio-inline">
+						<label><input type="radio" ng-model="opts.targetVert" value="bottom"> bottom</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group details">
+				<label class="col-xs-2 control-label input">offset</label>
+
+				<div class="col-xs-4">
+					<input class="form-control" ng-model="opts.targetOffset">
+				</div>
+			</div>
+		</div>
+	</div>
+	</fieldset>
+
+	<fieldset>
+		<legend>default template</legend>
+		<div class="form-group details">
+			<div class="checkbox-inline">
+				<label><input type="checkbox" ng-model="showHeader"> show header</label>
+			</div>
+			<div class="checkbox-inline">
+				<label><input type="checkbox" ng-model="opts.defaultClose"> close icon</label>
+			</div>
+		</div>
+		<span class="loose-label">footer:</span>
+		<div class="form-group details">
+			<div class="col-xs-12">
+				<div class="radio-inline">
+					<label><input type="radio" ng-model="opts.defaultFooter" value=""> none</label>
+				</div>
+				<div class="radio-inline">
+					<label><input type="radio" ng-model="opts.defaultFooter" value="ok"> ok</label>
+				</div>
+				<div class="radio-inline">
+					<label><input type="radio" ng-model="opts.defaultFooter" value="okcancel"> okcancel</label>
+				</div>
+				<div class="radio-inline">
+					<label><input type="radio" ng-model="opts.defaultFooter" value="yesno"> yesno</label>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+
+
+
+
+
+
+
+
+
+
+</div><!--options-->
 
 <div class="main">
+	<button class="btn btn-warning btn-sm target">Draggable Target</button>
 
-</div> <!--main-->
+
+</div>
+<!--main-->
 
 
 <div class="selModal" style="display:none;">
 	<span class="dk-modal-close exit-cancel">&times;</span>
+
 	<div class="dk-modal-header">Selector Modal</div>
 	<div class="dk-modal-body">
-		selector modal contents: {{selModalAppend}}
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia
+		<p>This modal is just a DOM element on the page.</p>
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus
+		diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus
+		sed augue semper porta. Mauris massa. Vestibulum lacinia
 	</div>
 	<div class="dk-modal-footer">
 		<button class="btn btn-default exit-cancel">No</button>
