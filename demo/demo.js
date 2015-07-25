@@ -33,34 +33,9 @@
 
 	})
 
-	app.controller('bodyCtrl', function ($scope, dkModal) {
+	app.controller('bodyCtrl', function ($scope, $timeout, dkModal) {
 
-		$scope.log = console.log.bind(console)
-		/*
-		 selector: undefined, // string or jquery element representing the modal
-		 template: undefined,
-		 templateUrl: undefined, // string url
-		 key: true, // bool
-		 click: true, // bool
-		 offsetTop: undefined, // MUST HAVE BOTH TOP AND LEFT, string with px or %
-		 offsetLeft: undefined, // MUST HAVE BOTH TOP AND LEFT, string with px or %
-		 target: undefined, // string or jquery element for positioning the modal against
-		 targetSide: 'right', // left/right
-		 targetVert: 'middle', // top/middle/bottom
-		 targetOffset: 20, // number (in px), distance left or right of target
-		 width: undefined, // string with px or %
-		 height: undefined, // string with px or %
-		 backdropColor: undefined, // rgba(0,0,0,.2), must be rgba otherwise won't be transparent
-		 cancelEventName: 'modalCancel',
-		 okEventName: 'modalOk',
-		 defaultClose: true, // bool, show close icon/text upper right
-		 defaultHeader: undefined, // $eval() value, so "'val'" for string or "val" for scope property, , if undefined/empty will hide header
-		 defaultBody: '', // $eval() value, so "'val'" for string or "val" for scope property
-		 defaultFooter: undefined, // ok, okcancel, yesno, if undefined/empty hide footer
-		 test: {
-		 mobileView: false
-		 }
-		 */
+		var log = $scope.log = console.log.bind(console);
 
 		$scope.defBody = '<p>This modal uses the dk-modal default template, which allows you to specify a data-bound header/body and footer mode. Header, footer, close icon are optional.';
 
@@ -141,8 +116,19 @@
 				$scope.defHeader = undefined;
 		})
 
+		$scope.$watch('opts.test.mode', function(val) {
+			if(val === undefined)
+				return;
+			$('html').addClass(val === 'mobile'? 'mobile': 'no-mobile');
+			$('html').removeClass(val === 'mobile'? 'no-mobile': 'mobile');
+		})
 
-	})
+		$timeout(function() {
+			$('.show-bar, .options, .status').addClass('in');
+		})
+
+
+	});// bodyCtrl
 
 	app.controller('tempCtrl', function ($scope) {
 		$scope.$parent.$regScope($scope, 'tempCtrl');
@@ -168,3 +154,4 @@
 
 
 })();
+

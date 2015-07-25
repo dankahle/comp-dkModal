@@ -15,7 +15,7 @@
 <body ng-controller="bodyCtrl" class="container-fluid">
 <button class="btn btn-warning btn-sm target">Draggable Target</button>
 
-<div class="status">
+<div class="status" ng-cloak>
 	<span>{{opts.test.mode}}</span>
 	<span class="screenMobile" ng-show="opts.test.mode == 'mobile'"></span>
 	<span class="screenDesktop" ng-show="opts.test.mode == 'desktop'"></span>

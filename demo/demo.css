@@ -258,10 +258,29 @@ body {
   }
 }
 .status {
+  font-size: 22px;
   position: fixed;
   right: 12px;
   bottom: 10px;
-  font-size: 22px;
+  transition: transform ease-out 0.3s;
+  transform: translate3d(0, 120%, 0);
+}
+.status.in {
+  transform: none;
+}
+@media (max-width: 500px) {
+  .status {
+    transform: rotate(-90deg);
+    bottom: auto;
+  }
+  html.mobile .status {
+    top: 396px;
+    right: -54px;
+  }
+  html.no-mobile .status {
+    top: 386px;
+    right: -66px;
+  }
 }
 .status span.screenMobile:before {
   content: 'phone';
@@ -315,6 +334,11 @@ body {
   line-height: 50px;
   text-align: left;
   margin-bottom: 0px;
+  transition: transform ease-out 0.3s;
+  transform: translate3d(0, -120%, 0);
+}
+.show-bar.in {
+  transform: none;
 }
 @media (min-width: 768px) {
   .show-bar {
@@ -340,6 +364,8 @@ body {
   border-radius: 4px;
   background: linear-gradient(to right, rgba(0, 0, 255, 0.15), rgba(0, 0, 255, 0.05));
   position: relative;
+  transition: transform ease-out 0.3s;
+  transform: translate3d(-120%, 0, 0);
 }
 .options:before,
 .options:after {
@@ -372,6 +398,9 @@ body {
 }
 .options:after {
   clear: both;
+}
+.options.in {
+  transform: none;
 }
 .options .qrcode-small {
   display: inline-block;
