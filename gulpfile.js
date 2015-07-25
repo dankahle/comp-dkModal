@@ -9,7 +9,7 @@ var gulp = require('gulp'),
 
 gulp.task('js-tmp', function () {
 	del.sync('tmp/*.js');
-	return gulp.src(['src/**/*.js', 'demo/**/*.js'])
+	return gulp.src(['src/dkModal.js', 'demo/demo.js'])
 		.pipe($.jshint(jshintConfig))
 		.pipe($.jshint.reporter(jshintStylish))
 		.pipe($.jshint.reporter('fail'))
@@ -29,6 +29,12 @@ gulp.task('js-dist', function () {
 		.pipe(gulp.dest('dist'))
 })
 
+gulp.task('copy-tmp', function() {
+	del.sync(['tmp/demo.html', 'tmp/*.png'])
+	gulp.src(['demo/demo.html', 'demo/*.png'])
+		.pipe(gulp.dest('tmp'))
+})
+
 gulp.task('copy-dist', function() {
 	return gulp.src(['src/dkModal.less'])
 		.pipe(gulp.dest('dist'))
@@ -36,7 +42,7 @@ gulp.task('copy-dist', function() {
 
 gulp.task('less-tmp', function () {
 	del.sync('tmp/*.css');
-	return gulp.src(['src/**/*.less', 'demo/**/*.less'])
+	return gulp.src(['src/dkModal.less', 'demo/demo.less'])
 		.pipe($.less())
 		.pipe($.autoprefixer({
 			browsers: [
@@ -54,7 +60,7 @@ gulp.task('less-tmp', function () {
 });
 
 gulp.task('less-dist', function () {
-	return gulp.src(['src/**/*.less'])
+	return gulp.src(['src/dkModal.less'])
 		.pipe($.less())
 		.pipe($.autoprefixer({
 			browsers: [
@@ -77,7 +83,7 @@ gulp.task('less-dist', function () {
 
 ///////////////////// dist
 
-gulp.task('build-tmp', ['js-tmp', 'less-tmp'])
+gulp.task('build-tmp', ['js-tmp', 'less-tmp', 'copy-tmp'])
 
 gulp.task('build-dist', function(cb) {
 	del.sync('dist');
@@ -89,5 +95,6 @@ gulp.task('build-dist', function(cb) {
 gulp.task('watch', ['js-tmp', 'less-tmp'], function() {
 	gulp.watch(['src/*.js', 'demo/*.js'], ['js-tmp']);
 	gulp.watch(['src/*.less', 'demo/*.less'], ['less-tmp']);
+	gulp.watch(['demo/demo.html', 'demo/*.png'], ['copy-tmp']);
 })
 
