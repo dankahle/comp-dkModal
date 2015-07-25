@@ -83,7 +83,10 @@ gulp.task('html-ghpages', function () {
 
 ///////////////////// build
 
-gulp.task('build-tmp', ['js-tmp', 'less-tmp', 'copy-tmp'])
+gulp.task('build-tmp', function(cb) {
+	del.sync('tmp');
+	runSequence(['js-tmp', 'less-tmp', 'copy-tmp'], cb);
+})
 
 gulp.task('build-dist', ['build-tmp'], function(cb) {
 	del.sync('dist');
@@ -97,7 +100,7 @@ gulp.task('build-ghpages', ['build-tmp'], function() {
 
 //////////////////// watch
 
-gulp.task('watch', ['js-tmp', 'less-tmp'], function() {
+gulp.task('watch', ['build-tmp'], function() {
 	gulp.watch(['src/*.js', 'demo/*.js'], ['js-tmp']);
 	gulp.watch(['src/*.less', 'demo/*.less'], ['less-tmp']);
 	gulp.watch(['demo/*.html', 'demo/*.png'], ['copy-tmp']);
