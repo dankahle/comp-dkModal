@@ -1,12 +1,12 @@
 {
-  "name": "dkModal",
+  "name": "dk-modal",
   "version": "0.0.1",
-  "homepage": "https://github.com/dankahle/comp-dkModal",
+  "homepage": "https://github.com/dankahle/comp-dk-modal",
   "authors": [
     "Dan Kahle <dan.kahle@gmail.com>"
   ],
   "description": "angular modal dialog",
-  "main": "dkModal.js",
+  "main": "dk-modal.js",
   "keywords": [
     "angular",
     "modal"

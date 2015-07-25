@@ -9,7 +9,7 @@ var gulp = require('gulp'),
 
 gulp.task('js-tmp', function () {
 	del.sync('tmp/*.js');
-	return gulp.src(['src/dkModal.js', 'demo/demo.js'])
+	return gulp.src(['src/dk-modal.js', 'demo/demo.js'])
 		.pipe($.jshint(jshintConfig))
 		.pipe($.jshint.reporter(jshintStylish))
 		.pipe($.jshint.reporter('fail'))
@@ -18,7 +18,7 @@ gulp.task('js-tmp', function () {
 })
 
 gulp.task('js-dist', function () {
-	return gulp.src(['tmp/dkModal.js'])
+	return gulp.src(['tmp/dk-modal.js'])
 		.pipe(gulp.dest('dist'))
 		.pipe($.uglify())
 		.pipe($.extReplace('.min.js'))
@@ -32,14 +32,14 @@ gulp.task('copy-tmp', function() {
 })
 
 gulp.task('copy-dist', function() {
-	return gulp.src(['src/dkModal.less'])
+	return gulp.src(['src/dk-modal.less'])
 		.pipe($.extReplace('._less'))// so webstorm stops compiling it
 		.pipe(gulp.dest('dist'))
 });
 
 gulp.task('less-tmp', function () {
 	del.sync('tmp/*.css');
-	return gulp.src(['src/dkModal.less', 'demo/demo.less'])
+	return gulp.src(['src/dk-modal.less', 'demo/demo.less'])
 		.pipe($.less())
 		.pipe($.autoprefixer({
 			browsers: [
@@ -57,7 +57,7 @@ gulp.task('less-tmp', function () {
 });
 
 gulp.task('css-dist', function () {
-	return gulp.src(['tmp/dkModal.css'])
+	return gulp.src(['tmp/dk-modal.css'])
 		.pipe(gulp.dest('dist'))
 		.pipe($.csso())
 		.pipe($.extReplace('.min.css'))

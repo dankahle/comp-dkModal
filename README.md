@@ -1,4 +1,4 @@
-# dkModal
+# dk-modal
 
 ## An angular module for creating modals
 

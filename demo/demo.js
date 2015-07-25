@@ -26,15 +26,14 @@
 	var app = angular.module('app', ['ngAnimate', 'ngTouch', 'dkModal']);
 
 
-	app.config(function ($dkModalProvider) {
-		$dkModalProvider.setDefaults({
+	app.config(function (dkModalProvider) {
+		dkModalProvider.setDefaults({
 			//backdropColor: 'rgba(0,0,255,.2)'
 		})
 
 	})
 
-	app.controller('bodyCtrl', function ($scope, $dkModal) {
-		var $modal, dkModal;
+	app.controller('bodyCtrl', function ($scope, dkModal) {
 
 		$scope.log = console.log.bind(console)
 		/*
@@ -101,7 +100,7 @@
 		};
 
 		$scope.showDefault = function () {
-			$dkModal($.extend({}, opts, {
+			dkModal($.extend({}, opts, {
 				templateUrl: 'dkModalTemplate.html',
 				defaultHeader: 'defHeader',
 				defaultBody: 'defBody'
@@ -109,11 +108,11 @@
 		}
 
 		$scope.showSelector = function () {
-			$dkModal($.extend({}, opts, {selector: '.selModal'})).show('init');
+			dkModal($.extend({}, opts, {selector: '.selModal'})).show('init');
 		}
 
 		$scope.showTemplateUrl = function () {
-			var temp_dkModal = $dkModal($.extend({}, opts, {templateUrl: 'tempModal.html'}));
+			var temp_dkModal = dkModal($.extend({}, opts, {templateUrl: 'tempModal.html'}));
 			temp_dkModal.init()
 				.then(function(initObj) {
 					initObj.scope.scope_tempCtrl.user = {name: 'dank'}; // changing scope data before show
@@ -143,37 +142,6 @@
 		})
 
 
-		$scope.show = function () {
-
-			/*
-			 var obj = dkModal.show();
-			 obj.modal.on('ok cancel', function(e) {
-			 console.log(e.type)
-			 })
-			 */
-
-			//var obj = dkModal.init();
-			//obj.scope.user = {name: 'carl'};
-
-			dkModal.show('init')
-				.then(function (initObj) {
-					initObj.modal.off('ok');// if selector, need to clear old one
-					initObj.modal.on('ok', function () {
-						console.log('got it:', initObj.scope.user)
-					})
-					initObj.modal.on('cancel', function (e) {
-						console.log('cancel')
-					})
-				}, function (err) {
-					throw err;
-				})
-
-		}
-
-		window.getdim = function () {
-			var $one = $('one');
-			console.log('dim', $one.outerWidth(), $one.outerHeight())
-		}
 	})
 
 	app.controller('tempCtrl', function ($scope) {

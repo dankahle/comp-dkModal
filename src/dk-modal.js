@@ -38,7 +38,7 @@
 
 	var mod = angular.module('dkModal', ['ngAnimate', 'ngTouch', 'ngSanitize']);
 
-	mod.provider('$dkModal', function () {
+	mod.provider('dkModal', function () {
 
 		//settings
 		var screen_xs = 767,
@@ -161,9 +161,9 @@
 					// $regScope above), then the scope you passed in in options, will have a property:
 					// scope_yourName that you can use to access the child scope, to setup initial values
 					// before showing.
-					// eg: var childScope = $dkModal(opts).init().scope.scope_nameICalledRegScopeWith
+					// eg: var childScope = dkModal(opts).init().scope.scope_nameICalledRegScopeWith
 					// childScope.user = {}
-					// $dkModal.show();
+					// dkModal.show();
 					function $regScope(scope, name) {
 						this['scope' + '_' + name] = scope;
 					}
@@ -511,7 +511,7 @@
 	mod.directive('dkModalTrigger', function () {
 		return {
 			restrict: 'A',
-			controller: function ($scope, $element, $attrs, $dkModal) {
+			controller: function ($scope, $element, $attrs, dkModal) {
 				$element.click(function () {
 					var opts = cleanOptions($element.data());
 					if (opts.templateUrl)
@@ -530,7 +530,7 @@
 						opts.target = $element;
 
 					$scope.$apply(function () {
-						$dkModal(opts).show('init');
+						dkModal(opts).show('init');
 					})
 				})
 
