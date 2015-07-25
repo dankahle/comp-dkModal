@@ -1,6 +1,9 @@
 (function () {
 	'use strict';
 
+
+	var isMobile = window.navigator.userAgent.indexOf('Mobi') != -1;
+
 	if (!$)
 		throw new Error('dkModal depends on jquery');
 	if (!angular)
@@ -14,14 +17,20 @@
 				opts[key] = opts[key].trim();
 		});
 
-		['offsetTop', 'offSetLeft', 'width', 'height']
+		['offsetTop', 'offsetLeft', 'width', 'height']
 			.forEach(function (v, i) {
-				if (typeof opts[v] == 'number')
+				if (typeof opts[v] == 'number' || (typeof opts[v] == 'string' && /^\d+$/.test(opts[v])))
 					opts[v] = opts[v] + 'px';
 			})
 
-		if (typeof opts.targetOffset == 'string' && opts.targetOffset.indexOf('px') != -1)
+		if (typeof opts.targetOffset == 'string')
 			opts.targetOffset = parseFloat(opts.targetOffset);
+
+		// testing overrides
+		if(opts.test && opts.test.mode == 'mobile')
+			isMobile = true;
+		else if(opts.test && opts.test.mode == 'desktop')
+			isMobile = false;
 
 		return opts;
 	}
@@ -37,8 +46,8 @@
 			phoneMarginPercent = 2, // this is percent of width so top gap matches side gaps
 			phoneWidth = '96%' // phoneWidth + phoneMargin*2 must add to 100
 
-		var obj = {},
-			isMobile = window.navigator.userAgent.indexOf('Mobi') != -1;
+		var obj = {};
+
 
 		var defaults = {
 			selector: undefined, // string or jquery element representing the modal
@@ -49,8 +58,8 @@
 			offsetTop: undefined, // MUST HAVE BOTH TOP AND LEFT, string with px or %
 			offsetLeft: undefined, // MUST HAVE BOTH TOP AND LEFT, string with px or %
 			target: undefined, // string or jquery element for positioning the modal against
-			targetVert: 'middle', // top/middle/bottom
 			targetSide: 'right', // left/right
+			targetVert: 'middle', // top/middle/bottom
 			targetOffset: 20, // number (in px), distance left or right of target
 			width: undefined, // string with px or %
 			height: undefined, // string with px or %
@@ -60,7 +69,10 @@
 			defaultClose: true, // bool, show close icon/text upper right
 			defaultHeader: undefined, // $eval() value, so "'val'" for string or "val" for scope property, , if undefined/empty will hide header
 			defaultBody: '', // $eval() value, so "'val'" for string or "val" for scope property
-			defaultFooter: undefined // ok, okcancel, yesno, if undefined/empty hide footer
+			defaultFooter: undefined, // ok, okcancel, yesno, if undefined/empty hide footer
+			test: {
+				mobileView: false
+			}
 		};
 
 		obj.setDefaults = function (opts) {
@@ -225,7 +237,7 @@
 						// now that we have modal opts apply them, but we had already applied sentInOptions earlier (needed in the above code), still, they outrank modal opts, so need to reapply them after modal opts.
 						angular.extend(opts, cleanOptions($modal.data()), cleanOptions(sentInOptions));
 
-						initObj = {modal: $modal, scope: (opts.scope && opts.scope.$modalChild) || opts.scope};
+						initObj = {modal: $modal, scope: opts.scope};
 
 						// for angular templates we need to spin for a cycle to get a digest loop in for our templates (not our selector modal), if we don't the heights can be off, calculated on the handlebars instead of their contents. We're already async in this function so we'll just spin here instead of in show()
 
@@ -365,36 +377,6 @@
 						$modal.css('left', phoneMarginPercent + '%');
 						$modal.css('width', phoneWidth);
 					}
-					else if (opts.offsetTop && opts.offsetLeft) {// offset()
-						$modal.css('transform', 'translate(0,0)');// clear out css translate
-
-						var adjTop = opts.offsetTop.indexOf('%') != -1 ? window.innerHeight * parseInt(opts.offsetTop) / 100 : parseInt((opts.offsetTop));
-
-						var adjLeft = opts.offsetLeft.indexOf('%') != -1 ? window.innerWidth * parseInt(opts.offsetLeft) / 100 : parseInt((opts.offsetLeft));
-
-						if (adjTop + modalHeight < window.innerHeight)
-							modalTop = opts.offsetTop;
-						else {
-							modalTop = (window.innerHeight - modalHeight) + 'px';
-							//console.log('adj top to:', modalTop);
-						}
-
-						if (adjLeft + modalWidth < window.innerWidth)
-							modalLeft = opts.offsetLeft;
-						else {
-							modalLeft = (window.innerWidth - modalWidth) + 'px';
-							//console.log('adj left to:', modalLeft);
-						}
-
-						/*
-						 console.log('modal width/height', modalWidth, modalHeight)
-						 console.log(modalLeft, modalTop)
-						 */
-
-						//warning: we can get inaccurate results using jquery.offset({top:xx, left:xx}) here so we'll just use css instead
-						$modal.css('top', modalTop) // these are strings
-						$modal.css('left', modalLeft)
-					}
 					else if (opts.target) {// target left/right
 						$modal.css('transform', 'translate(0,0)');// clear out css translate
 						var side = opts.targetSide || 'right',
@@ -451,6 +433,36 @@
 						//warning: we can get inaccurate results using jquery.offset({top:xx, left:xx}) here so we'll just use css instead
 						$modal.css('top', modalTop + 'px')
 						$modal.css('left', modalLeft + 'px')
+					}
+					else if (opts.offsetTop && opts.offsetLeft) {// offset()
+						$modal.css('transform', 'translate(0,0)');// clear out css translate
+
+						var adjTop = opts.offsetTop.indexOf('%') != -1 ? window.innerHeight * parseInt(opts.offsetTop) / 100 : parseInt((opts.offsetTop));
+
+						var adjLeft = opts.offsetLeft.indexOf('%') != -1 ? window.innerWidth * parseInt(opts.offsetLeft) / 100 : parseInt((opts.offsetLeft));
+
+						if (adjTop + modalHeight < window.innerHeight)
+							modalTop = opts.offsetTop;
+						else {
+							modalTop = (window.innerHeight - modalHeight) + 'px';
+							//console.log('adj top to:', modalTop);
+						}
+
+						if (adjLeft + modalWidth < window.innerWidth)
+							modalLeft = opts.offsetLeft;
+						else {
+							modalLeft = (window.innerWidth - modalWidth) + 'px';
+							//console.log('adj left to:', modalLeft);
+						}
+
+						/*
+						 console.log('modal width/height', modalWidth, modalHeight)
+						 console.log(modalLeft, modalTop)
+						 */
+
+						//warning: we can get inaccurate results using jquery.offset({top:xx, left:xx}) here so we'll just use css instead
+						$modal.css('top', modalTop) // these are strings
+						$modal.css('left', modalLeft)
 					}
 
 					// backdrop

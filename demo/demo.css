@@ -339,6 +339,7 @@ body {
   padding: 15px;
   border-radius: 4px;
   background: linear-gradient(to right, rgba(0, 0, 255, 0.15), rgba(0, 0, 255, 0.05));
+  position: relative;
 }
 .options:before,
 .options:after {
@@ -371,6 +372,20 @@ body {
 }
 .options:after {
   clear: both;
+}
+.options .qrcode-small {
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  background: url(../demo/qrcode.png) no-repeat;
+  background-size: cover;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  opacity: .5;
+}
+.options .qrcode-small:active {
+  text-decoration: none;
 }
 .options fieldset {
   clear: both;

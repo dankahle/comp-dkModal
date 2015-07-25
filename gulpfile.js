@@ -7,37 +7,35 @@ var gulp = require('gulp'),
 	jshintStylish = require('jshint-stylish')
 
 
-
 gulp.task('js-tmp', function () {
-	del.sync('tmp/js');
+	del.sync('tmp/*.js');
 	return gulp.src(['src/**/*.js', 'demo/**/*.js'])
 		.pipe($.jshint(jshintConfig))
 		.pipe($.jshint.reporter(jshintStylish))
 		.pipe($.jshint.reporter('fail'))
 		.pipe($.ngAnnotate())
-		.pipe(gulp.dest('tmp/js'))
+		.pipe(gulp.dest('tmp'))
 })
 
 gulp.task('js-dist', function () {
-	return gulp.src(['src/**/*.js'])
+	return gulp.src(['src/dkModal.js'])
 		.pipe($.jshint(jshintConfig))
 		.pipe($.jshint.reporter(jshintStylish))
 		.pipe($.jshint.reporter('fail'))
 		.pipe($.ngAnnotate())
-		.pipe($.concat('dkModal.js'))
 		.pipe(gulp.dest('dist'))
 		.pipe($.uglify())
 		.pipe($.extReplace('.min.js'))
 		.pipe(gulp.dest('dist'))
 })
 
-gulp.task('copy-less-dist', function() {
-	return gulp.src('src/dkModal.less')
+gulp.task('copy-dist', function() {
+	return gulp.src(['src/dkModal.less'])
 		.pipe(gulp.dest('dist'))
 });
 
 gulp.task('less-tmp', function () {
-	del.sync('tmp/css');
+	del.sync('tmp/*.css');
 	return gulp.src(['src/**/*.less', 'demo/**/*.less'])
 		.pipe($.less())
 		.pipe($.autoprefixer({
@@ -52,7 +50,7 @@ gulp.task('less-tmp', function () {
 				"Safari >= 6"
 			]
 		}))
-		.pipe(gulp.dest('tmp/css'))
+		.pipe(gulp.dest('tmp'))
 });
 
 gulp.task('less-dist', function () {
@@ -79,14 +77,11 @@ gulp.task('less-dist', function () {
 
 ///////////////////// dist
 
-gulp.task('clean-dist', function (cb) {
-	del('dist', cb)
-});
-
 gulp.task('build-tmp', ['js-tmp', 'less-tmp'])
 
-gulp.task('build-dist', ['clean-dist'], function(cb) {
-	runSequence(['js-dist', 'copy-less-dist', 'less-dist'], cb)
+gulp.task('build-dist', function(cb) {
+	del.sync('dist');
+	runSequence(['js-dist', 'less-dist', 'copy-dist'], cb)
 });
 
 //////////////////// watch

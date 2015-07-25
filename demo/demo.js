@@ -67,9 +67,11 @@
 
 		var defHeader = $scope.defHeader = 'Default Modal';
 
-		$scope.selectorModalBody = "This modal is a dom element on the page. It's accessed with a jquery selector. Default positioning: center with width at set % base on breakpoint.";
+		$scope.selectorModalBody = "This modal is a dom element on the page. It's accessed with a jquery selector. Default positioning: modal centered in viewport with width at set % based on breakpoint.";
 
 		$scope.templateModalBody = "This modal is loaded from html file, then compiled/linked against the chosen scope. It has an input element, so will be positioned near top of screen for mobile phone.";
+
+		$scope.qrcodeBody = "<img src='qrcode.png' width='148' height=148>";
 
 		window.$scope = $scope;//todo: remove
 

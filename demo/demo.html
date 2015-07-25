@@ -6,8 +6,9 @@
 	<title>dk-modal</title>
 	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
 	<link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css">
-	<link rel="stylesheet" href="../tmp/css/dkModal.css">
-	<link rel="stylesheet" href="../tmp/css/demo.css">
+	<link rel="stylesheet" href="../tmp/dkModal.css">
+	<!--<link rel="stylesheet" href="../dist/dkModal.min.css">-->
+	<link rel="stylesheet" href="../tmp/demo.css">
 
 </head>
 <body ng-controller="bodyCtrl" class="container-fluid">
@@ -26,6 +27,7 @@
 
 
 <div class="options form-group-sm">
+	<a href="" class="qrcode-small" dk-modal-trigger=".qrcodeModal" data-width="150px"></a>
 	<fieldset>
 		<legend>device mode</legend>
 		<div class="radio-inline">
@@ -197,6 +199,9 @@
 	</div>
 </div>
 
+<div class="qrcodeModal" style="display:none">
+	<img src="qrcode.png" width="148" height="148">
+</div>
 
 <script src="../bower_components/jquery/dist/jquery.js"></script>
 <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
@@ -204,8 +209,9 @@
 <script src="../bower_components/angular-animate/angular-animate.js"></script>
 <script src="../bower_components/angular-touch/angular-touch.js"></script>
 <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
-<script src="../tmp/js/dkModal.js"></script>
-<script src="../tmp/js/demoapp.js"></script>
+<script src="../tmp/dkModal.js"></script>
+<!--<script src="../dist/dkModal.min.js"></script>-->
+<script src="../tmp/demo.js"></script>
 <script>
 
 </script>
