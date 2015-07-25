@@ -18,11 +18,7 @@ gulp.task('js-tmp', function () {
 })
 
 gulp.task('js-dist', function () {
-	return gulp.src(['src/dkModal.js'])
-		.pipe($.jshint(jshintConfig))
-		.pipe($.jshint.reporter(jshintStylish))
-		.pipe($.jshint.reporter('fail'))
-		.pipe($.ngAnnotate())
+	return gulp.src(['tmp/dkModal.js'])
 		.pipe(gulp.dest('dist'))
 		.pipe($.uglify())
 		.pipe($.extReplace('.min.js'))
@@ -30,13 +26,14 @@ gulp.task('js-dist', function () {
 })
 
 gulp.task('copy-tmp', function() {
-	del.sync(['tmp/demo.html', 'tmp/*.png'])
-	gulp.src(['demo/demo.html', 'demo/*.png'])
+	del.sync(['tmp/*.html', 'tmp/*.png'])
+	return gulp.src(['demo/*.html', 'demo/*.png'])
 		.pipe(gulp.dest('tmp'))
 })
 
 gulp.task('copy-dist', function() {
 	return gulp.src(['src/dkModal.less'])
+		.pipe($.extReplace('._less'))// so webstorm stops compiling it
 		.pipe(gulp.dest('dist'))
 });
 
@@ -59,42 +56,50 @@ gulp.task('less-tmp', function () {
 		.pipe(gulp.dest('tmp'))
 });
 
-gulp.task('less-dist', function () {
-	return gulp.src(['src/dkModal.less'])
-		.pipe($.less())
-		.pipe($.autoprefixer({
-			browsers: [
-				"Android 2.3",
-				"Android >= 4",
-				"Chrome >= 20",
-				"Firefox >= 24",
-				"Explorer >= 8",
-				"iOS >= 6",
-				"Opera >= 12",
-				"Safari >= 6"
-			]
-		}))
-		.pipe($.concat('dkModal.css'))
+gulp.task('css-dist', function () {
+	return gulp.src(['tmp/dkModal.css'])
 		.pipe(gulp.dest('dist'))
 		.pipe($.csso())
 		.pipe($.extReplace('.min.css'))
 		.pipe(gulp.dest('dist'))
 });
 
-///////////////////// dist
+gulp.task('copy-ghpages', function() {
+	return gulp.src(['tmp/*.js', 'tmp/*.css', 'tmp/*.png', 'tmp/tempModal.html'])
+		.pipe(gulp.dest('gh-pages'))
+})
+
+gulp.task('html-ghpages', function () {
+	var assets = $.useref.assets();
+
+	return gulp.src('tmp/index.html')
+		.pipe(assets)
+		.pipe($.if('*.js', $.uglify()))
+		.pipe($.if('*.css', $.csso()))
+		.pipe(assets.restore())
+		.pipe($.useref())
+		.pipe(gulp.dest('gh-pages'));
+});
+
+///////////////////// build
 
 gulp.task('build-tmp', ['js-tmp', 'less-tmp', 'copy-tmp'])
 
-gulp.task('build-dist', function(cb) {
+gulp.task('build-dist', ['build-tmp'], function(cb) {
 	del.sync('dist');
-	runSequence(['js-dist', 'less-dist', 'copy-dist'], cb)
+	runSequence(['js-dist', 'css-dist', 'copy-dist'], cb)
 });
+
+gulp.task('build-ghpages', ['build-tmp'], function() {
+	del.sync('gh-pages');
+	runSequence(['copy-ghpages', 'html-ghpages'])
+})
 
 //////////////////// watch
 
 gulp.task('watch', ['js-tmp', 'less-tmp'], function() {
 	gulp.watch(['src/*.js', 'demo/*.js'], ['js-tmp']);
 	gulp.watch(['src/*.less', 'demo/*.less'], ['less-tmp']);
-	gulp.watch(['demo/demo.html', 'demo/*.png'], ['copy-tmp']);
+	gulp.watch(['demo/*.html', 'demo/*.png'], ['copy-tmp']);
 })
 
