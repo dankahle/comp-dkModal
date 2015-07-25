@@ -1,7 +1,12 @@
 (function () {
 	'use strict';
 
+	var log = console.log.bind(console);
+	//var log = console.log = function(){} //todo-prod: reverse these log line comments
 
+	$('.main').click(function() {
+		log('click')
+	})
 	// draggable target
 	$('.target').mousedown(function (e) {
 		var $this;
@@ -15,7 +20,6 @@
 			})
 
 			$(document).mouseup(function (e) {
-				console.log('turn off handler')
 				$(document).off('mouseup mousemove');
 			})
 
@@ -34,8 +38,6 @@
 	})
 
 	app.controller('bodyCtrl', function ($scope, $timeout, dkModal) {
-
-		var log = $scope.log = console.log.bind(console);
 
 		$scope.defBody = '<p>This modal uses the dk-modal default template, which allows you to specify a data-bound header/body and footer mode. Header, footer, close icon are optional.';
 
