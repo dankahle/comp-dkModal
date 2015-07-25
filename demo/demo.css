@@ -266,11 +266,15 @@ body {
   transform: translate3d(0, 120%, 0);
 }
 .status.in {
-  transform: none;
+  transform: translate3d(0, 0, 0);
+}
+@media (max-width: 500px) {
+  .status.in {
+    transform: rotate(-90deg);
+  }
 }
 @media (max-width: 500px) {
   .status {
-    transform: rotate(-90deg);
     bottom: auto;
   }
   html.mobile .status {

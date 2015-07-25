@@ -32,10 +32,13 @@ body {
 	transition: @introTransition;
 	transform: translate3d(0, @introDistance, 0);
 	&.in {
-		transform: none;
+		transform: translate3d(0, 0, 0);
+		@media (max-width: @mobilePhoneStatusRotate) {
+			transform: rotate(-90deg);
+		}
 	}
 	@media (max-width: @mobilePhoneStatusRotate) {
-		transform: rotate(-90deg);
+		//transform: rotate(-90deg);
 		bottom: auto;
 		html.mobile & {
 			top: 396px;
