@@ -17,12 +17,59 @@ html, body {
 }
 
 body {
+	background: url(circle.svg);
 	@media (max-width: @bodyLosesPadding) {
 		&.container-fluid {
 			padding: 0 !important;
 		}
 	}
 }
+
+.bg-circle {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: -1;
+	//overflow: hidden;
+}
+
+.bg-icon {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: -10;
+	font-size: 3000px;
+	color: #8316ab;
+	opacity: .07;
+	background: white;
+	&:before {
+		display: inline-block;
+		height: 2000px;
+		position: absolute;
+		top: -300px;
+		left: -160px;
+	}
+}
+
+/*
+.bg-icon {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: -1;
+	font-size: 3000px;
+	color: #8316ab;
+	opacity: .1;
+	background: white;
+}
+*/
+
 
 .status {
 	font-size: 22px;
@@ -77,15 +124,22 @@ body {
 }
 
 .target {
+	//width: 77px;
+	//height: 43px;
+	padding: 3px 6px;
+	//background: plum;
+	background: lighten(#8316ab, 40%);
+	border-radius: 4px;
+	border: 1px solid #333;
+	text-align: center;
 	opacity: 0;
 	transition: opacity .3s;
-	//display: inline-block;
-	position: absolute;
-	top: 40%;
-	left: 60%;
-	transform: translate(-50px, -50px);
-	&.active {
-		opacity: 1;
+	position: fixed;
+	top: 54%;//40%;
+	left: 64%; //60%;
+	z-index: 100;
+	&.in {
+		opacity: .8;
 	}
 }
 
@@ -180,7 +234,6 @@ body {
 .main {
 	overflow: hidden;
 	height: 100%;
-	position: relative;
 }
 
 

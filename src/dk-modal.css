@@ -54,6 +54,11 @@
     width: 46%;
   }
 }
+@media (min-width: 1500px) {
+  .dk-modal {
+    width: 38%;
+  }
+}
 .dk-modal .dk-modal-header {
   font-size: 21px;
   padding: 20px 32px 0;

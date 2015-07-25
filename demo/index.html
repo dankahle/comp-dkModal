@@ -6,6 +6,7 @@
 	<title>dk-modal</title>
 	<!--build:css vendor.min.css-->
 	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="../bower_components/icomoon/style.css">
 	<!--endbuild-->
 	<link rel="stylesheet" href="dk-modal.css">
 	<!--<link rel="stylesheet" href="../dist/dk-modal.min.css">-->
@@ -13,7 +14,10 @@
 
 </head>
 <body ng-controller="bodyCtrl" class="container-fluid">
-<button class="btn btn-warning btn-sm target">Draggable Target</button>
+<div class="bg-icon icon-github"></div>
+
+<!--<button class="btn btn-warning btn-sm target">Draggable Target</button>-->
+<div class="target">draggable<br>target</div>
 
 <div class="status" ng-cloak>
 	<span>{{opts.test.mode}}</span>
@@ -205,6 +209,8 @@
 
 <!--build:js vendor.min.js-->
 <script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/jquery-ui/jquery-ui.js"></script>
+<script src="../bower_components/jquery-ui-touch-punch/jquery.ui.touch-punch.js"></script>
 <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script src="../bower_components/angular/angular.js"></script>
 <script src="../bower_components/angular-animate/angular-animate.js"></script>

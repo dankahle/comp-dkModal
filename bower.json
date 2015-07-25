@@ -29,7 +29,8 @@
     "angular-animate": "^1.4.3",
     "angular-touch": "1.4.3",
     "bootstrap": "^3.3.5",
-    "angular-sanitize": "~1.4.3"
+    "angular-sanitize": "~1.4.3",
+    "jquery-ui-touch-punch": "*"
   },
   "devDependencies": {
     "angular-touch": "~1.4.3",

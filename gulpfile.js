@@ -24,6 +24,13 @@ gulp.task('js-dist', function () {
 		.pipe($.extReplace('.min.js'))
 		.pipe(gulp.dest('dist'))
 })
+//'bower_components/icomoon/fonts'
+
+gulp.task('copy-fonts-tmp', function() {
+	del.sync('tmp/fonts/*.*')
+	return gulp.src('bower_components/icomoon/fonts/*.*')
+		.pipe(gulp.dest('tmp/fonts'))
+})
 
 gulp.task('copy-tmp', function() {
 	del.sync(['tmp/*.html', 'tmp/*.png'])
@@ -69,6 +76,11 @@ gulp.task('copy-ghpages', function() {
 		.pipe(gulp.dest('gh-pages'))
 })
 
+gulp.task('copy-fonts-ghpages', function() {
+	return gulp.src('bower_components/icomoon/fonts/*.*')
+		.pipe(gulp.dest('gh-pages/fonts'))
+})
+
 gulp.task('html-ghpages', function () {
 	var assets = $.useref.assets();
 
@@ -84,18 +96,18 @@ gulp.task('html-ghpages', function () {
 ///////////////////// build
 
 gulp.task('build-tmp', function(cb) {
-	del.sync('tmp');
+	del.sync('tmp/*.*');
 	runSequence(['js-tmp', 'less-tmp', 'copy-tmp'], cb);
 })
 
 gulp.task('build-dist', ['build-tmp'], function(cb) {
-	del.sync('dist');
+	del.sync('dist/*.*');
 	runSequence(['js-dist', 'css-dist', 'copy-dist'], cb)
 });
 
 gulp.task('build-ghpages', ['build-tmp'], function() {
-	del.sync('gh-pages');
-	runSequence(['copy-ghpages', 'html-ghpages'])
+	del.sync('gh-pages/*.*');
+	runSequence(['copy-ghpages', 'copy-fonts-ghpages', 'html-ghpages'])
 })
 
 //////////////////// watch
