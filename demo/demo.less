@@ -69,9 +69,9 @@ body {
 	right: 12px;
 	bottom: 10px;
 	transition: @introTransition;
-	transform: translate3d(0, @introDistance, 0);
+	transform: translateY(@introDistance);
 	&.in {
-		transform: translate3d(0, 0, 0);
+		transform: translateY(0);
 		@media (max-width: @mobilePhoneStatusRotate) {
 			transform: rotate(-90deg);
 		}
@@ -142,7 +142,7 @@ body {
 	text-align: left;
 	margin-bottom: 0px;
 	transition: @introTransition;
-	transform: translate3d(0, -@introDistance, 0);
+	transform: translateY(-@introDistance);
 	&.in {
 		transform: none;
 	}
@@ -171,7 +171,7 @@ body {
 	background: linear-gradient(to right, rgba(0, 0, 255, .15), rgba(0, 0, 255, .05));
 	position: relative;
 	transition: @introTransition;
-	transform: translate3d(-@introDistance, 0, 0);
+	transform: translateX(-@introDistance);
 	&.in {
 		transform: none;
 	}

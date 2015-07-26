@@ -298,10 +298,10 @@ body {
   right: 12px;
   bottom: 10px;
   transition: transform ease-out 0.3s;
-  transform: translate3d(0, 120%, 0);
+  transform: translateY(120%);
 }
 .status.in {
-  transform: translate3d(0, 0, 0);
+  transform: translateY(0);
 }
 @media (max-width: 500px) {
   .status.in {
@@ -379,7 +379,7 @@ body {
   text-align: left;
   margin-bottom: 0px;
   transition: transform ease-out 0.3s;
-  transform: translate3d(0, -120%, 0);
+  transform: translateY(-120%);
 }
 .show-bar.in {
   transform: none;
@@ -409,7 +409,7 @@ body {
   background: linear-gradient(to right, rgba(0, 0, 255, 0.15), rgba(0, 0, 255, 0.05));
   position: relative;
   transition: transform ease-out 0.3s;
-  transform: translate3d(-120%, 0, 0);
+  transform: translateX(-120%);
 }
 .options:before,
 .options:after {
