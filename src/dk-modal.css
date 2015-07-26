@@ -27,9 +27,23 @@
   opacity: 0;
   transition: opacity 0.2s;
   width: 90%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  /*
+We've got us a problem with blurry and shifting text on chrome, FF, safari on mac, on pc some mild text shifting on chrome and questionable animation performance on safari. This all started when you started using translate3d to position the divs on page init. All a sudden you started seeing blurry text on the modal (which wasnt' even using translate3d). You read an angularstrap issue and and pulled the translate3d and it stopped, mostly... Now what you have is mild shifting text with chrome/ie and perm blurry on safari on mac, on windows: mild shifting text on chrome. Windows is handling it better, better graphics card I bet.
+
+	The problem lies in translate. If translate(0,0) no problem, even if animated there (which is what boot does). Problem is when it has values, then has to make that calc after animation and messes up the images. I.e. it probably copies an image of the modal, then fades it in, then puts that image there again, but some how messes it up a bit. On safari, messes it up a lot.
+
+	to fix it:
+	-webkit-filter:blur of all things will fix chrome's text shifting on mac and windows, but if you use filter:blur(0), this will fix chrome, but makes mac firefox blurry. IT'S STUPID TO USE FILTER:BLUR(0). So... no filter:blur and jsut stick with what you have. No js centering. F them, this is a hardware issue mostly. Guys on macbooks probably dont' even see this? Either way it will go away, don't screw up your code over it.
+
+
+*/
+  /*
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%); // todo: needs -webkit-transform for phone
+	//todo: need to remove this blur when the hardware/opsys fixes this issue (read above)
+	-webkit-filter: blur(0); //this fixes chrome, but not safari, but it's F'd up to
+    */
 }
 .dk-modal.open {
   opacity: 1;

@@ -203,14 +203,12 @@
 
 						var html;
 						if ((html = $templateCache.get(opts.templateUrl))) {
-							log('cached')
 							$modal = $compile(html)(opts.scope);
 							if (!$modal || $modal.length === 0)
 								defAjax.reject(new Error('Failed to get compile modal for templateUrl: ' + opts.templateUrl));
 							defAjax.resolve();
 						}
 						else {
-							log('notcached')
 							$http.get(opts.templateUrl)
 								.then(function (resp) {
 									$templateCache.put(opts.templateUrl, resp.data);
@@ -470,6 +468,10 @@
 						//warning: we can get inaccurate results using jquery.offset({top:xx, left:xx}) here so we'll just use css instead
 						$modal.css('top', modalTop) // these are strings
 						$modal.css('left', modalLeft)
+					}
+					else { // default centering
+						$modal.css('top', (window.innerHeight/2 - modalHeight/2) + 'px')
+						$modal.css('left', (window.innerWidth/2 - modalWidth/2) + 'px')
 					}
 
 					// backdrop
