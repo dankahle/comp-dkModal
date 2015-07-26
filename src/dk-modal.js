@@ -1,6 +1,8 @@
 (function () {
 	'use strict';
 
+	var log = console.log.bind(console);
+	//var log = console.log = function(){} //todo-prod: reverse these log line comments
 
 	var isMobile = window.navigator.userAgent.indexOf('Mobi') != -1;
 
@@ -201,15 +203,17 @@
 
 						var html;
 						if ((html = $templateCache.get(opts.templateUrl))) {
+							log('cached')
 							$modal = $compile(html)(opts.scope);
 							if (!$modal || $modal.length === 0)
 								defAjax.reject(new Error('Failed to get compile modal for templateUrl: ' + opts.templateUrl));
 							defAjax.resolve();
 						}
 						else {
+							log('notcached')
 							$http.get(opts.templateUrl)
 								.then(function (resp) {
-									$templateCache.put(resp.data);
+									$templateCache.put(opts.templateUrl, resp.data);
 									$modal = $compile(resp.data)(opts.scope);
 									if (!$modal || $modal.length === 0)
 										defAjax.reject(new Error('Failed to get compile modal for templateUrl: ' + opts.templateUrl));
