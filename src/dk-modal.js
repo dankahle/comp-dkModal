@@ -211,6 +211,7 @@
 						else {
 							$http.get(opts.templateUrl)
 								.then(function (resp) {
+									//log('cache opts.templateUrl')
 									$templateCache.put(opts.templateUrl, resp.data);
 									$modal = $compile(resp.data)(opts.scope);
 									if (!$modal || $modal.length === 0)

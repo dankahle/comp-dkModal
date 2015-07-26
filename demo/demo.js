@@ -61,13 +61,6 @@
 
 		window.$scope = $scope;//todo: remove
 
-		$scope.$on('modalOk', function () {
-			console.log('ok event')
-		})
-		$scope.$on('modalCancel', function () {
-			console.log('cancel event')
-		})
-
 		// defaults
 		$scope.position = 'default';
 		$scope.showHeader = true;
@@ -78,7 +71,6 @@
 			scope: $scope,
 			targetSide: 'right',
 			targetVert: 'middle',
-			targetOffset: 20,
 			defaultClose: true,
 			defaultFooter: 'ok',
 			test: {
@@ -139,6 +131,24 @@
 			$('.show-bar, .options, .status').addClass('in');
 		})
 
+		function closeIndicatorAnimate(val) {
+			var $closeInd = $('.closeIndicator');
+			if(val == 'ok')
+				$closeInd.removeClass('cancel').addClass('ok');
+			else
+				$closeInd.removeClass('ok').addClass('cancel');
+
+			if(!$closeInd.hasClass('flash'))// first time
+				$closeInd.addClass('flash');
+			else
+				$closeInd.before($closeInd.clone(true)).remove();
+		}
+		$scope.$on('modalOk', function () {
+			closeIndicatorAnimate('ok');
+		})
+		$scope.$on('modalCancel', function () {
+			closeIndicatorAnimate('cancel');
+		})
 
 	});// bodyCtrl
 

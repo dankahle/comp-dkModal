@@ -276,20 +276,48 @@ body {
   top: -300px;
   left: -160px;
 }
-/*
-.bg-icon {
-	position: fixed;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	z-index: -1;
-	font-size: 3000px;
-	color: #8316ab;
-	opacity: .1;
-	background: white;
+.closeIndicator {
+  display: block;
+  height: 31.4px;
+  width: 140px;
+  text-align: center;
+  font-size: 22px;
+  position: fixed;
+  right: 50%;
+  bottom: 10px;
+  transition: transform ease-out 0.3s;
+  transform: translateX(50%);
+  opacity: 0;
+  filter: blur(0);
 }
-*/
+@media (max-width: 500px) {
+  .closeIndicator {
+    transform: rotate(-90deg);
+    bottom: auto;
+    top: 187px;
+    right: -56px;
+  }
+}
+.closeIndicator.flash {
+  animation: showCloseIndicator 1.5s;
+}
+.closeIndicator.ok:before {
+  content: 'ok event';
+}
+.closeIndicator.cancel:before {
+  content: 'cancel event';
+}
+@keyframes showCloseIndicator {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  1000% {
+    opacity: 0;
+  }
+}
 .status {
   font-size: 22px;
   position: fixed;

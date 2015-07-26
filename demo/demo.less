@@ -44,21 +44,45 @@ body {
 	}
 }
 
-/*
-.bg-icon {
+.closeIndicator {
+	display:block;
+	height: 31.4px;
+	width: 140px;
+	text-align: center;
+	font-size: 22px;
 	position: fixed;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	z-index: -1;
-	font-size: 3000px;
-	color: #8316ab;
-	opacity: .1;
-	background: white;
+	right: 50%;
+	bottom: 10px;
+	transition: @introTransition;
+	transform: translateX(50%);
+	opacity: 0;
+	filter: blur(0);
+	@media (max-width: @mobilePhoneStatusRotate) {
+		transform: rotate(-90deg);
+		bottom: auto;
+		top: 187px;
+		right: -56px;
+	}
+	&.flash {
+		animation: showCloseIndicator 1.5s;
+	}
+	&.ok {
+		&:before {
+			content: 'ok event';
+		}
+	}
+	&.cancel {
+		&:before {
+			content: 'cancel event';
+		}
+	}
 }
-*/
 
+@keyframes showCloseIndicator {
+	0% { opacity: 0; }
+	50% { opacity: 1; }
+	1000% { opacity: 0; }
+}
 
 .status {
 	font-size: 22px;
