@@ -131,23 +131,20 @@
 			$('.show-bar, .options, .status').addClass('in');
 		})
 
-		function closeIndicatorAnimate(val) {
-			var $closeInd = $('.closeIndicator');
-			if(val == 'ok')
-				$closeInd.removeClass('cancel').addClass('ok');
-			else
-				$closeInd.removeClass('ok').addClass('cancel');
+		function githubAnimate(val) {
+			var $git = $('.github span');
 
-			if(!$closeInd.hasClass('flash'))// first time
-				$closeInd.addClass('flash');
-			else
-				$closeInd.before($closeInd.clone(true)).remove();
+			$git.addClass(val);
+			setTimeout(function() {
+						$git.removeClass(val);
+			},100)
 		}
 		$scope.$on('modalOk', function () {
-			closeIndicatorAnimate('ok');
+			log('ok')
+			githubAnimate('ok');
 		})
 		$scope.$on('modalCancel', function () {
-			closeIndicatorAnimate('cancel');
+			githubAnimate('cancel');
 		})
 
 	});// bodyCtrl

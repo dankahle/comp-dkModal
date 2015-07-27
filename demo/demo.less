@@ -11,6 +11,8 @@
 
 @introDistance: 120%;
 @introTransition: transform ease-out .3s;
+@purple: #8316ab;
+
 
 html, body {
 	height: 100%;
@@ -32,7 +34,7 @@ body {
 	left: 0;
 	z-index: -10;
 	font-size: 3000px;
-	color: #8316ab;
+	color: @purple;
 	opacity: .07;
 	background: white;
 	&:before {
@@ -53,18 +55,24 @@ body {
 	position: fixed;
 	right: 50%;
 	bottom: 10px;
-	transition: @introTransition;
-	transform: translateX(50%);
-	opacity: 0;
-	filter: blur(0);
-	@media (max-width: @mobilePhoneStatusRotate) {
-		transform: rotate(-90deg);
-		bottom: auto;
-		top: 187px;
-		right: -56px;
-	}
+
+	transform: rotate(-90deg) translate(0, -40px);
+	top: 187px;
+	right: -56px;
 	&.flash {
-		animation: showCloseIndicator 1.5s;
+		animation: showCloseIndicatorRotate 2s;
+	}
+
+
+	//-webkit-font-smoothing: antialiased;
+	//-moz-osx-font-smoothing: grayscale;
+	//-webkit-filter: blur(0);
+	//backface-visibility: hidden;
+	@media (min-width: @mobilePhoneStatusRotate) {
+		transform: translateX(50%);
+		&.flash {
+			animation: showCloseIndicator 2s;
+		}
 	}
 	&.ok {
 		&:before {
@@ -79,9 +87,14 @@ body {
 }
 
 @keyframes showCloseIndicator {
-	0% { opacity: 0; }
-	50% { opacity: 1; }
-	1000% { opacity: 0; }
+	0% {opacity: 1;}
+	100% { opacity: 0; }
+}
+
+@keyframes showCloseIndicatorRotate {
+	0% { transform: rotate(-90deg) translate(0, -40px); }
+	50% { transform:  rotate(-90deg) translate(0,0); }
+	100% { transform:  rotate(-90deg) translate(0, -40px); }
 }
 
 .status {
@@ -141,7 +154,7 @@ body {
 	//height: 43px;
 	padding: 3px 6px;
 	//background: plum;
-	background: lighten(#8316ab, 40%);
+	background: lighten(@purple, 40%);
 	border-radius: 4px;
 	border: 1px solid #333;
 	text-align: center;
@@ -178,6 +191,38 @@ body {
 		margin-right: 4px;
 		@media (max-width: @bodyLosesPadding) {
 			&:first-child { margin-left: 4px; }
+		}
+	}
+	.github {
+		display: inline-block;
+		overflow: hidden;
+		width: 44px;
+		height: 44px;
+		border: 3px solid white;
+		padding-left: 1px;
+		margin-left: 13px;
+		border-radius: 50%;
+		vertical-align: middle;
+		text-align: center;
+		text-decoration: none;
+		//background: blue;
+		span {
+			transition: color .2s, background-color ease-out 1.5s;
+			line-height: 38px;
+			font-size: 46px;
+			color: #999;
+			margin-left: -2px;
+			&:hover {
+				color: #666;
+			}
+			&.ok {
+				transition: background-color 0s;
+				background-color: rgba(0,255,0, .3)
+			}
+			&.cancel {
+				transition: background-color 0s;
+				background-color: rgba(255,0,0, .3)
+			}
 		}
 	}
 }

@@ -285,21 +285,20 @@ body {
   position: fixed;
   right: 50%;
   bottom: 10px;
-  transition: transform ease-out 0.3s;
-  transform: translateX(50%);
-  opacity: 0;
-  filter: blur(0);
-}
-@media (max-width: 500px) {
-  .closeIndicator {
-    transform: rotate(-90deg);
-    bottom: auto;
-    top: 187px;
-    right: -56px;
-  }
+  transform: rotate(-90deg) translate(0, -40px);
+  top: 187px;
+  right: -56px;
 }
 .closeIndicator.flash {
-  animation: showCloseIndicator 1.5s;
+  animation: showCloseIndicatorRotate 2s;
+}
+@media (min-width: 500px) {
+  .closeIndicator {
+    transform: translateX(50%);
+  }
+  .closeIndicator.flash {
+    animation: showCloseIndicator 2s;
+  }
 }
 .closeIndicator.ok:before {
   content: 'ok event';
@@ -309,13 +308,21 @@ body {
 }
 @keyframes showCloseIndicator {
   0% {
-    opacity: 0;
-  }
-  50% {
     opacity: 1;
   }
-  1000% {
+  100% {
     opacity: 0;
+  }
+}
+@keyframes showCloseIndicatorRotate {
+  0% {
+    transform: rotate(-90deg) translate(0, -40px);
+  }
+  50% {
+    transform: rotate(-90deg) translate(0, 0);
+  }
+  100% {
+    transform: rotate(-90deg) translate(0, -40px);
   }
 }
 .status {
@@ -425,6 +432,37 @@ body {
   .show-bar button:first-child {
     margin-left: 4px;
   }
+}
+.show-bar .github {
+  display: inline-block;
+  overflow: hidden;
+  width: 44px;
+  height: 44px;
+  border: 3px solid white;
+  padding-left: 1px;
+  margin-left: 13px;
+  border-radius: 50%;
+  vertical-align: middle;
+  text-align: center;
+  text-decoration: none;
+}
+.show-bar .github span {
+  transition: color 0.2s, background-color ease-out 1.5s;
+  line-height: 38px;
+  font-size: 46px;
+  color: #999;
+  margin-left: -2px;
+}
+.show-bar .github span:hover {
+  color: #666;
+}
+.show-bar .github span.ok {
+  transition: background-color 0s;
+  background-color: rgba(0, 255, 0, 0.3);
+}
+.show-bar .github span.cancel {
+  transition: background-color 0s;
+  background-color: rgba(255, 0, 0, 0.3);
 }
 .options {
   color: #424242;
