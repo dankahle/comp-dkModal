@@ -131,20 +131,16 @@
 			$('.show-bar, .options, .status').addClass('in');
 		})
 
-		function githubAnimate(val) {
-			var $git = $('.github span');
+		var $git = $('.github span');
 
-			$git.addClass(val);
-			setTimeout(function() {
-						$git.removeClass(val);
-			},100)
-		}
+		$git.hover(function() {
+			$git.removeClass('ok cancel');
+		})
 		$scope.$on('modalOk', function () {
-			log('ok')
-			githubAnimate('ok');
+			$git.addClass('ok').removeClass('cancel');
 		})
 		$scope.$on('modalCancel', function () {
-			githubAnimate('cancel');
+			$git.addClass('cancel').removeClass('ok');
 		})
 
 	});// bodyCtrl

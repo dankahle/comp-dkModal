@@ -447,22 +447,21 @@ body {
   text-decoration: none;
 }
 .show-bar .github span {
-  transition: color 0.2s, background-color ease-out 1.5s;
+  transition: .1s;
   line-height: 38px;
   font-size: 46px;
   color: #999;
   margin-left: -2px;
 }
 .show-bar .github span:hover {
-  color: #666;
+  color: #777;
+  background-color: rgba(0, 0, 230, 0.3) !important;
 }
 .show-bar .github span.ok {
-  transition: background-color 0s;
-  background-color: rgba(0, 255, 0, 0.3);
+  background-color: rgba(0, 230, 0, 0.3);
 }
 .show-bar .github span.cancel {
-  transition: background-color 0s;
-  background-color: rgba(255, 0, 0, 0.3);
+  background-color: rgba(230, 0, 0, 0.3);
 }
 .options {
   color: #424242;

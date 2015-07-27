@@ -207,21 +207,20 @@ body {
 		text-decoration: none;
 		//background: blue;
 		span {
-			transition: color .2s, background-color ease-out 1.5s;
+			transition: .1s;
 			line-height: 38px;
 			font-size: 46px;
 			color: #999;
 			margin-left: -2px;
 			&:hover {
-				color: #666;
+				color: #777;
+				background-color: rgba(0,0,230, .3) !important;
 			}
 			&.ok {
-				transition: background-color 0s;
-				background-color: rgba(0,255,0, .3)
+				background-color: rgba(0,230,0, .3);
 			}
 			&.cancel {
-				transition: background-color 0s;
-				background-color: rgba(255,0,0, .3)
+				background-color: rgba(230,0,0, .3);
 			}
 		}
 	}
