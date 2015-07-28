@@ -1,27 +1,28 @@
 
 //@import (reference) '../bower_components/bootstrap/less/bootstrap';
 //@import (reference) '../bower_components/bootstrap/less/mixins.less';
-//@import (reference) '../bower_components/bootstrap/less/variables.less';
+@import (reference) '../bower_components/bootstrap/less/variables.less';
 //@import (reference) '../bower_components/font-awesome/less/font-awesome.less';
 
 .outline-offset(@n) { outline-offset: @n*(-1px);}
-.outline {outline: 1px solid black; .outline-offset(1); }
-.outline2 { outline: 1px solid black; .outline-offset(2); }
-.outline-red { .outline; outline-color: red; }
-.outline-blue { .outline; outline-color: blue; }
-.outline-red2 { .outline2; outline-color: red;}
-.outline-blue2 { .outline2; outline-color: blue; }
-.bg-blue { background: rgba(0,0,255, .1)};
-.bg-red { background: rgba(255,0,0, .1)};
-.bg-green { background: rgba(0,255,0, .1)};
-.border { border: 1px solid black; }
-.border-red { .border; border-color: red;}
-.border-blue { .border; border-color: blue;}
-.box(@num) { width: @num*1px; height: @num*1px; }
+.outline() {outline: 1px solid black; .outline-offset(1); }
+.outline2() { outline: 1px solid black; .outline-offset(2); }
+.outline-red() { .outline; outline-color: red; }
+.outline-blue() { .outline; outline-color: blue; }
+.outline-red2() { .outline2; outline-color: red;}
+.outline-blue2() { .outline2; outline-color: blue; }
+.bg-blue() { background: rgba(0,0,255, .1)};
+.bg-red() { background: rgba(255,0,0, .1)};
+.bg-green() { background: rgba(0,255,0, .1)};
+.border() { border: 1px solid black; }
+.border-red() { .border; border-color: red;}
+.border-blue() { .border; border-color: blue;}
+.box(@num) { width: ~'@{num}px'; height: ~'@{num}px'; }
+.rect(@width, @height) { width: ~'@{width}px'; height: ~'@{height}px'; }
 
 * {box-sizing: border-box;}
 
-.clearfix {
+.clearfix() {
 	&:before,
 	&:after {
 		content: " "; // 1
@@ -32,13 +33,13 @@
 	}
 }
 
-.center-block {
+.center-block() {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 }
 
-.ghost {
+.ghost() {
 	&:before {
 		content: '';
 		display: inline-block;
@@ -47,7 +48,7 @@
 		margin-right: -.25em;
 	}
 }
-.ghost-nospace {
+.ghost-nospace() {
 	&:before {
 		content: '';
 		display: inline-block;
@@ -55,3 +56,4 @@
 		vertical-align: middle;
 	}
 }
+

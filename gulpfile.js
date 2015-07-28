@@ -28,7 +28,7 @@ gulp.task('js-dist', function () {
 
 gulp.task('copy-fonts-tmp', function() {
 	del.sync('tmp/fonts/*.*')
-	return gulp.src('bower_components/icomoon/fonts/*.*')
+	return gulp.src('icomoon/fonts/*.*')
 		.pipe(gulp.dest('tmp/fonts'))
 })
 
@@ -77,7 +77,7 @@ gulp.task('copy-ghpages', function() {
 })
 
 gulp.task('copy-fonts-ghpages', function() {
-	return gulp.src('bower_components/icomoon/fonts/*.*')
+	return gulp.src('icomoon/fonts/*.*')
 		.pipe(gulp.dest('gh-pages/fonts'))
 })
 

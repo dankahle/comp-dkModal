@@ -15,7 +15,7 @@
 
 	})
 
-	app.controller('bodyCtrl', function ($scope, $timeout, dkModal) {
+	app.controller('bodyCtrl', function ($scope, dkModal) {
 
 		$scope.defBody = '<p>This modal uses the dk-modal default template, which allows you to specify a data-bound header/body and footer mode. Header, footer, close icon are optional.';
 
@@ -95,8 +95,10 @@
 			$('html').removeClass(val === 'mobile'? 'no-mobile': 'mobile');
 		})
 
-		$timeout(function() {
-			$('.show-bar, .options, .status, .bg-dk-modal').addClass('in');
+		// we were doing this in a timeout, but works just fine without it. so do that instead. Even with a timeout it was getting into a state where the animations weren't happening at all, so not adding the class or adding it so fast it didn't trigger the animation. Watch this.
+
+		setTimeout(function() {
+			$('.show-bar, .options, .status').addClass('in');
 		})
 
 		var $git = $('.github span');
