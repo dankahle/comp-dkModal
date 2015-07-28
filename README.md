@@ -1,6 +1,6 @@
 # dk-modal
 
-## An angular module for creating modals
+An angular module for creating modals
 
 ### Purpose of this project
 This isn't that end-all solution to all your modal concerns, then again... that's exactly what it is. The idea behind this is:
@@ -27,36 +27,6 @@ key, click
 backdropColor
 
 **tests**
-
-
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
-fwfsd  
 
 
 ////////////////////////////////////////
