@@ -128,7 +128,7 @@
 		})
 
 		$timeout(function() {
-			$('.show-bar, .options, .status').addClass('in');
+			$('.show-bar, .options, .status, .bg-dk-modal').addClass('in');
 		})
 
 		var $git = $('.github span');

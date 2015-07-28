@@ -46,59 +46,22 @@ body {
 	}
 }
 
-.closeIndicator {
-	display:block;
-	height: 31.4px;
-	width: 140px;
-	text-align: center;
-	font-size: 22px;
+.bg-dk-modal {
+	z-index: -5;
+	transition: @introTransition;
+	font-size: 100px;//110
+	color: rgba(0,0,0,.1);
 	position: fixed;
-	right: 50%;
-	bottom: 10px;
-
-	transform: rotate(-90deg) translate(0, -40px);
-	top: 187px;
-	right: -56px;
-	&.flash {
-		animation: showCloseIndicatorRotate 2s;
+	right: -141px;//-164
+	top: 204px;
+	&.in {
+		transform: rotate(-90deg);
 	}
-
-
-	//-webkit-font-smoothing: antialiased;
-	//-moz-osx-font-smoothing: grayscale;
-	//-webkit-filter: blur(0);
-	//backface-visibility: hidden;
-	@media (min-width: @mobilePhoneStatusRotate) {
-		transform: translateX(50%);
-		&.flash {
-			animation: showCloseIndicator 2s;
-		}
-	}
-	&.ok {
-		&:before {
-			content: 'ok event';
-		}
-	}
-	&.cancel {
-		&:before {
-			content: 'cancel event';
-		}
-	}
-}
-
-@keyframes showCloseIndicator {
-	0% {opacity: 1;}
-	100% { opacity: 0; }
-}
-
-@keyframes showCloseIndicatorRotate {
-	0% { transform: rotate(-90deg) translate(0, -40px); }
-	50% { transform:  rotate(-90deg) translate(0,0); }
-	100% { transform:  rotate(-90deg) translate(0, -40px); }
 }
 
 .status {
 	font-size: 22px;
+	color: #555;
 	position: fixed;
 	right: 12px;
 	bottom: 10px;
@@ -173,6 +136,7 @@ body {
 	@height: 50px;
 	height: @height;
 	line-height: @height;
+	white-space: nowrap;
 	text-align: left;
 	margin-bottom: 0px;
 	transition: @introTransition;
@@ -198,9 +162,9 @@ body {
 		overflow: hidden;
 		width: 44px;
 		height: 44px;
-		border: 3px solid white;
+		border: 3px solid transparent;
 		padding-left: 1px;
-		margin-left: 13px;
+		margin-left: 7px;//13px;
 		border-radius: 50%;
 		vertical-align: middle;
 		text-align: center;
@@ -214,13 +178,13 @@ body {
 			margin-left: -2px;
 			&:hover {
 				color: #777;
-				background-color: rgba(0,0,230, .3) !important;
+				background-color: rgba(0,0,240, .3) !important;
 			}
 			&.ok {
 				background-color: rgba(0,230,0, .3);
 			}
 			&.cancel {
-				background-color: rgba(230,0,0, .3);
+				background-color: rgba(240,0,0, .3);
 			}
 		}
 	}
@@ -242,17 +206,15 @@ body {
 	}
 	.qrcode-small {
 		display: inline-block;
-		width: 26px;
-		height: 26px;
+		width: 30px;
+		height: 30px;
 		background: url(qrcode.png);
 		background-size: cover;
 		position: absolute;
 		top: 4px;
 		right: 4px;
 		opacity: .5;
-		&:active {
-			text-decoration: none;
-		}
+		text-decoration: none;
 	}
 
 	fieldset {

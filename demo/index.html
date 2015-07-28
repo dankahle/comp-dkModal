@@ -15,6 +15,7 @@
 </head>
 <body ng-controller="bodyCtrl" class="container-fluid">
 <div class="bg-icon icon-github"></div>
+<div class="bg-dk-modal">dk-modal</div>
 
 <div class="target">draggable<br>target</div>
 
@@ -35,7 +36,7 @@
 
 
 <div class="options form-group-sm">
-	<a href="" class="qrcode-small" dk-modal-trigger=".qrcodeModal" data-width="150px"></a>
+	<a href="" class="qrcode-small" dk-modal-trigger=".qrcodeModal" data-cancel-event-name="donothin" data-width="150px"></a>
 	<fieldset>
 		<legend>device mode</legend>
 		<div class="radio-inline">
