@@ -1,61 +1,31 @@
 # dk-modal
 
-## An angular module for creating modals
+An angular module for creating modals popups windows
 
-### Purpose of this project
-This isn't that end-all solution to all your modal concerns, then again... that's exactly what it is. The idea behind this is:
-
-* simple code that's easy to understand so easy to hack on
-* you create the modal you want/need from this, i.e. this is just a starting point, a very good starting point that works right out of the box, but that can easily be shaped into what you really want, the code being simple and readable.
-
- I need a grid like this too, so will come up with the dk-grid one of these days. Just something that has all the boilerplate code for paging, sorting, local data, remote/data, simple pager option, but be easily extendable to morph into whatever you really need for that specific use.
-
-### Todo:
-
-**this readme**
-
-**demo page that makes it easy to test out all features including:**
-
-provider.setDefaults()
-
-with choices for:
-default,
-offsetTop, offsetLeft
-target, targetSide, targetVert, targetOffset (with draggable target, and target offscreen)
-width, height
-key, click
-backdropColor
-
-**tests**
+## Features
+* default template with preset layout and optional header/footer
+* directive for auto-wiring element to trigger modal on click event
+* configuration via object or data attributes on trigger element or modal itself
+* default width/height dependent on breakpoint, plus config width/height as well
+* positioning choices
+  * forces modal to 100% width placed at top of screen for mobile phone "if modal has input elements"
+    * default (vert/horiz center)
+    * px/% fixed offset in viewport
+    * px offset from target element with vertical choices of: top/middle/bottom
+* config backdrop keyboard/click/color+opacity
+* config/handle ok/cancel $rootscope and modal events
+* opacity animation that's blur and jank free
+* supports DOM element modal
+* access to modal and scope before or after showing
+* access to modal's childscope, should it have one
 
 
-fwfsd
-fwfsd
-fwfsd
-fwfsd
-fwfsd
-fwfsd
-fwfsd
-fwfsd
-fwfsd
-fwfsd
+[back to top](#dk-modal)
 
-fsd
-fsd
-af
-sadf
-sad
-f
-sdaf
-sad
-fsad
-fas
-////////////////////////////////////////
+### //////////// don't forget
+* config: talk about priority of configs betwwn servie call/modal and trigger  
+* def modal: go over footer modes  
 
-features:
 
-mobile phone:
-width 100%
-placement at top of screen for mobile phone with input, else where specified
 
-[back to top](#purpose-of-this-project)
+
