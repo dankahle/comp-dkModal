@@ -4,41 +4,9 @@
 	var log = console.log.bind(console);
 	//var log = console.log = function(){} //todo-prod: reverse these log line comments
 
-/*
-	$('.target').click(function() {
-		$(this).css('background', 'red')
-	})
-*/
-
-
-	// draggable target
-/*
-	$('.target').mousedown(function (e) {
-		var $this;
-		if (e.which == 1) {
-			$this = $(this);
-			var offLeft = e.pageX - $this.offset().left;
-			var offTop = e.pageY - $this.offset().top;
-
-			$(document).mousemove(function (e) {
-				$this.offset({top: e.pageY - offTop, left: e.pageX - offLeft});
-			})
-
-			$(document).mouseup(function (e) {
-				$(document).off('mouseup mousemove');
-			})
-
-			return false;
-		}
-	})
-*/
-
-
 	$('.target').draggable();
 
-
 	var app = angular.module('app', ['ngAnimate', 'ngTouch', 'dkModal']);
-
 
 	app.config(function (dkModalProvider) {
 		dkModalProvider.setDefaults({
