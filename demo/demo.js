@@ -59,7 +59,11 @@
 		}
 
 		$scope.showTemplateUrl = function () {
-			var temp_dkModal = dkModal($.extend({}, opts, {templateUrl: 'tempModal.html'}));
+			var temp_dkModal = dkModal($.extend({}, opts, {
+				templateUrl: 'tempModal.html',
+				width: '288px',
+				backdropColor: 'none'
+			}));
 			temp_dkModal.init()
 				.then(function(initObj) {
 					initObj.scope.scope_tempCtrl.user = {name: 'dank'}; // changing scope data before show
