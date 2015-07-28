@@ -1,0 +1,117 @@
+.dk-modal-backdrop {
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.2);
+  outline: none;
+  /* animation */
+  -webkit-transition: opacity 0.2s;
+       -o-transition: opacity 0.2s;
+          transition: opacity 0.2s;
+  opacity: 0;
+}
+.dk-modal-backdrop.open {
+  opacity: 1;
+}
+.dk-modal {
+  position: fixed;
+  z-index: 10001;
+  overflow: auto;
+  background: white;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
+          box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
+  outline: none;
+  /* animation */
+  opacity: 0;
+  -webkit-transition: opacity 0.2s;
+       -o-transition: opacity 0.2s;
+          transition: opacity 0.2s;
+  width: 90%;
+  /*
+We've got us a problem with blurry and shifting text on chrome, FF, safari on mac, on pc some mild text shifting on chrome and questionable animation performance on safari. This all started when you started using translate3d to position the divs on page init. All a sudden you started seeing blurry text on the modal (which wasnt' even using translate3d). You read an angularstrap issue and and pulled the translate3d and it stopped, mostly... Now what you have is mild shifting text with chrome/ie and perm blurry on safari on mac, on windows: mild shifting text on chrome. Windows is handling it better, better graphics card I bet.
+
+	The problem lies in translate. If translate(0,0) no problem, even if animated there (which is what boot does). Problem is when it has values, then has to make that calc after animation and messes up the images. I.e. it probably copies an image of the modal, then fades it in, then puts that image there again, but some how messes it up a bit. On safari, messes it up a lot.
+
+	to fix it:
+	-webkit-filter:blur of all things will fix chrome's text shifting on mac and windows, but if you use filter:blur(0), this will fix chrome, but makes mac firefox blurry. IT'S STUPID TO USE FILTER:BLUR(0). So... no filter:blur and jsut stick with what you have. No js centering. F them, this is a hardware issue mostly. Guys on macbooks probably dont' even see this? Either way it will go away, don't screw up your code over it.
+
+
+*/
+  /*
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%); // todo: needs -webkit-transform for phone
+	//todo: need to remove this blur when the hardware/opsys fixes this issue (read above)
+	-webkit-filter: blur(0); //this fixes chrome, but not safari, but it's F'd up to
+    */
+}
+.dk-modal.open {
+  opacity: 1;
+}
+@media (min-width: 400px) {
+  .dk-modal {
+    width: 80%;
+  }
+}
+@media (min-width: 768px) {
+  .dk-modal {
+    width: 66%;
+  }
+}
+@media (min-width: 992px) {
+  .dk-modal {
+    width: 50%;
+  }
+}
+@media (min-width: 1200px) {
+  .dk-modal {
+    width: 46%;
+  }
+}
+@media (min-width: 1500px) {
+  .dk-modal {
+    width: 38%;
+  }
+}
+.dk-modal .dk-modal-header {
+  font-size: 21px;
+  padding: 20px 32px 0;
+  margin-bottom: 20px;
+}
+.dk-modal .dk-modal-header[class*=' ng-hide'] + .dk-modal-body {
+  padding-top: 9px;
+}
+.dk-modal .dk-modal-body {
+  padding: 0 32px;
+  margin: 20px 0;
+}
+.dk-modal .dk-modal-footer {
+  padding: 0 32px 20px;
+  margin-top: 20px;
+  text-align: center;
+}
+.dk-modal .dk-modal-footer .btn {
+  margin-right: 6px;
+  min-width: 67px;
+}
+.dk-modal .dk-modal-close {
+  display: inline-block;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  line-height: 27px;
+  font-size: 24px;
+  position: absolute;
+  top: 6px;
+  right: 8px;
+}
+.dk-modal .dk-modal-close:hover {
+  font-weight: bold;
+  font-size: 27px;
+  cursor: pointer;
+}

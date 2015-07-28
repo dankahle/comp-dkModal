@@ -5,28 +5,35 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<title>dk-modal</title>
 	<link rel="stylesheet" href="vendor.min.css">
-	<link rel="stylesheet" href="dkModal.css">
-	<!--<link rel="stylesheet" href="../dist/dkModal.min.css">-->
+	<link rel="stylesheet" href="dk-modal.css">
+	<!--<link rel="stylesheet" href="../dist/dk-modal.min.css">-->
 	<link rel="stylesheet" href="demo.css">
 
 </head>
 <body ng-controller="bodyCtrl" class="container-fluid">
-<button class="btn btn-warning btn-sm target">Draggable Target</button>
+<div class="bg-icon icon-github"></div>
+<div class="bg-dk-modal">dk-modal</div>
 
-<div class="status">
+<div class="target">draggable<br>target</div>
+
+<div class="status" ng-cloak>
 	<span>{{opts.test.mode}}</span>
 	<span class="screenMobile" ng-show="opts.test.mode == 'mobile'"></span>
 	<span class="screenDesktop" ng-show="opts.test.mode == 'desktop'"></span>
 </div>
+
 <div class="show-bar">
 	<button ng-click="showDefault()" class="btn btn-default">Default
 	</button><button ng-click="showSelector()" class="btn btn-default">Selector
 </button><button ng-click="showTemplateUrl()" class="btn btn-default">Template</button>
-</div>
+		<a href="https://github.com/dankahle/dk-modal" target="_blank" class="github" ng-click="clearOkState()">
+			<span class="icon-github"></span>
+		</a>
+	</div>
 
 
 <div class="options form-group-sm">
-	<a href="" class="qrcode-small" dk-modal-trigger=".qrcodeModal" data-width="150px"></a>
+	<a href="" class="qrcode-small" dk-modal-trigger=".qrcodeModal" data-cancel-event-name="donothin" data-width="150px"></a>
 	<fieldset>
 		<legend>device mode</legend>
 		<div class="radio-inline">
@@ -203,8 +210,8 @@
 
 <script src="vendor.min.js"></script>
 
-<script src="dkModal.js"></script>
-<!--<script src="../dist/dkModal.min.js"></script>-->
+<script src="dk-modal.js"></script>
+<!--<script src="../dist/dk-modal.min.js"></script>-->
 <script src="demo.js"></script>
 <script>
 

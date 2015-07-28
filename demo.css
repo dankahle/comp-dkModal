@@ -259,14 +259,85 @@ body {
 }
 @media (max-width: 349px) {
   body.container-fluid {
-    padding: 0 !important;
+    padding: 0;
   }
 }
+.bg-icon {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -10;
+  font-size: 3000px;
+  color: #8316ab;
+  opacity: .07;
+  background: white;
+}
+.bg-icon:before {
+  display: inline-block;
+  height: 2000px;
+  position: absolute;
+  top: -300px;
+  left: -160px;
+}
+.bg-dk-modal {
+  z-index: -5;
+  -webkit-transition: -webkit-transform ease-out 0.3s;
+       -o-transition: -o-transform ease-out 0.3s;
+          transition: transform ease-out 0.3s;
+  font-size: 100px;
+  color: rgba(0, 0, 0, 0.1);
+  position: fixed;
+  right: -141px;
+  top: 204px;
+}
+.bg-dk-modal.in {
+  -webkit-transform: rotate(-90deg);
+      -ms-transform: rotate(-90deg);
+       -o-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+}
 .status {
+  font-size: 22px;
+  color: #555;
   position: fixed;
   right: 12px;
   bottom: 10px;
-  font-size: 22px;
+  -webkit-transition: -webkit-transform ease-out 0.3s;
+       -o-transition: -o-transform ease-out 0.3s;
+          transition: transform ease-out 0.3s;
+  -webkit-transform: translateY(120%);
+      -ms-transform: translateY(120%);
+       -o-transform: translateY(120%);
+          transform: translateY(120%);
+}
+.status.in {
+  -webkit-transform: translateY(0);
+      -ms-transform: translateY(0);
+       -o-transform: translateY(0);
+          transform: translateY(0);
+}
+@media (max-width: 500px) {
+  .status.in {
+    -webkit-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+         -o-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+  }
+}
+@media (max-width: 500px) {
+  .status {
+    bottom: auto;
+  }
+  html.mobile .status {
+    top: 396px;
+    right: -54px;
+  }
+  html.no-mobile .status {
+    top: 386px;
+    right: -66px;
+  }
 }
 .status span.screenMobile:before {
   content: 'phone';
@@ -305,26 +376,42 @@ body {
   }
 }
 .target {
+  padding: 3px 6px;
+  background: #db9bf2;
+  border-radius: 4px;
+  border: 1px solid #333;
+  text-align: center;
   opacity: 0;
-  -webkit-transition: opacity .2s;
-       -o-transition: opacity .2s;
-          transition: opacity .2s;
-  position: absolute;
-  top: 40%;
-  left: 60%;
-  -webkit-transform: translate(-50px, -50px);
-      -ms-transform: translate(-50px, -50px);
-       -o-transform: translate(-50px, -50px);
-          transform: translate(-50px, -50px);
+  -webkit-transition: opacity .3s;
+       -o-transition: opacity .3s;
+          transition: opacity .3s;
+  position: fixed;
+  top: 54%;
+  left: 64%;
+  z-index: 100;
 }
-.target.active {
-  opacity: 1;
+.target.in {
+  opacity: .8;
 }
 .show-bar {
   height: 50px;
   line-height: 50px;
+  white-space: nowrap;
   text-align: left;
   margin-bottom: 0px;
+  -webkit-transition: -webkit-transform ease-out 0.3s;
+       -o-transition: -o-transform ease-out 0.3s;
+          transition: transform ease-out 0.3s;
+  -webkit-transform: translateY(-120%);
+      -ms-transform: translateY(-120%);
+       -o-transform: translateY(-120%);
+          transform: translateY(-120%);
+}
+.show-bar.in {
+  -webkit-transform: none;
+      -ms-transform: none;
+       -o-transform: none;
+          transform: none;
 }
 @media (min-width: 768px) {
   .show-bar {
@@ -342,6 +429,38 @@ body {
     margin-left: 4px;
   }
 }
+.show-bar .github {
+  display: inline-block;
+  overflow: hidden;
+  width: 44px;
+  height: 44px;
+  border: 3px solid transparent;
+  padding-left: 1px;
+  margin-left: 7px;
+  border-radius: 50%;
+  vertical-align: middle;
+  text-align: center;
+  text-decoration: none;
+}
+.show-bar .github span {
+  -webkit-transition: .1s;
+       -o-transition: .1s;
+          transition: .1s;
+  line-height: 38px;
+  font-size: 46px;
+  color: #999;
+  margin-left: -2px;
+}
+.show-bar .github span:hover {
+  color: #777;
+  background-color: rgba(0, 0, 240, 0.3) !important;
+}
+.show-bar .github span.ok {
+  background-color: rgba(0, 230, 0, 0.3);
+}
+.show-bar .github span.cancel {
+  background-color: rgba(240, 0, 0, 0.3);
+}
 .options {
   color: #424242;
   width: 320px;
@@ -353,6 +472,13 @@ body {
   background: -o-linear-gradient(left, rgba(0, 0, 255, 0.15), rgba(0, 0, 255, 0.05));
   background: linear-gradient(to right, rgba(0, 0, 255, 0.15), rgba(0, 0, 255, 0.05));
   position: relative;
+  -webkit-transition: -webkit-transform ease-out 0.3s;
+       -o-transition: -o-transform ease-out 0.3s;
+          transition: transform ease-out 0.3s;
+  -webkit-transform: translateX(-120%);
+      -ms-transform: translateX(-120%);
+       -o-transform: translateX(-120%);
+          transform: translateX(-120%);
 }
 .options:before,
 .options:after {
@@ -385,11 +511,17 @@ body {
 }
 .options:after {
   clear: both;
+}
+.options.in {
+  -webkit-transform: none;
+      -ms-transform: none;
+       -o-transform: none;
+          transform: none;
 }
 .options .qrcode-small {
   display: inline-block;
-  width: 26px;
-  height: 26px;
+  width: 30px;
+  height: 30px;
   background: url(qrcode.png);
   -webkit-background-size: cover;
           background-size: cover;
@@ -397,8 +529,6 @@ body {
   top: 4px;
   right: 4px;
   opacity: .5;
-}
-.options .qrcode-small:active {
   text-decoration: none;
 }
 .options fieldset {
@@ -437,5 +567,4 @@ body {
 .main {
   overflow: hidden;
   height: 100%;
-  position: relative;
 }

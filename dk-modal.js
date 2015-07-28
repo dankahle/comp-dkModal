@@ -1,6 +1,8 @@
 (function () {
 	'use strict';
 
+	var log = console.log.bind(console);
+	//var log = console.log = function(){} //todo-prod: reverse these log line comments
 
 	var isMobile = window.navigator.userAgent.indexOf('Mobi') != -1;
 
@@ -23,7 +25,10 @@
 					opts[v] = opts[v] + 'px';
 			})
 
-		if (typeof opts.targetOffset == 'string')
+
+		if(opts.targetOffset === '' || opts.targetOffset === undefined)
+			opts.targetOffset = 0;
+		else if (typeof opts.targetOffset == 'string')
 			opts.targetOffset = parseFloat(opts.targetOffset);
 
 		// testing overrides
@@ -38,7 +43,7 @@
 
 	var mod = angular.module('dkModal', ['ngAnimate', 'ngTouch', 'ngSanitize']);
 
-	mod.provider('$dkModal', function () {
+	mod.provider('dkModal', function () {
 
 		//settings
 		var screen_xs = 767,
@@ -161,9 +166,9 @@
 					// $regScope above), then the scope you passed in in options, will have a property:
 					// scope_yourName that you can use to access the child scope, to setup initial values
 					// before showing.
-					// eg: var childScope = $dkModal(opts).init().scope.scope_nameICalledRegScopeWith
+					// eg: var childScope = dkModal(opts).init().scope.scope_nameICalledRegScopeWith
 					// childScope.user = {}
-					// $dkModal.show();
+					// dkModal.show();
 					function $regScope(scope, name) {
 						this['scope' + '_' + name] = scope;
 					}
@@ -206,7 +211,8 @@
 						else {
 							$http.get(opts.templateUrl)
 								.then(function (resp) {
-									$templateCache.put(resp.data);
+									//log('cache opts.templateUrl')
+									$templateCache.put(opts.templateUrl, resp.data);
 									$modal = $compile(resp.data)(opts.scope);
 									if (!$modal || $modal.length === 0)
 										defAjax.reject(new Error('Failed to get compile modal for templateUrl: ' + opts.templateUrl));
@@ -464,6 +470,10 @@
 						$modal.css('top', modalTop) // these are strings
 						$modal.css('left', modalLeft)
 					}
+					else { // default centering
+						$modal.css('top', (window.innerHeight/2 - modalHeight/2) + 'px')
+						$modal.css('left', (window.innerWidth/2 - modalWidth/2) + 'px')
+					}
 
 					// backdrop
 					$backdrop = $('<div tabindex="-1" class="dk-modal-backdrop"></div>');
@@ -511,7 +521,7 @@
 	mod.directive('dkModalTrigger', function () {
 		return {
 			restrict: 'A',
-			controller: ["$scope", "$element", "$attrs", "$dkModal", function ($scope, $element, $attrs, $dkModal) {
+			controller: ["$scope", "$element", "$attrs", "dkModal", function ($scope, $element, $attrs, dkModal) {
 				$element.click(function () {
 					var opts = cleanOptions($element.data());
 					if (opts.templateUrl)
@@ -530,7 +540,7 @@
 						opts.target = $element;
 
 					$scope.$apply(function () {
-						$dkModal(opts).show('init');
+						dkModal(opts).show('init');
 					})
 				})
 

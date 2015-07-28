@@ -1,67 +1,21 @@
 (function () {
 	'use strict';
 
+	var log = console.log.bind(console);
+	//var log = console.log = function(){} //todo-prod: reverse these log line comments
 
-	// draggable target
-	$('.target').mousedown(function (e) {
-		var $this;
-		if (e.which == 1) {
-			$this = $(this);
-			var offLeft = e.pageX - $this.offset().left;
-			var offTop = e.pageY - $this.offset().top;
-
-			$(document).mousemove(function (e) {
-				$this.offset({top: e.pageY - offTop, left: e.pageX - offLeft});
-			})
-
-			$(document).mouseup(function (e) {
-				console.log('turn off handler')
-				$(document).off('mouseup mousemove');
-			})
-
-			return false;
-		}
-	})
+	$('.target').draggable();
 
 	var app = angular.module('app', ['ngAnimate', 'ngTouch', 'dkModal']);
 
-
-	app.config(["$dkModalProvider", function ($dkModalProvider) {
-		$dkModalProvider.setDefaults({
+	app.config(["dkModalProvider", function (dkModalProvider) {
+		dkModalProvider.setDefaults({
 			//backdropColor: 'rgba(0,0,255,.2)'
 		})
 
 	}])
 
-	app.controller('bodyCtrl', ["$scope", "$dkModal", function ($scope, $dkModal) {
-		var $modal, dkModal;
-
-		$scope.log = console.log.bind(console)
-		/*
-		 selector: undefined, // string or jquery element representing the modal
-		 template: undefined,
-		 templateUrl: undefined, // string url
-		 key: true, // bool
-		 click: true, // bool
-		 offsetTop: undefined, // MUST HAVE BOTH TOP AND LEFT, string with px or %
-		 offsetLeft: undefined, // MUST HAVE BOTH TOP AND LEFT, string with px or %
-		 target: undefined, // string or jquery element for positioning the modal against
-		 targetSide: 'right', // left/right
-		 targetVert: 'middle', // top/middle/bottom
-		 targetOffset: 20, // number (in px), distance left or right of target
-		 width: undefined, // string with px or %
-		 height: undefined, // string with px or %
-		 backdropColor: undefined, // rgba(0,0,0,.2), must be rgba otherwise won't be transparent
-		 cancelEventName: 'modalCancel',
-		 okEventName: 'modalOk',
-		 defaultClose: true, // bool, show close icon/text upper right
-		 defaultHeader: undefined, // $eval() value, so "'val'" for string or "val" for scope property, , if undefined/empty will hide header
-		 defaultBody: '', // $eval() value, so "'val'" for string or "val" for scope property
-		 defaultFooter: undefined, // ok, okcancel, yesno, if undefined/empty hide footer
-		 test: {
-		 mobileView: false
-		 }
-		 */
+	app.controller('bodyCtrl', ["$scope", "$timeout", "dkModal", function ($scope, $timeout, dkModal) {
 
 		$scope.defBody = '<p>This modal uses the dk-modal default template, which allows you to specify a data-bound header/body and footer mode. Header, footer, close icon are optional.';
 
@@ -75,13 +29,6 @@
 
 		window.$scope = $scope;//todo: remove
 
-		$scope.$on('modalOk', function () {
-			console.log('ok event')
-		})
-		$scope.$on('modalCancel', function () {
-			console.log('cancel event')
-		})
-
 		// defaults
 		$scope.position = 'default';
 		$scope.showHeader = true;
@@ -92,7 +39,6 @@
 			scope: $scope,
 			targetSide: 'right',
 			targetVert: 'middle',
-			targetOffset: 20,
 			defaultClose: true,
 			defaultFooter: 'ok',
 			test: {
@@ -101,7 +47,7 @@
 		};
 
 		$scope.showDefault = function () {
-			$dkModal($.extend({}, opts, {
+			dkModal($.extend({}, opts, {
 				templateUrl: 'dkModalTemplate.html',
 				defaultHeader: 'defHeader',
 				defaultBody: 'defBody'
@@ -109,11 +55,11 @@
 		}
 
 		$scope.showSelector = function () {
-			$dkModal($.extend({}, opts, {selector: '.selModal'})).show('init');
+			dkModal($.extend({}, opts, {selector: '.selModal'})).show('init');
 		}
 
 		$scope.showTemplateUrl = function () {
-			var temp_dkModal = $dkModal($.extend({}, opts, {templateUrl: 'tempModal.html'}));
+			var temp_dkModal = dkModal($.extend({}, opts, {templateUrl: 'tempModal.html'}));
 			temp_dkModal.init()
 				.then(function(initObj) {
 					initObj.scope.scope_tempCtrl.user = {name: 'dank'}; // changing scope data before show
@@ -125,12 +71,12 @@
 
 		$scope.showTarget = function() {
 			opts.target = '.target';
-			$('.target').addClass('active');
+			$('.target').addClass('in');
 		}
 
 		$scope.hideTarget = function() {
 			opts.target = undefined;
-			$('.target').removeClass('active');
+			$('.target').removeClass('in');
 		}
 
 		$scope.$watch('showHeader', function(val) {
@@ -142,39 +88,30 @@
 				$scope.defHeader = undefined;
 		})
 
+		$scope.$watch('opts.test.mode', function(val) {
+			if(val === undefined)
+				return;
+			$('html').addClass(val === 'mobile'? 'mobile': 'no-mobile');
+			$('html').removeClass(val === 'mobile'? 'no-mobile': 'mobile');
+		})
 
-		$scope.show = function () {
+		$timeout(function() {
+			$('.show-bar, .options, .status, .bg-dk-modal').addClass('in');
+		})
 
-			/*
-			 var obj = dkModal.show();
-			 obj.modal.on('ok cancel', function(e) {
-			 console.log(e.type)
-			 })
-			 */
+		var $git = $('.github span');
 
-			//var obj = dkModal.init();
-			//obj.scope.user = {name: 'carl'};
+		$git.hover(function() {
+			$git.removeClass('ok cancel');
+		})
+		$scope.$on('modalOk', function () {
+			$git.addClass('ok').removeClass('cancel');
+		})
+		$scope.$on('modalCancel', function () {
+			$git.addClass('cancel').removeClass('ok');
+		})
 
-			dkModal.show('init')
-				.then(function (initObj) {
-					initObj.modal.off('ok');// if selector, need to clear old one
-					initObj.modal.on('ok', function () {
-						console.log('got it:', initObj.scope.user)
-					})
-					initObj.modal.on('cancel', function (e) {
-						console.log('cancel')
-					})
-				}, function (err) {
-					throw err;
-				})
-
-		}
-
-		window.getdim = function () {
-			var $one = $('one');
-			console.log('dim', $one.outerWidth(), $one.outerHeight())
-		}
-	}])
+	}]);// bodyCtrl
 
 	app.controller('tempCtrl', ["$scope", function ($scope) {
 		$scope.$parent.$regScope($scope, 'tempCtrl');
@@ -200,3 +137,4 @@
 
 
 })();
+
