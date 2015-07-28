@@ -1,6 +1,8 @@
 (function () {
 	'use strict';
 
+	var log = console.log.bind(console);
+	//var log = console.log = function(){} //todo-prod: reverse these log line comments
 
 	var isMobile = window.navigator.userAgent.indexOf('Mobi') != -1;
 
@@ -23,7 +25,10 @@
 					opts[v] = opts[v] + 'px';
 			})
 
-		if (typeof opts.targetOffset == 'string')
+
+		if(opts.targetOffset === '' || opts.targetOffset === undefined)
+			opts.targetOffset = 0;
+		else if (typeof opts.targetOffset == 'string')
 			opts.targetOffset = parseFloat(opts.targetOffset);
 
 		// testing overrides
@@ -206,7 +211,8 @@
 						else {
 							$http.get(opts.templateUrl)
 								.then(function (resp) {
-									$templateCache.put(resp.data);
+									//log('cache opts.templateUrl')
+									$templateCache.put(opts.templateUrl, resp.data);
 									$modal = $compile(resp.data)(opts.scope);
 									if (!$modal || $modal.length === 0)
 										defAjax.reject(new Error('Failed to get compile modal for templateUrl: ' + opts.templateUrl));
@@ -463,6 +469,10 @@
 						//warning: we can get inaccurate results using jquery.offset({top:xx, left:xx}) here so we'll just use css instead
 						$modal.css('top', modalTop) // these are strings
 						$modal.css('left', modalLeft)
+					}
+					else { // default centering
+						$modal.css('top', (window.innerHeight/2 - modalHeight/2) + 'px')
+						$modal.css('left', (window.innerWidth/2 - modalWidth/2) + 'px')
 					}
 
 					// backdrop
