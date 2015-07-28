@@ -12,7 +12,8 @@ An angular module for creating modals popups windows
     * default (vert/horiz center)
     * px/% fixed offset in viewport
     * px offset from target element with vertical choices of: top/middle/bottom
-* control keyboard/click/
+* config backdrop keyboard/click/color+opacity
+* config/handle ok/cancel $rootscope and modal events
 * opacity animation that's blur and jank free
 * supports DOM element modal
 * access to modal and scope before or after showing
@@ -20,3 +21,11 @@ An angular module for creating modals popups windows
 
 
 [back to top](#dk-modal)
+
+### //////////// don't forget
+* config: talk about priority of configs betwwn servie call/modal and trigger  
+* def modal: go over footer modes  
+
+
+
+
