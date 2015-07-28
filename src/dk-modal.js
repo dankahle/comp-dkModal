@@ -149,7 +149,6 @@
 						})
 				};
 
-
 				//////////////////////// init
 
 				// We allow them to call init for modal/childScope manipulation before show (see $regScope)
