@@ -1,9 +1,9 @@
 # dk-modal
 
-An angular module for creating modals popups windows
+An angular module for creating modal windows
 
 ## Features
-* default template with preset layout and optional header/footer
+* default template with preset layout and optional header/footer/close icon
 * directive for auto-wiring element to trigger modal on click event
 * configuration via object or data attributes on trigger element or modal itself
 * default width/height dependent on breakpoint, plus config width/height as well
@@ -17,7 +17,25 @@ An angular module for creating modals popups windows
 * opacity animation that's blur and jank free
 * supports DOM element modal
 * access to modal and scope before or after showing
-* access to modal's childscope, should it have one
+
+## Use
+
+### browser
+`bower install dk-modal`  
+`bower install`
+dependencies: jquery, angular, angular-animate, angular-sanitize, bootstrap (for breakpoints only)  
+
+## develop
+`npm install dk-modal`
+`npm install`
+
+
+
+
+
+
+
+
 
 
 [back to top](#dk-modal)
