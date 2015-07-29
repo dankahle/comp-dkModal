@@ -29,8 +29,10 @@ dependencies: jquery, angular, angular-animate, angular-sanitize, bootstrap vari
 ### develop
 `npm install dk-modal`  
 `npm install`
-
-
+  
+  
+**7/29/15:**  
+Currently working on this readme, should be done in a day or so, then will release version 1.0 and publish to bower/npm.
 
 
 [back to top](#dk-modal)
