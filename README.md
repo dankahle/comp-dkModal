@@ -1,6 +1,10 @@
 # dk-modal
 
-An angular module for creating modal windows
+An angular module for creating modal windows. Other modules expect all modals to be similar in many respects. This modal allows you control (on an individual basis): width (px/%), height (px/%), position (center/fixed offset in viewport/offset from target element horizontally and vertically (top/middle/bottom), keyboard, click, backdrop color/opacity. It also has a default template which allows you to specify just header/body/footer settings only with optional header/footer and footer modes: (none/ok/okcancel/yesno) that automatically show the buttons and wire up ok or cancel close events. The default template has supporting css so you can use the template, or use its css classes in your own template. All animation is in css making it jank free and easy to modify, should you not like the default opacity animation. If device is mobile phone and modal has input controls, overrides size/positioning to full width - positioned at top.  
+
+This and many other features such as: access to the modal's scope via a scope registration function, so you can, initialize the modal, then access the modal's scope (should it have one) *before* showing it. Separate ok/cancel events broadcast on both the modal (jquery style) and on $rootScope with definable ok/cancel event names. A solution for the infamous fuzzy/janky text associated with centered modals. Notice how nobody is centering modals? It's because opacity animation does not play well with css transforms. Namely the translate(%) functions required for determining the modal's height on the fly. This module calculates height in javascript, after runnin an angular digest cycle, allowing it to position the modal anywhere in any way. Center being one, but also top/middle/bottom vertically with respect to a target element.
+
+
 
 ## Demo  
 [http://dankahle.github.io/dk-modal/](http://dankahle.github.io/dk-modal/)  
