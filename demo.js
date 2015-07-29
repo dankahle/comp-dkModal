@@ -39,17 +39,30 @@
 			key: true,
 			click: true,
 			scope: $scope,
-			targetSide: 'right',
-			targetVert: 'middle',
 			defaultClose: true,
 			defaultFooter: 'ok',
 			test: {
 				mode: navigator.userAgent.indexOf('Mobi') === -1? 'desktop': 'mobile'
 			}
 		};
+		$scope.offsetOpts = {
+		}
+		$scope.targetOpts = {
+			targetSide: 'right',
+			targetVert: 'middle'
+		}
+
+		function getPositionOpts() {
+			if($scope.position == 'default')
+				return {};
+			else if($scope.position == 'offset')
+				return $scope.offsetOpts;
+			else if($scope.position == 'target')
+				return $scope.targetOpts;
+		}
 
 		$scope.showDefault = function () {
-			dkModal($.extend({}, opts, {
+			dkModal($.extend({}, opts, getPositionOpts(), {
 				templateUrl: 'dkModalTemplate.html',
 				defaultHeader: 'defHeader',
 				defaultBody: 'defBody',
@@ -58,14 +71,14 @@
 		}
 
 		$scope.showSelector = function () {
-			dkModal($.extend({}, opts, {
+			dkModal($.extend({}, opts, getPositionOpts(), {
 				selector: '.selModal',
 				backdropColor: $scope.backdropRgba
 			})).show('init');
 		}
 
 		$scope.showTemplateUrl = function () {
-			var temp_dkModal = dkModal($.extend({}, opts, {
+			var temp_dkModal = dkModal($.extend({}, opts, getPositionOpts(), {
 				templateUrl: 'tempModal.html',
 				width: '288px',
 				backdropColor: $scope.backdropRgba

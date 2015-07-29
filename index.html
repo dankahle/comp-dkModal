@@ -62,7 +62,7 @@
 					<label class="col-xs-2 control-label input">top</label>
 
 					<div class="col-xs-4">
-						<input class="form-control" ng-model="opts.offsetTop">
+						<input class="form-control" ng-model="offsetOpts.offsetTop">
 					</div>
 					<div class="col-xs-4">
 						<span class="units">px, %</span>
@@ -72,7 +72,7 @@
 					<label class="col-xs-2 control-label input">left</label>
 
 					<div class="col-xs-4">
-						<input class="form-control" ng-model="opts.offsetLeft">
+						<input class="form-control" ng-model="offsetOpts.offsetLeft">
 					</div>
 					<div class="col-xs-4">
 						<span class="units">px, %</span>
@@ -84,23 +84,23 @@
 				<div class="form-group details">
 					<div class="col-xs-12">
 						<div class="radio-inline">
-							<label><input type="radio" ng-model="opts.targetSide" value="left"> left</label>
+							<label><input type="radio" ng-model="targetOpts.targetSide" value="left"> left</label>
 						</div>
 						<div class="radio-inline">
-							<label><input type="radio" ng-model="opts.targetSide" value="right"> right</label>
+							<label><input type="radio" ng-model="targetOpts.targetSide" value="right"> right</label>
 						</div>
 					</div>
 				</div>
 				<div class="form-group details">
 					<div class="col-xs-12">
 						<div class="radio-inline">
-							<label><input type="radio" ng-model="opts.targetVert" value="top"> top</label>
+							<label><input type="radio" ng-model="targetOpts.targetVert" value="top"> top</label>
 						</div>
 						<div class="radio-inline">
-							<label><input type="radio" ng-model="opts.targetVert" value="middle"> middle</label>
+							<label><input type="radio" ng-model="targetOpts.targetVert" value="middle"> middle</label>
 						</div>
 						<div class="radio-inline">
-							<label><input type="radio" ng-model="opts.targetVert" value="bottom"> bottom</label>
+							<label><input type="radio" ng-model="targetOpts.targetVert" value="bottom"> bottom</label>
 						</div>
 					</div>
 				</div>
@@ -108,7 +108,7 @@
 					<label class="col-xs-2 control-label input">offset</label>
 
 					<div class="col-xs-4">
-						<input class="form-control" ng-model="opts.targetOffset">
+						<input class="form-control" ng-model="targetOpts.targetOffset">
 					</div>
 					<div class="col-xs-4">
 						<span class="units">px</span>
