@@ -18,31 +18,23 @@ An angular module for creating modal windows
 * supports DOM element modal
 * access to modal and scope before or after showing
 
-## Use
+## Use  
+(not published yet)
 
 ### browser
 `bower install dk-modal`  
-`bower install`
-dependencies: jquery, angular, angular-animate, angular-sanitize, bootstrap (for breakpoints only)  
+`bower install`  
+dependencies: jquery, angular, angular-animate, angular-sanitize, bootstrap variables.less (for breakpoints only)  
 
-## develop
-`npm install dk-modal`
+### develop
+`npm install dk-modal`  
 `npm install`
-
-
-
-
-
-
 
 
 
 
 [back to top](#dk-modal)
 
-// notes:  
--- config: talk about priority of configs betwwn servie call/modal and trigger  
--- def modal: go over footer modes  
 
 
 
