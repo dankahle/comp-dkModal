@@ -15,7 +15,7 @@ An angular module for creating modal windows
 * config backdrop keyboard/click/color+opacity
 * config/handle ok/cancel $rootscope and modal events
 * opacity animation that's blur and jank free
-* supports DOM element modal
+* supports DOM element and angular templateUrl modals
 * access to modal and scope before or after showing
 
 ## Use  
