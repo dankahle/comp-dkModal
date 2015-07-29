@@ -68,7 +68,7 @@
 			targetOffset: 20, // number (in px), distance left or right of target
 			width: undefined, // string with px or %
 			height: undefined, // string with px or %
-			backdropColor: undefined, // rgba(0,0,0,.2), must be rgba otherwise won't be transparent
+			backdropColor: undefined, // rgba(0,0,0,.2), must be rgba otherwise won't be transparent, we're animating opacity so can't set that here
 			cancelEventName: 'modalCancel',
 			okEventName: 'modalOk',
 			defaultClose: true, // bool, show close icon/text upper right
@@ -148,7 +148,6 @@
 								$modal.remove();
 						})
 				};
-
 
 				//////////////////////// init
 
@@ -479,7 +478,7 @@
 					$backdrop = $('<div tabindex="-1" class="dk-modal-backdrop"></div>');
 
 					if (opts.backdropColor)
-						$backdrop.css('background-color', opts.backdropColor);
+						$backdrop.css('background-color', opts.backdropColor == 'none'? 'rgba(0,0,0,0)': opts.backdropColor);
 
 					// backdrop
 					if (opts.click)

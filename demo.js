@@ -32,6 +32,8 @@
 		// defaults
 		$scope.position = 'default';
 		$scope.showHeader = true;
+		$scope.backdropColor = '#000000';
+		$scope.backdropOpacity = 0.2;
 
 		var opts = $scope.opts = {
 			key: true,
@@ -50,16 +52,24 @@
 			dkModal($.extend({}, opts, {
 				templateUrl: 'dkModalTemplate.html',
 				defaultHeader: 'defHeader',
-				defaultBody: 'defBody'
+				defaultBody: 'defBody',
+				backdropColor: $scope.backdropRgba
 			})).show('init');
 		}
 
 		$scope.showSelector = function () {
-			dkModal($.extend({}, opts, {selector: '.selModal'})).show('init');
+			dkModal($.extend({}, opts, {
+				selector: '.selModal',
+				backdropColor: $scope.backdropRgba
+			})).show('init');
 		}
 
 		$scope.showTemplateUrl = function () {
-			var temp_dkModal = dkModal($.extend({}, opts, {templateUrl: 'tempModal.html'}));
+			var temp_dkModal = dkModal($.extend({}, opts, {
+				templateUrl: 'tempModal.html',
+				width: '288px',
+				backdropColor: $scope.backdropRgba
+			}));
 			temp_dkModal.init()
 				.then(function(initObj) {
 					initObj.scope.scope_tempCtrl.user = {name: 'dank'}; // changing scope data before show
@@ -93,6 +103,19 @@
 				return;
 			$('html').addClass(val === 'mobile'? 'mobile': 'no-mobile');
 			$('html').removeClass(val === 'mobile'? 'no-mobile': 'mobile');
+		})
+
+		$scope.$watch(function() { return $scope.backdropColor + $scope.backdropOpacity }, function(val) {
+			if(!val)
+				return;
+
+			$scope.backdropRgba =  'rgba(' +
+				parseInt('0x' + val.substr(1,2)) + ',' +
+				parseInt('0x' + val.substr(3,2)) + ',' +
+				parseInt('0x' + val.substr(5,2)) + ',' +
+				$scope.backdropOpacity + ')';
+
+			$('.backdropExample').css('background', $scope.backdropRgba);
 		})
 
 		// we were doing this in a timeout, but works just fine without it. so do that instead. Even with a timeout it was getting into a state where the animations weren't happening at all, so not adding the class or adding it so fast it didn't trigger the animation. Watch this.
