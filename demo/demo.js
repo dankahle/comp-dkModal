@@ -63,7 +63,7 @@
 
 		$scope.showDefault = function () {
 			dkModal($.extend({}, opts, getPositionOpts(), {
-				templateUrl: 'dkModalTemplate.html',
+				templateUrl: 'default',
 				defaultHeader: 'defHeader',
 				defaultBody: 'defBody',
 				backdropColor: $scope.backdropRgba

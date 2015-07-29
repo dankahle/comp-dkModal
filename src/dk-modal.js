@@ -187,7 +187,8 @@
 							throw new Error('scope is required with templateUrl option');
 						opts.scope.$regScope = $regScope; // attach $regScope to passed in scope for children to register with
 
-						if (opts.templateUrl == 'dkModalTemplate.html') { // setup scope for default template
+						if (opts.templateUrl == 'default' || opts.templateUrl == 'dkModalTemplate.html') { // setup scope for default template
+							opts.templateUrl = 'dkModalTemplate.html';
 							var newScope = opts.scope.$new(); // new scope so we don't junk up other scope
 							newScope.close = opts.defaultClose;
 							newScope.header = opts.scope.$eval(opts.defaultHeader);// allow it to be scope driven
