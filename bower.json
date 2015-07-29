@@ -27,13 +27,12 @@
     "jquery": "^2.1.4",
     "angular": "^1.4.2",
     "angular-animate": "^1.4.3",
-    "angular-touch": "1.4.3",
-    "bootstrap": "^3.3.5",
     "angular-sanitize": "~1.4.3",
-    "jquery-ui-touch-punch": "*"
+		"bootstrap": "^3.3.5"
   },
   "devDependencies": {
-    "angular-touch": "~1.4.3"
+    "angular-touch": "~1.4.3",
+		"jquery-ui-touch-punch": "*"
   },
   "resolutions": {
     "angular": "1.4.3",
