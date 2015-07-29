@@ -19,7 +19,7 @@ An angular module for creating modal windows
 * access to modal and scope before or after showing
 
 ## Use  
-(not published yet)
+(not published to bower/npm yet)
 
 ### browser
 `bower install dk-modal`  
