@@ -85,7 +85,7 @@
 			}));
 			temp_dkModal.init()
 				.then(function(initObj) {
-					initObj.scope.scope_tempCtrl.user = {name: 'dank'}; // changing scope data before show
+					initObj.scope.scope_tempCtrl.user = {name: 'dank'}; // changing scope data before show, tempCtrl has called $regScope() which was added to this scope by init().
 					temp_dkModal.show();// falsey here, as we've already called init
 				}, function(err) {
 					throw err;

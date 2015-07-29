@@ -154,10 +154,7 @@
 				// We allow them to call init for modal/childScope manipulation before show (see $regScope)
 				get.init = function () {
 
-					var defAjax = $q.defer(), // if one path is async (templateUrl) it's an async function
-						promiseAjax = defAjax.promise,
-						defSpin = $q.defer(),
-						promiseSpin = defSpin.promise;
+					var def = $q.defer(); // if one path is async (templateUrl) it's an async function
 
 
 					// $regScope: helper function for child scopes (your modal has an ngController on it,
@@ -181,8 +178,9 @@
 							throw new Error('Scope is required with template option');
 						$modal = $compile(opts.template)(opts.scope);
 						if (!$modal || $modal.length === 0)
-							defAjax.reject(new Error('Failed to get compile modal for template'));
-						defAjax.resolve();
+							def.reject(new Error('Failed to get compile modal for template'));
+						else
+							resolvePromise();
 					}
 					else if (opts.templateUrl) {
 						if (!opts.scope)
@@ -196,16 +194,15 @@
 							newScope.body = opts.scope.$eval(opts.defaultBody);// allow it to be scope driven
 							newScope.footer = opts.defaultFooter;
 							opts.scope = newScope;
-							//todo: remove below
-							window.testScope = newScope;
 						}
 
 						var html;
 						if ((html = $templateCache.get(opts.templateUrl))) {
 							$modal = $compile(html)(opts.scope);
 							if (!$modal || $modal.length === 0)
-								defAjax.reject(new Error('Failed to get compile modal for templateUrl: ' + opts.templateUrl));
-							defAjax.resolve();
+								def.reject(new Error('Failed to get compile modal for templateUrl: ' + opts.templateUrl));
+							else
+								resolvePromise();
 						}
 						else {
 							$http.get(opts.templateUrl)
@@ -214,10 +211,11 @@
 									$templateCache.put(opts.templateUrl, resp.data);
 									$modal = $compile(resp.data)(opts.scope);
 									if (!$modal || $modal.length === 0)
-										defAjax.reject(new Error('Failed to get compile modal for templateUrl: ' + opts.templateUrl));
-									defAjax.resolve();
+										def.reject(new Error('Failed to get compile modal for templateUrl: ' + opts.templateUrl));
+									else
+										resolvePromise();
 								}, function (err) {
-									defAjax.reject(new Error('Failed to get modal for template: ' + opts.templateUrl));
+									def.reject(new Error('Failed to get modal for template: ' + opts.templateUrl));
 								})
 						}
 					}
@@ -225,39 +223,29 @@
 						isSelector = true;
 						$modal = $(opts.selector);
 						if ($modal.length === 0)
-							defAjax.reject(new Error('Failed to find modal from selector: ' + opts.selector));
-						defAjax.resolve();
+							def.reject(new Error('Failed to find modal from selector: ' + opts.selector));
+						else
+							resolvePromise();
 					}
 
-					promiseAjax.then(function () {
-						// have $modal, we could pass it in, but it's in scope so why bother, just needed to wait for it is all.
 
-						/* options precedence:
-						 1) service call opts (either code or via dkModalTrigger element)
-						 2) modal data attrs
-						 3) provider settings
-						 4) defaults
+					function resolvePromise() {
+						/* options precedence (highest to lowest):
+						 1) service call opts (either via code or via dkModalTrigger element)
+						 2) dk-modal element data attrs
+						 3) provider setDefaults()
+						 4) var defaults in provider
 						 */
 
 						// now that we have modal opts apply them, but we had already applied sentInOptions earlier (needed in the above code), still, they outrank modal opts, so need to reapply them after modal opts.
 						angular.extend(opts, cleanOptions($modal.data()), cleanOptions(sentInOptions));
 
 						initObj = {modal: $modal, scope: opts.scope};
+						def.resolve(initObj);
+					}
 
-						// for angular templates we need to spin for a cycle to get a digest loop in for our templates (not our selector modal), if we don't the heights can be off, calculated on the handlebars instead of their contents. We're already async in this function so we'll just spin here instead of in show()
-
-						if(opts.template || opts.templateUrl)
-							$timeout(function () {
-								defSpin.resolve(initObj); // pass back modal and scope for manipulation before show
-							})
-						else
-							defSpin.resolve(initObj); // pass back modal and scope for manipulation before show
-
-					}, function (err) {
-						return defSpin.reject(err);
-					});
-
-					return promiseSpin;
+					// this may or may not be resolved/rejected at this point, doesn't matter either way
+					return def.promise;
 				}
 
 
@@ -274,15 +262,22 @@
 					if (init || !initObj) {
 						get.init()
 							.then(function () {
-								doShow();
-								def.resolve(initObj);// pass back initObj for modal/scope access
+								// we'll spin for a cycle to allow angular digest so we get a true height. Otherwise the height will be the handlebar height
+								$timeout(function() {
+									doShow();
+									def.resolve(initObj);// pass back initObj for modal/scope access
+								})
+
 							}, function (err) {
 								def.reject(err);
 							})
 					}
-					else {
-						doShow();
-						def.resolve(initObj);// pass back initObj for modal/scope access
+					else { // init's already been done, just doShow()
+						// we'll spin for a cycle to allow angular digest so we get a true height. Otherwise the height will be the handlebar height
+						$timeout(function() {
+							doShow();
+							def.resolve(initObj);// pass back initObj for modal/scope access
+						})
 					}
 
 					return promise;
