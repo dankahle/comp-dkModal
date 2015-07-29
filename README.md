@@ -2,6 +2,9 @@
 
 An angular module for creating modal windows
 
+## Demo  
+[http://dankahle.github.io/dk-modal/](http://dankahle.github.io/dk-modal/)  
+
 ## Features
 * default template with preset layout and optional header/footer/close icon
 * directive for auto-wiring element to trigger modal on click event
