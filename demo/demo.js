@@ -32,7 +32,7 @@
 		// defaults
 		$scope.position = 'default';
 		$scope.showHeader = true;
-		$scope.backdropColor = '#0000';
+		$scope.backdropColor = '#000000';
 		$scope.backdropOpacity = 0.2;
 
 		var opts = $scope.opts = {
@@ -106,7 +106,6 @@
 		})
 
 		$scope.$watch(function() { return $scope.backdropColor + $scope.backdropOpacity }, function(val) {
-log('backdrop wath', val)
 			if(!val)
 				return;
 

@@ -257,6 +257,7 @@ html.no-mobile .status {
 .options .details .form-control-range {
   height: 30px;
   vertical-align: middle;
+  padding: 0;
 }
 .options .backdropExample {
   display: block;
