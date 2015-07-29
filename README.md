@@ -40,9 +40,9 @@ dependencies: jquery, angular, angular-animate, angular-sanitize, bootstrap (for
 
 [back to top](#dk-modal)
 
-### //////////// don't forget
-* config: talk about priority of configs betwwn servie call/modal and trigger  
-* def modal: go over footer modes  
+// notes:  
+-- config: talk about priority of configs betwwn servie call/modal and trigger  
+-- def modal: go over footer modes  
 
 
 
