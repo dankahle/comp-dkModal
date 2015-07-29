@@ -254,6 +254,18 @@ html.no-mobile .status {
   margin-left: -8px;
   font-size: .9em;
 }
+.options .details .form-control-range {
+  height: 30px;
+  vertical-align: middle;
+}
+.options .backdropExample {
+  display: block;
+  width: 66px;
+  height: 66px;
+  position: absolute;
+  top: -46px;
+  left: 13px;
+}
 .main {
   overflow: hidden;
   height: 100%;
