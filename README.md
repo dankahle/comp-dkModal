@@ -9,9 +9,9 @@ An angular module for creating modal windows
 * default width/height dependent on breakpoint, plus config width/height as well
 * positioning choices
   * forces modal to 100% width placed at top of screen for mobile phone "if modal has input elements"
-    * default (vert/horiz center)
-    * px/% fixed offset in viewport
-    * px offset from target element with vertical choices of: top/middle/bottom
+  * default (vert/horiz center)
+  * px/% fixed offset in viewport
+  * px offset from target element with vertical choices of: top/middle/bottom
 * config backdrop keyboard/click/color+opacity
 * config/handle ok/cancel $rootscope and modal events
 * opacity animation that's blur and jank free
