@@ -151,10 +151,7 @@
 						})
 				};
 
-				//////////////////////// init
-
-				// We allow them to call init for modal/childScope manipulation before show (see $regScope)
-				get.init = function () {
+				function getModal () {
 
 					var def = $q.defer(); // if one path is async (templateUrl) it's an async function
 
@@ -229,17 +226,22 @@
 
 
 					function resolvePromise() {
-						/* options precedence (highest to lowest):
-						 1) service call opts (either via code or via dkModalTrigger element)
+						/*
+							The service call overrides all attributes set on the modal itself.
+							The trigger calls the service with its data attributes, so its data attrs override the
+							modal data attrs as well
+
+							config precedence (highest to lowest):
+						 1) service call opts, this includes dkModalTrigger data attrs which get rolled up into a serivce call
 						 2) dk-modal element data attrs
 						 3) provider setDefaults()
 						 4) var defaults in provider
-						 */
+						*/
 
 						// now that we have modal opts apply them, but we had already applied sentInOptions earlier (needed in the above code), still, they outrank modal opts, so need to reapply them after modal opts.
 						angular.extend(opts, cleanOptions($modal.data()), cleanOptions(sentInOptions));
 
-						def.resolve($modal);
+						def.resolve();
 					}
 
 					// this may or may not be resolved/rejected at this point, doesn't matter either way
@@ -247,38 +249,23 @@
 				}
 
 
-				///////////////////////// show
-				/*
-				show:
-				if calling init first, call empty or with false as init has already happened. If you didn't call init first, pass in truthy so we init. We could just check if(initObj), but it will be around from last time we showed the modal. We need to init "every time we show the modal", our databinding is in init.
-				 */
-				get.show = function (init) {
+				get.show = function () {
 
 					var def = $q.defer(),
 						promise = def.promise;
 
-					if (init || !$modal) {
-						log('init call')
-						get.init()
-							.then(function () {
-								// we'll spin for a cycle to allow angular digest so we get a true height. Otherwise the height will be the handlebar height
-								$timeout(function() {
-									doShow();
-									def.resolve($modal);
-								})
-
-							}, function (err) {
-								def.reject(err);
+					getModal()
+						.then(function () {
+							// we'll spin for a cycle to allow angular digest so we get a true height,
+							// otherwise the height will be the handlebar height, not the content height
+							$timeout(function() {
+								doShow();
+								def.resolve($modal); // return $modal to the user
 							})
-					}
-					else { // init's already been done, just doShow()
-						// we'll spin for a cycle to allow angular digest so we get a true height. Otherwise the height will be the handlebar height
-						log('bypass init')
-						$timeout(function() {
-							doShow();
-							def.resolve($modal);
+
+						}, function (err) {
+							def.reject(err);
 						})
-					}
 
 					return promise;
 				}
@@ -488,7 +475,13 @@
 					$animate.addClass($backdrop, 'open')
 
 					$modal.show();
-					$modal.focus();
+					// if element on modal has autofocus attr, focus the element, else focus the modal
+					var $focusElem = $modal.find('[autofocus]');
+					if($focusElem.length > 0)
+						$focusElem.focus();
+					else
+						$modal.focus();
+
 					$animate.addClass($modal, 'open')
 						.then(function () {
 							$modal.trigger('show');

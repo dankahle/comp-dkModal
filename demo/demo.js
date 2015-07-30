@@ -9,6 +9,7 @@
 	var app = angular.module('app', ['ngAnimate', 'ngTouch', 'dkModal']);
 
 	app.config(function (dkModalProvider) {
+		// eg: setting global defaults
 		dkModalProvider.setDefaults({
 			//backdropColor: 'rgba(0,0,255,.2)'
 		})
@@ -77,19 +78,21 @@
 			})).show();
 		}
 
+		$scope.user = {name: 'mary'}
 		$scope.showTemplateUrl = function () {
 			var temp_dkModal = dkModal($.extend({}, opts, getPositionOpts(), {
 				templateUrl: 'tempModal.html',
 				width: '288px',
 				backdropColor: $scope.backdropRgba
 			}));
-			temp_dkModal.init()
+			temp_dkModal.show()
 				.then(function($modal) {
-					$scope.$regScopes.tempCtrl.user = {name: 'dank'}; // access scope data after init and show
+					// there's a mechanism to register your modal's childscope with the scope passed into dkModal
+					// see getModal() in service and tempCtrl below
 					$modal.on('modalOk', function() {
 						log('your new name: ', $scope.$regScopes.tempCtrl.user.name)
+						return false;
 					})
-					temp_dkModal.show();
 				}, function(err) {
 					throw err;
 				})
@@ -156,7 +159,6 @@
 
 	app.controller('tempCtrl', function ($scope) {
 		$scope.$parent.$regScope('tempCtrl', $scope);
-		$scope.user = {name: 'jim'};
 	})
 
 
