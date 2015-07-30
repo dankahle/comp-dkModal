@@ -67,14 +67,14 @@
 				defaultHeader: 'defHeader',
 				defaultBody: 'defBody',
 				backdropColor: $scope.backdropRgba
-			})).show('init');
+			})).show();
 		}
 
 		$scope.showSelector = function () {
 			dkModal($.extend({}, opts, getPositionOpts(), {
 				selector: '.selModal',
 				backdropColor: $scope.backdropRgba
-			})).show('init');
+			})).show();
 		}
 
 		$scope.showTemplateUrl = function () {
@@ -84,9 +84,12 @@
 				backdropColor: $scope.backdropRgba
 			}));
 			temp_dkModal.init()
-				.then(function(initObj) {
-					initObj.scope.scope_tempCtrl.user = {name: 'dank'}; // changing scope data before show, tempCtrl has called $regScope() which was added to this scope by init().
-					temp_dkModal.show();// falsey here, as we've already called init
+				.then(function($modal) {
+					$scope.$regScopes.tempCtrl.user = {name: 'dank'}; // access scope data after init and show
+					$modal.on('modalOk', function() {
+						log('your new name: ', $scope.$regScopes.tempCtrl.user.name)
+					})
+					temp_dkModal.show();
 				}, function(err) {
 					throw err;
 				})
@@ -152,7 +155,7 @@
 	});// bodyCtrl
 
 	app.controller('tempCtrl', function ($scope) {
-		$scope.$parent.$regScope($scope, 'tempCtrl');
+		$scope.$parent.$regScope('tempCtrl', $scope);
 		$scope.user = {name: 'jim'};
 	})
 

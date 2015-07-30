@@ -89,7 +89,7 @@
 				var get = {},
 					isSelector = false,
 					opts = angular.extend({}, defaults, cleanOptions(sentInOptions)),
-					$modal, $backdrop, initObj;
+					$modal, $backdrop;
 
 				function exitHandlerOk(e) {
 					$rootScope.$apply(function () {
@@ -130,7 +130,7 @@
 						$modal.off('keyup', keyHandler);
 					}
 
-					// I'd rather do enter/leave, but if selector, it's already in the dom, so we'll addClass instead
+					// we can't do enter/leave cause selector option modal is already in the dom
 					$animate.removeClass($backdrop, 'open')
 						.then(function () {
 							$backdrop.remove()
@@ -146,6 +146,8 @@
 								$modal.hide();
 							else
 								$modal.remove();
+
+							$modal = undefined; // we'll force an init every time they call show, unless there's a repeated use case where it makes sense to leave it around.
 						})
 				};
 
@@ -157,16 +159,12 @@
 					var def = $q.defer(); // if one path is async (templateUrl) it's an async function
 
 
-					// $regScope: helper function for child scopes (your modal has an ngController on it,
-					// when you call this from that controller's scope, with your scope and name (see
-					// $regScope above), then the scope you passed in in options, will have a property:
-					// scope_yourName that you can use to access the child scope, to setup initial values
-					// before showing.
-					// eg: var childScope = dkModal(opts).init().scope.scope_nameICalledRegScopeWith
-					// childScope.user = {}
-					// dkModal.show();
-					function $regScope(scope, name) {
-						this['scope' + '_' + name] = scope;
+					// $regScope: helper function for a child scope (should your modal have one), to register
+					// the scope with your passed in scope, so it has access to the child scope after init()
+					// and show() calls. See $scope.showTemplateUrl() in demo
+					function $regScope(name, scope) {
+						this.$regScopes = this.$regScopes || {};
+						this.$regScopes[name] = scope
 					}
 
 					if (!opts.selector && !opts.template && !opts.templateUrl)
@@ -241,8 +239,7 @@
 						// now that we have modal opts apply them, but we had already applied sentInOptions earlier (needed in the above code), still, they outrank modal opts, so need to reapply them after modal opts.
 						angular.extend(opts, cleanOptions($modal.data()), cleanOptions(sentInOptions));
 
-						initObj = {modal: $modal, scope: opts.scope};
-						def.resolve(initObj);
+						def.resolve($modal);
 					}
 
 					// this may or may not be resolved/rejected at this point, doesn't matter either way
@@ -260,13 +257,14 @@
 					var def = $q.defer(),
 						promise = def.promise;
 
-					if (init || !initObj) {
+					if (init || !$modal) {
+						log('init call')
 						get.init()
 							.then(function () {
 								// we'll spin for a cycle to allow angular digest so we get a true height. Otherwise the height will be the handlebar height
 								$timeout(function() {
 									doShow();
-									def.resolve(initObj);// pass back initObj for modal/scope access
+									def.resolve($modal);
 								})
 
 							}, function (err) {
@@ -275,9 +273,10 @@
 					}
 					else { // init's already been done, just doShow()
 						// we'll spin for a cycle to allow angular digest so we get a true height. Otherwise the height will be the handlebar height
+						log('bypass init')
 						$timeout(function() {
 							doShow();
-							def.resolve(initObj);// pass back initObj for modal/scope access
+							def.resolve($modal);
 						})
 					}
 
