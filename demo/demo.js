@@ -158,6 +158,8 @@
 	});// bodyCtrl
 
 	app.controller('tempCtrl', function ($scope) {
+		// register this scope with parent (optional), then you can ccess it from parent:
+		// $scope.$regScopes.tempCtrl in the ok event handler
 		$scope.$parent.$regScope('tempCtrl', $scope);
 	})
 

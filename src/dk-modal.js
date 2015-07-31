@@ -487,7 +487,11 @@
 							$modal.trigger('show');
 						})
 
-				}
+					// attach this service to rootscope for access to hide() from
+					// the modal's template or controller: $scope.dkModalInstance.hide('ok'/'cancel'), there will only
+					// be one up at a time so can reuse the property on each show() call
+					$rootScope.dkModalInstance = get;
+				}//show
 
 				return get; // so they can fire up service with options and call show/hide multiple times
 			}
@@ -527,7 +531,7 @@
 						opts.target = $element;
 
 					$scope.$apply(function () {
-						dkModal(opts).show('init');
+						dkModal(opts).show()
 					})
 				})
 
