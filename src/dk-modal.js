@@ -25,10 +25,7 @@
 					opts[v] = opts[v] + 'px';
 			})
 
-
-		if(opts.targetOffset === '' || opts.targetOffset === undefined)
-			opts.targetOffset = 0;
-		else if (typeof opts.targetOffset == 'string')
+		if (typeof opts.targetOffset == 'string')
 			opts.targetOffset = parseFloat(opts.targetOffset);
 
 		// testing overrides
