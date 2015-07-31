@@ -62,7 +62,7 @@
 			target: undefined, // string or jquery element for positioning the modal against
 			targetSide: 'right', // left/right
 			targetVert: 'middle', // top/middle/bottom
-			targetOffset: 20, // number (in px), distance left or right of target
+			targetOffset: 8, // number (in px), distance left or right of target
 			width: undefined, // string with px or %
 			height: undefined, // string with px or %
 			backdropColor: undefined, // rgba(0,0,0,.2), must be rgba otherwise won't be transparent, we're animating opacity so can't set that here
