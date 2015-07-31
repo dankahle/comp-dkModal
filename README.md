@@ -20,7 +20,7 @@ An angular module for creating modal windows.
 * css opacity animation that's blur and jank free
 * access to modal and its scope before or after showing
 
-## Use  
+## Setup  
 (not published to bower/npm yet)
 
 ### browser
@@ -33,14 +33,27 @@ jquery, angular, angular-animate, angular-sanitize, bootstrap variables.less (fo
 `npm install dk-modal`  
 `npm install`
   
+## Use
+#### Code
+```js
+dkModal({
+	selector: '.orderCompleteModal',
+	template: ' ... ',
+	templateUrl: 'orderComplete.html',
+	other options
+	}).show()
+	.then(function(modal) {
+		modal.on('modalOk', function() {
+			...
+	}
+````
+#### dkModalTrigger directive
+```html
+<a href="" dkModalTrigger="address.html" data-target="#user{{$index}}_address">edit</a>
+```
   
   
   
-  
-  
-**7/29/15:**  
-Currently working on this readme, should be done in a day or so, then will release version 1.0 and publish to bower/npm.
-
 
 [back to top](#dk-modal)
 
