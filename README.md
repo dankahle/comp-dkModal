@@ -42,6 +42,8 @@ dkModal({
 			...
 		}
 	}
+	
+	$rootScope.modalInstance.hide('ok'); hiding modal from anywhere, 'ok' sends ok event, else get cancel event
 ````
 #### dkModalTrigger directive
 inside an ngRepeat loop, editing that specific item in popup mode, placed to the right/middle of a specified element
@@ -76,7 +78,18 @@ defaultBody: '', // string, required,  $eval() value, so "'val'" for string or "
 defaultFooter: undefined, // string, optional, ok, okcancel, yesno, if falsey hides footer
 };
 ```
- 
+## Positioning  
+By default, modal is positioned in center of viewport. Other options are: offset px or % from left and top of viewport (offsetLeft, offsetTop), and with respect to a target element (target, targetSide, targetVert, targetOffset). 
+
+## Width
+Default width is a breakpiont dependent percentage with percentages decreasing with screen size. Setting width (px/%) in options will force to a fixed width.
+
+## dkModalTrigger
+Adding this directive to an element will cause it to trigger the specified modal. All options are available as data options with camelCase replaced with dashes: okEventName >> data-ok-event-name.  
+dk-modal-trigger="selector/templateUrl", If ends in .html assumed a templateUrl, otherwise assumed a selector. Or data-selector="xxx" data-template-url="xxx". .  
+** data-target="this" is a special case that makes the trigger element the target as well.  
+
+
   
 
 [back to top](#dk-modal)
