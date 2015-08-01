@@ -38,7 +38,20 @@
 	}
 
 
+	// Module
 	var mod = angular.module('dkModal', ['ngAnimate', 'ngTouch', 'ngSanitize']);
+
+	mod.run(function($rootScope) {
+		// $rootScope.$regScope: helper function for a child scope (should your modal have one),
+		// to register the scope globally, to have access to the child scope
+		// after show() calls, to initialize modal data or in have access in ok/cancel handlers. See $scope.showTemplateUrl() in demo
+		function regScope(name, scope) {
+			$rootScope.$regScopes = $rootScope.$regScopes || {};
+			$rootScope.$regScopes[name] = scope
+		}
+
+		$rootScope.$regScope = regScope;
+	})
 
 	mod.provider('dkModal', function () {
 
@@ -66,7 +79,8 @@
 			targetOffset: 8, // number (in px), distance left or right of target
 			width: undefined, // string with px or %, css has breakpoint dependent default percentages
 			height: undefined, // string with px or %, optional
-			backdropColor: undefined, // rgba(0,0,0,.2), must be rgba otherwise won't be transparent, opacity is already used in css animation
+			// there's already separate css values for modal/popup transition speed and background color/opacity, so this shouldn't be needed
+			backdropColor: undefined,// rgba(0,0,0,.2), must be rgba otherwise won't be transparent, opacity is already used in css animation
 			cancelEventName: 'modalCancel', // string, alternate name for cancel event
 			okEventName: 'modalOk', // string, alternate name for ok event
 			// default template config values
@@ -159,14 +173,6 @@
 					var def = $q.defer(); // if one path is async (templateUrl) it's an async function
 
 
-					// $regScope: helper function for a child scope (should your modal have one), to register
-					// the scope with your passed in scope, so it has access to the child scope after init()
-					// and show() calls. See $scope.showTemplateUrl() in demo
-					function $regScope(name, scope) {
-						$rootScope.$regScopes = $rootScope.$regScopes || {};
-						$rootScope.$regScopes[name] = scope
-					}
-
 					if (!opts.selector && !opts.template && !opts.templateUrl)
 						throw new Error('Must set either selector or templateUrl');
 
@@ -183,7 +189,6 @@
 					else if (opts.templateUrl) {
 						if (!opts.scope)
 							throw new Error('scope is required with templateUrl option');
-						opts.scope.$regScope = $regScope; // attach $regScope to passed in scope for children to register with
 
 						if (opts.templateUrl == 'default' || opts.templateUrl == 'dkModalTemplate.html') { // setup scope for default template
 							opts.templateUrl = 'dkModalTemplate.html';
