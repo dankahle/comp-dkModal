@@ -78,7 +78,6 @@
 			})).show();
 		}
 
-		$scope.user = {name: 'mary'}
 		$scope.showTemplateUrl = function () {
 			var temp_dkModal = dkModal($.extend({}, opts, getPositionOpts(), {
 				templateUrl: 'tempModal.html',
@@ -87,8 +86,9 @@
 			}));
 			temp_dkModal.show()
 				.then(function($modal) {
-					// there's a mechanism to register your modal's childscope with the scope passed into dkModal
-					// see getModal() in service and tempCtrl below
+					// we could have had the child scope inherit from its ancestors or as in this case
+					// register the child scope so we can access it directly after show and ok event
+					$scope.$regScopes.tempCtrl.user = {name: 'dank'};
 					$modal.on('modalOk', function() {
 						log('your new name: ', $scope.$regScopes.tempCtrl.user.name)
 						return false;
@@ -158,9 +158,9 @@
 	});// bodyCtrl
 
 	app.controller('tempCtrl', function ($scope) {
-		// register this scope with parent (optional), then you can ccess it from parent:
+		// register this scope with rootscope (optional), then you can ccess it anywhere:
 		// $scope.$regScopes.tempCtrl in the ok event handler
-		$scope.$parent.$regScope('tempCtrl', $scope);
+		$scope.$regScope('tempCtrl', $scope);
 	})
 
 

@@ -157,8 +157,8 @@
 					// the scope with your passed in scope, so it has access to the child scope after init()
 					// and show() calls. See $scope.showTemplateUrl() in demo
 					function $regScope(name, scope) {
-						this.$regScopes = this.$regScopes || {};
-						this.$regScopes[name] = scope
+						$rootScope.$regScopes = $rootScope.$regScopes || {};
+						$rootScope.$regScopes[name] = scope
 					}
 
 					if (!opts.selector && !opts.template && !opts.templateUrl)
