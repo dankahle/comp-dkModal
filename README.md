@@ -6,7 +6,7 @@ An angular module for creating modal windows.
 [http://dankahle.github.io/dk-modal/](http://dankahle.github.io/dk-modal/)  
 
 ## Features
-* supports DOM element and angular templateUrl modals
+* supports DOM element and angular templateUrl modals [go](#supports-dom)
 * default template option, all you need to supply is body and  optional header/footer (ok/okcancel/yesno)
 * directive for auto-wiring element to trigger modal with all options as data attributes
 * config: width/height/position to make any size and place anywhere
@@ -40,19 +40,21 @@ dkModal({
 	selector: '.orderCompleteModal',
 	template: ' ... ',
 	templateUrl: 'orderComplete.html',
-	other options
+	...other options
 	}).show()
 	.then(function(modal) {
 		modal.on('modalOk', function() {
-			...
+		// handle the ok event, optionally have access to the modal's scope, should it have one
+		}
 	}
 ````
 #### dkModalTrigger directive
 ```html
-<a href="" dkModalTrigger="address.html" data-target="#user{{$index}}_address">edit</a>
+<div ng-repeat="...">
+<a href="" dk-modal-trigger="user.html" data-target="#user{{$index}}_name">edit</a>
 ```
   
-  
+ 
   
 
 [back to top](#dk-modal)
