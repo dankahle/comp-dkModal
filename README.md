@@ -25,7 +25,6 @@ An angular module for creating modal windows. The modal can be any size and plac
 
 ### browser
 `bower install dk-modal`  
-`bower install`  
 dependencies:  
 jquery, angular, angular-animate, angular-sanitize, bootstrap variables.less (for breakpoints only)  
 
