@@ -32,16 +32,13 @@ An angular module for creating modal windows. The modal can be any size and plac
 firing it up from a controller with an options object, and handling the jquery and scope broadcast events for ok button
 ```js
 dkModal({
-	selector: '.orderCompleteModal',
-	template: ' ... ',
-	templateUrl: 'orderComplete.html',
-	...other options
+	selector: '.orderCompleteModal' // or templateUrl or template
 	}).show()
 	.then(function(modal) {
-		modal.on('modalOk', function() {
+		modal.on('modalOk', function() { // jquery event
 		...
 		}
-		$scope.$on('modalOk', function() {
+		$scope.$on('modalOk', function() { // scope event broadcast on this scope
 			...
 		}
 	}
