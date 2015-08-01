@@ -6,7 +6,7 @@ An angular module for creating modal windows. The modal can be any size and plac
 [http://dankahle.github.io/dk-modal/](http://dankahle.github.io/dk-modal/)  
 
 ## Features
-* supports DOM element and angular templateUrl modals
+* supports DOM element and angular template modals
 * default template option, all you need to supply is body and  optional header/footer (ok/okcancel/yesno)
 * directive for auto-wiring element to trigger modal with all options as data attributes
 * config: width/height/position to make any size and place anywhere
@@ -16,9 +16,9 @@ An angular module for creating modal windows. The modal can be any size and plac
   * px/% fixed offset in viewport
   * px offset from target element with vertical choices of: top/middle/bottom
 * separate css settings for modal/popup modes
-* user defined ok/cancel $rootscope and modal events
+* user defined ok/cancel scope and modal events
 * css opacity animation that's blur and jank free
-* access to modal and its scope before or after showing
+* access to modal and any of its child scopes
 
 ## Setup  
 (not published to bower/npm yet)
