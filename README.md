@@ -84,10 +84,10 @@ defaultFooter: undefined, // string, optional, ok, okcancel, yesno, if falsey hi
 ### config precedence
 Config options can be set globally via dkModalProvider.setDefaults(obj). Individual instance options can be set via dkModal service call, and via data attributes on both the modal and the dkModalTrigger element. The precedence of these options are (from highest to lowest):
 
-1) service call opts, this includes dkModalTrigger data attrs which get rolled up into a serivce call
-2) dk-modal element data attrs
-3) provider setDefaults()
-4) var defaults in provider
+1. service call opts, this includes dkModalTrigger data attrs which get rolled up into a serivce call
+2. dk-modal element data attrs
+3. dkModalProvider.setDefaults() calls
+4. var defaults in provider code (seen above)
 
 
 ### positioning  
