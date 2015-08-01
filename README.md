@@ -47,7 +47,7 @@ dkModal({
 	}
 ````
 #### dkModalTrigger directive
-inside an ngRepeat loop allowing editing of that specific item with popup placed to the right/middle of a specific element
+inside an ngRepeat loop, editing that specific item in popup mode, placed to the right/middle of a specified element
 ```html
 <div ng-repeat="...">
 <a href="" dk-modal-trigger="user.html" data-target="#user{{$index}}_name" data-popup="true">edit</a>
