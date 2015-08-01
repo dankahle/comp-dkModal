@@ -523,12 +523,9 @@
 			controller: function ($scope, $element, $attrs, dkModal) {
 				$element.click(function () {
 					var opts = cleanOptions($element.data());
-					if (opts.templateUrl)
-						opts.scope = $scope; // if templateUrl, they'll need scope
-					else if ($attrs.dkModalTrigger && /.html$/i.test($attrs.dkModalTrigger)) {
+					opts.scope = $scope; // for template options and to constrain broadcast events to this scope
+					if ($attrs.dkModalTrigger && /.html$/i.test($attrs.dkModalTrigger))
 						opts.templateUrl = $attrs.dkModalTrigger;
-						opts.scope = $scope; // if templateUrl, they'll need scope
-					}
 					else if (!opts.selector && $attrs.dkModalTrigger)
 						opts.selector = $attrs.dkModalTrigger;
 
