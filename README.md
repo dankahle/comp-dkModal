@@ -68,7 +68,7 @@ targetVert: 'middle', // string, top/middle/bottom
 targetOffset: 8, // number (in px), distance left or right of target
 width: undefined, // string with px or %, css has breakpoint dependent default percentages
 height: undefined, // string with px or %, optional
-// there's already separate css values for modal/poopup transition speed and background color/opacity
+// there's already separate css values for modal/popup transition speed and background color/opacity
 backdropColor: undefined,// rgba(0,0,0,.2), must be rgba otherwise won't be transparent, opacity is already used in css animation
 cancelEventName: 'modalCancel', // string, alternate name for cancel event
 okEventName: 'modalOk', // string, alternate name for ok event
