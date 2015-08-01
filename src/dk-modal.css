@@ -10,6 +10,10 @@
   transition: opacity 0.2s;
   opacity: 0;
 }
+.dk-modal-backdrop.popup {
+  transition: opacity 0.2s;
+  background: rgba(0, 0, 0, 0.1);
+}
 .dk-modal-backdrop.open {
   opacity: 1;
 }
@@ -42,6 +46,9 @@ We've got us a problem with blurry and shifting text on chrome, FF, safari on ma
 	//todo: need to remove this blur when the hardware/opsys fixes this issue (read above)
 	-webkit-filter: blur(0); //this fixes chrome, but not safari, but it's F'd up to
     */
+}
+.dk-modal.popup {
+  transition: opacity 0.2s;
 }
 .dk-modal.open {
   opacity: 1;

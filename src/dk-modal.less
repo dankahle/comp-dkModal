@@ -1,6 +1,7 @@
 @import '../bower_components/bootstrap/less/variables';
 
-@transition: opacity .2s;
+@transitionModal: opacity .2s;
+@transitionPopup: opacity .2s;
 @screen-lg-mid: 1500px;
 
 .dk-modal-backdrop {
@@ -13,7 +14,11 @@
 	background: rgba(0, 0, 0, .2);
 	outline: none; // has tabindex, defeat focus outline
 	// animation
-	transition: @transition;
+	transition: @transitionModal;
+	&.popup {
+		transition: @transitionPopup;
+		background: rgba(0, 0, 0, .1);// invisible backdrop
+	}
 	opacity: 0;
 	&.open {
 		opacity: 1;
@@ -31,7 +36,10 @@
 	outline: none; // has tabindex, defeat focus outline
 	// animation
 	opacity: 0;
-	transition: @transition;
+	transition: @transitionModal;
+	&.popup {
+		transition: @transitionPopup;
+	}
 	&.open {
 		opacity: 1;
 	}

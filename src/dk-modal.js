@@ -52,6 +52,7 @@
 
 
 		var defaults = {
+			popup: undefined, // bool, if truthy use popup css animation
 			selector: undefined, // string or jquery element representing the modal
 			template: undefined,
 			templateUrl: undefined, // string url
@@ -468,6 +469,11 @@
 
 					if (opts.key)
 						$backdrop.keyup(keyHandler);
+
+					if(opts.popup) {
+						$backdrop.addClass('popup');
+						$modal.addClass('popup');
+					}
 
 					// show
 					$('body').prepend($backdrop);

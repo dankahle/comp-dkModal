@@ -67,22 +67,22 @@
 				templateUrl: 'default',
 				defaultHeader: 'defHeader',
 				defaultBody: 'defBody',
-				backdropColor: $scope.backdropRgba
+				backdropColor: $scope.backdropRgba // use manual settings
 			})).show();
 		}
 
 		$scope.showSelector = function () {
 			dkModal($.extend({}, opts, getPositionOpts(), {
 				selector: '.selModal',
-				backdropColor: $scope.backdropRgba
+				backdropColor: $scope.backdropRgba // use manual settings
 			})).show();
 		}
 
 		$scope.showTemplateUrl = function () {
 			var temp_dkModal = dkModal($.extend({}, opts, getPositionOpts(), {
+				popup: true,
 				templateUrl: 'tempModal.html',
-				width: '288px',
-				backdropColor: $scope.backdropRgba
+				width: '288px'
 			}));
 			temp_dkModal.show()
 				.then(function($modal) {
