@@ -44,7 +44,7 @@ dkModal({
 		}
 	}
 	
-	$rootScope.modalInstance.hide('ok'); hiding modal from anywhere, 'ok' sends ok event, else get cancel event
+	$rootScope.modalInstance.hide('ok'); // hide modal from anywhere, 'ok' sends ok event, else get cancel event
 ````
 #### dkModalTrigger directive
 inside an ngRepeat loop, editing that specific item in popup mode, placed to the right/middle of a specified element
@@ -106,11 +106,11 @@ The default template is located at the bottom of the dk-modal.js file. It has cs
 
 ### access to modal/scope/events
 Both the modal and optionally any of its child scopes are available globally.  
-dkModal().show().then(modal) { modal available here for wiring modal.on()/$scope.$on() event handlers } 
+dkModal().show().then(modal) { modal available here for wiring modal.on()/$scope.$on() event handlers }  
 The modal instance is available at $rootScope.dkModalInstance for access to hide('ok'/'cancel') from anywhere on page.  
 
 **$regScope**  
-A $regScope method with signature: (name, scope) is added to $rootScope. Any controller can register its scope via this method, which will then be available globally via $rootScope.#regScopes.name. Uses are for setting data in the modal's scope in the show().then() function, and for accessing the modal's scope in the ok/cancel event handlers.
+A $regScope method with signature: (name, scope) is added to $rootScope. Any controller can register its scope via this method, which will then be available globally via $rootScope.$regScopes.name. Uses are for initializing modal scope data in show().then(), and for accessing the modal's scope in the ok/cancel event handlers.
   
 
 [back to top](#dk-modal)
