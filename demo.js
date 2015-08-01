@@ -9,6 +9,7 @@
 	var app = angular.module('app', ['ngAnimate', 'ngTouch', 'dkModal']);
 
 	app.config(["dkModalProvider", function (dkModalProvider) {
+		// eg: setting global defaults
 		dkModalProvider.setDefaults({
 			//backdropColor: 'rgba(0,0,255,.2)'
 		})
@@ -63,30 +64,35 @@
 
 		$scope.showDefault = function () {
 			dkModal($.extend({}, opts, getPositionOpts(), {
-				templateUrl: 'dkModalTemplate.html',
+				templateUrl: 'default',
 				defaultHeader: 'defHeader',
 				defaultBody: 'defBody',
-				backdropColor: $scope.backdropRgba
-			})).show('init');
+				backdropColor: $scope.backdropRgba // use manual settings
+			})).show();
 		}
 
 		$scope.showSelector = function () {
 			dkModal($.extend({}, opts, getPositionOpts(), {
 				selector: '.selModal',
-				backdropColor: $scope.backdropRgba
-			})).show('init');
+				backdropColor: $scope.backdropRgba // use manual settings
+			})).show();
 		}
 
 		$scope.showTemplateUrl = function () {
 			var temp_dkModal = dkModal($.extend({}, opts, getPositionOpts(), {
+				popup: true,
 				templateUrl: 'tempModal.html',
-				width: '288px',
-				backdropColor: $scope.backdropRgba
+				width: '288px'
 			}));
-			temp_dkModal.init()
-				.then(function(initObj) {
-					initObj.scope.scope_tempCtrl.user = {name: 'dank'}; // changing scope data before show
-					temp_dkModal.show();// falsey here, as we've already called init
+			temp_dkModal.show()
+				.then(function($modal) {
+					// we could have had the child scope inherit from its ancestors or as in this case
+					// register the child scope so we can access it directly after show and ok event
+					$scope.$regScopes.tempCtrl.user = {name: 'dank'};
+					$modal.on('modalOk', function() {
+						log('your new name: ', $scope.$regScopes.tempCtrl.user.name)
+						return false;
+					})
 				}, function(err) {
 					throw err;
 				})
@@ -152,8 +158,9 @@
 	}]);// bodyCtrl
 
 	app.controller('tempCtrl', ["$scope", function ($scope) {
-		$scope.$parent.$regScope($scope, 'tempCtrl');
-		$scope.user = {name: 'jim'};
+		// register this scope with rootscope (optional), then you can ccess it anywhere:
+		// $scope.$regScopes.tempCtrl in the ok event handler
+		$scope.$regScope('tempCtrl', $scope);
 	}])
 
 
