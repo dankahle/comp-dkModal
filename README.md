@@ -23,15 +23,9 @@ An angular module for creating modal windows. The modal can be any size and plac
 ## Setup  
 (not published to bower/npm yet)
 
-### browser
 `bower install dk-modal`  
-dependencies:  
-jquery, angular, angular-animate, angular-sanitize, bootstrap variables.less (for breakpoints only)  
-
-### develop
 `npm install dk-modal`  
-`npm install`
-  
+
 ## Use
 #### Code
 firing it up from a controller with an options object, and catching the jquery event on the modal, or scope broadcast event as well
