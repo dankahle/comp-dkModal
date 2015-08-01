@@ -24,6 +24,7 @@ An angular module for creating modal windows. The modal can be any size and plac
 (not published to bower/npm yet)
 
 `bower install dk-modal`  
+  
 `npm install dk-modal`  
 
 ## Use
