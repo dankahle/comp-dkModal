@@ -1,12 +1,12 @@
 # dk-modal
 
-An angular module for creating modal windows. 
+An angular module for creating modal windows. The modal can be any size and placed anywhere on screen (center, viewport offset, target element offset). Dual purposed for general messages and data edit popups with separate css settings for each mode, say slower/darker for messages, faster/lighter for editing.
 
 ## Demo  
 [http://dankahle.github.io/dk-modal/](http://dankahle.github.io/dk-modal/)  
 
 ## Features
-* supports DOM element and angular templateUrl modals [go](#supports-dom)
+* supports DOM element and angular templateUrl modals
 * default template option, all you need to supply is body and  optional header/footer (ok/okcancel/yesno)
 * directive for auto-wiring element to trigger modal with all options as data attributes
 * config: width/height/position to make any size and place anywhere
@@ -15,7 +15,7 @@ An angular module for creating modal windows.
   * default: horizontal/vertical center
   * px/% fixed offset in viewport
   * px offset from target element with vertical choices of: top/middle/bottom
-* config backdrop color/opacity cause sometimes you don't want a visible backdrop
+* separate css settings for modal/popup modes
 * user defined ok/cancel $rootscope and modal events
 * css opacity animation that's blur and jank free
 * access to modal and its scope before or after showing
@@ -35,6 +35,7 @@ jquery, angular, angular-animate, angular-sanitize, bootstrap variables.less (fo
   
 ## Use
 #### Code
+firing it up from a controller with an options object, and catching the jquery event on the modal, or scope broadcast event as well
 ```js
 dkModal({
 	selector: '.orderCompleteModal',
@@ -44,14 +45,19 @@ dkModal({
 	}).show()
 	.then(function(modal) {
 		modal.on('modalOk', function() {
-		// handle the ok event, optionally have access to the modal's scope, should it have one
+		...
+		}
+		OR
+		$scope.$on('modalOk', function() {
+			...
 		}
 	}
 ````
 #### dkModalTrigger directive
+inside an ngRepeat loop allowing editing of that specific item with popup placed to the right/middle of a specific element
 ```html
 <div ng-repeat="...">
-<a href="" dk-modal-trigger="user.html" data-target="#user{{$index}}_name">edit</a>
+<a href="" dk-modal-trigger="user.html" data-target="#user{{$index}}_name" data-popup="true">edit</a>
 ```
   
  
