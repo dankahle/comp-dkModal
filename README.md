@@ -1,4 +1,4 @@
-## dk-modal
+# dk-modal
 
 An angular module for creating modal windows. The modal can be any size and placed anywhere on screen (center, viewport offset, target element offset). Dual purposed for general messages and data edit popups with separate css settings for each mode, say slower/darker for messages, faster/lighter for editing.
 
@@ -68,7 +68,8 @@ targetVert: 'middle', // string, top/middle/bottom
 targetOffset: 8, // number (in px), distance left or right of target
 width: undefined, // string with px or %, css has breakpoint dependent default percentages
 height: undefined, // string with px or %, optional
-backdropColor: undefined, // rgba(0,0,0,.2), must be rgba otherwise won't be transparent, opacity is already used in css animation
+// there's already separate css values for modal/poopup transition speed and background color/opacity
+backdropColor: undefined,// rgba(0,0,0,.2), must be rgba otherwise won't be transparent, opacity is already used in css animation
 cancelEventName: 'modalCancel', // string, alternate name for cancel event
 okEventName: 'modalOk', // string, alternate name for ok event
 // default template config values
