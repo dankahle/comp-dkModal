@@ -68,7 +68,7 @@ targetVert: 'middle', // string, top/middle/bottom
 targetOffset: 8, // number (in px), distance left or right of target
 width: undefined, // string with px or %, css has breakpoint dependent default percentages
 height: undefined, // string with px or %, optional
-// there's already separate css values for modal/popup transition speed and background color/opacity
+// there's already separate css values for modal/popup transition speed and background color/opacity, so this shouldn't be needed
 backdropColor: undefined,// rgba(0,0,0,.2), must be rgba otherwise won't be transparent, opacity is already used in css animation
 cancelEventName: 'modalCancel', // string, alternate name for cancel event
 okEventName: 'modalOk', // string, alternate name for ok event
@@ -85,9 +85,9 @@ By default, modal is positioned in center of viewport. Other options are: offset
 ### width
 Default width is a breakpiont dependent percentage with percentages decreasing with screen size. Setting width (px/%) in options will force to a fixed width.
 
-### dkModalTrigger
+### dkModalTrigger directive
 Adding this directive to an element will cause it to trigger the specified modal. All options are available as data options with camelCase replaced with dashes: okEventName >> data-ok-event-name.  
-dk-modal-trigger="selector/templateUrl", If ends in .html assumed a templateUrl, otherwise assumed a selector. Or data-selector="xxx" data-template-url="xxx". .  
+dk-modal-trigger="selector/templateUrl", If ends in .html assumed a templateUrl, otherwise assumed a selector. Or data-selector="xxx" data-template-url="xxx".  
 ** data-target="this" is a special case that makes the trigger element the target as well.  
 
 
