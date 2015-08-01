@@ -47,7 +47,7 @@ dkModal({
 inside an ngRepeat loop, editing that specific item in popup mode, placed to the right/middle of a specified element
 ```html
 <div ng-repeat="...">
-<a href="" dk-modal-trigger="user.html" data-target="#user{{$index}}_name" data-popup="true">edit</a>
+<a href="" dk-modal-trigger="user.html" data-popup="true" data-target="#user{{$index}}_name">edit</a>
 ```
 ## Configure  
 ```js
@@ -64,16 +64,16 @@ target: undefined, // string or jquery element for positioning the modal against
 targetSide: 'right', // string, left/right
 targetVert: 'middle', // string, top/middle/bottom
 targetOffset: 8, // number (in px), distance left or right of target
-width: undefined, // string with px or %, css has breakpoint dependent default percentages 
-height: undefined, // string with px or %, not needed
+width: undefined, // string with px or %, css has breakpoint dependent default percentages
+height: undefined, // string with px or %, optional
 backdropColor: undefined, // rgba(0,0,0,.2), must be rgba otherwise won't be transparent, opacity is already used in css animation
 cancelEventName: 'modalCancel', // string, alternate name for cancel event
 okEventName: 'modalOk', // string, alternate name for ok event
 // default template config values
 defaultClose: true, // bool, show close icon/text upper right
-defaultHeader: undefined, // $eval() value, so "'val'" for string or "val" for scope property, , if falsey hides header
-defaultBody: '', // $eval() value, so "'val'" for string or "val" for scope property
-defaultFooter: undefined, // ok, okcancel, yesno, if falsey hides footer
+defaultHeader: undefined, // string, optional,  $eval() value, so "'val'" for string or "val" for scope property, if falsey hides header
+defaultBody: '', // string, required,  $eval() value, so "'val'" for string or "val" for scope property
+defaultFooter: undefined, // string, optional, ok, okcancel, yesno, if falsey hides footer
 };
 ```
  
