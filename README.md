@@ -29,7 +29,7 @@ An angular module for creating modal windows. The modal can be any size and plac
 
 ## Use
 #### Code
-firing it up from a controller with an options object, and catching the jquery event on the modal, or scope broadcast event as well
+firing it up from a controller with an options object, and handling the jquery event and scope broadcast events
 ```js
 dkModal({
 	selector: '.orderCompleteModal',
@@ -41,7 +41,6 @@ dkModal({
 		modal.on('modalOk', function() {
 		...
 		}
-		OR
 		$scope.$on('modalOk', function() {
 			...
 		}
