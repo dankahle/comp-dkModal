@@ -52,27 +52,28 @@
 
 
 		var defaults = {
-			popup: undefined, // bool, if truthy use popup css animation
-			selector: undefined, // string or jquery element representing the modal
-			template: undefined,
-			templateUrl: undefined, // string url
-			key: true, // bool
-			click: true, // bool
-			offsetTop: undefined, // MUST HAVE BOTH TOP AND LEFT, string with px or %
+			popup: undefined, // bool, adds popup class for .popup css values
+			selector: undefined, // selector string or jquery element representing the modal
+			template: undefined, // string angular template
+			templateUrl: undefined, // string angular template url
+			key: true, // bool, escape key can close modal
+			click: true, // bool, mouse click can close modal
+			offsetTop: undefined, // MUST HAVE BOTH TOP AND LEFT, string with px or %, css centers by default
 			offsetLeft: undefined, // MUST HAVE BOTH TOP AND LEFT, string with px or %
 			target: undefined, // string or jquery element for positioning the modal against
-			targetSide: 'right', // left/right
-			targetVert: 'middle', // top/middle/bottom
+			targetSide: 'right', // string, left/right
+			targetVert: 'middle', // string, top/middle/bottom
 			targetOffset: 8, // number (in px), distance left or right of target
-			width: undefined, // string with px or %
-			height: undefined, // string with px or %
-			backdropColor: undefined, // rgba(0,0,0,.2), must be rgba otherwise won't be transparent, we're animating opacity so can't set that here
-			cancelEventName: 'modalCancel',
-			okEventName: 'modalOk',
+			width: undefined, // string with px or %, css has breakpoint dependent default percentages
+			height: undefined, // string with px or %, not needed
+			backdropColor: undefined, // rgba(0,0,0,.2), must be rgba otherwise won't be transparent, opacity is already used in css animation
+			cancelEventName: 'modalCancel', // string, alternate name for cancel event
+			okEventName: 'modalOk', // string, alternate name for ok event
+			// default template config values
 			defaultClose: true, // bool, show close icon/text upper right
-			defaultHeader: undefined, // $eval() value, so "'val'" for string or "val" for scope property, , if undefined/empty will hide header
+			defaultHeader: undefined, // $eval() value, so "'val'" for string or "val" for scope property, , if falsey hides header
 			defaultBody: '', // $eval() value, so "'val'" for string or "val" for scope property
-			defaultFooter: undefined, // ok, okcancel, yesno, if undefined/empty hide footer
+			defaultFooter: undefined, // ok, okcancel, yesno, if falsey hides footer
 			test: {
 				mobileView: false
 			}
@@ -82,6 +83,7 @@
 			angular.extend(defaults, cleanOptions(opts));
 		}
 
+		// gulp-ng-annotate needs a little help seeing this so we prefix with /*ngInject*/
 		obj.$get = /*@ngInject*/ function ($http, $templateCache, $compile, $animate, $rootScope, $timeout, $q) {
 			return function (sentInOptions) {
 				var get = {},
