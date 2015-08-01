@@ -105,8 +105,12 @@ dk-modal-trigger="selector/templateUrl", If ends in .html assumed a templateUrl,
 The default template is located at the bottom of the dk-modal.js file. It has css classes to position the header/body/footer with collapsing margins for modals with/without header/footer. The classes can be reused in other templates, to get similar results. Any element with `exit-cancel` or `exit-ok` will be wired to throw an ok/cancel event upon click. Any modal with an input/select/textarea control will be forced to 100% width at top of viewport for mobile phone only. Options are there for showing close icon (upper right), header, body, footer. Header and body are $eval'd so values are expected to be expressions. If a string is needed, wrap it in quotes. Footer options are: falsey (none), 'ok', 'okcancel', 'yesno', with the buttons wired to throw ok/cancel events.
 
 ### access to modal/scope/events
-dkModal().show
-The modal instance is available at $rootScope.dkModalInstance
+Both the modal and optionally any of its child scopes are available globally.  
+dkModal().show().then(modal) { modal available here for wiring modal.on()/$scope.$on() event handlers } 
+The modal instance is available at $rootScope.dkModalInstance for access to hide('ok'/'cancel') from anywhere on page.  
+
+**$regScope**  
+A $regScope method with signature: (name, scope) is added to $rootScope. Any controller can register its scope via this method, which will then be available globally via $rootScope.#regScopes.name. Uses are for setting data in the modal's scope in the show().then() function, and for accessing the modal's scope in the ok/cancel event handlers.
   
 
 [back to top](#dk-modal)
