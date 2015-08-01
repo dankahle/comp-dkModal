@@ -137,7 +137,10 @@
 						.then(function () {
 							var eventName = mode == 'ok' ? opts.okEventName : opts.cancelEventName;
 							$modal.trigger(eventName);
-							$rootScope.$broadcast(eventName);
+							if(opts.scope)
+								opts.scope.$broadcast(eventName);
+							else
+								$rootScope.$broadcast(eventName);
 
 							if (isSelector)
 								$modal.hide();
