@@ -1,11 +1,11 @@
-# dk-modal
+## dk-modal
 
 An angular module for creating modal windows. The modal can be any size and placed anywhere on screen (center, viewport offset, target element offset). Dual purposed for general messages and data edit popups with separate css settings for each mode, say slower/darker for messages, faster/lighter for editing.
 
-## Demo  
+### demo  
 [http://dankahle.github.io/dk-modal/](http://dankahle.github.io/dk-modal/)  
 
-## Features
+### features
 * supports DOM element and angular template modals
 * default template option, all you need to supply is body and  optional header/footer (ok/okcancel/yesno)
 * directive for auto-wiring element to trigger modal with all options as data attributes
@@ -20,15 +20,15 @@ An angular module for creating modal windows. The modal can be any size and plac
 * css opacity animation that's blur and jank free
 * access to modal and any of its child scopes
 
-## Setup  
+### setup  
 (not published to bower/npm yet)
 
 `bower install dk-modal`  
   
 `npm install dk-modal`  
 
-## Use
-#### Code
+### use
+#### code
 firing it up from a controller with an options object, and handling the jquery and scope broadcast events for ok button
 ```js
 dkModal({
@@ -51,7 +51,7 @@ inside an ngRepeat loop, editing that specific item in popup mode, placed to the
 <div ng-repeat="...">
 <a href="" dk-modal-trigger="user.html" data-popup="true" data-target="#user{{$index}}_name">edit</a>
 ```
-## Configure  
+### configure  
 ```js
 var defaults = {
 popup: undefined, // bool, adds popup class for .popup css values
@@ -78,13 +78,13 @@ defaultBody: '', // string, required,  $eval() value, so "'val'" for string or "
 defaultFooter: undefined, // string, optional, ok, okcancel, yesno, if falsey hides footer
 };
 ```
-## Positioning  
+### positioning  
 By default, modal is positioned in center of viewport. Other options are: offset px or % from left and top of viewport (offsetLeft, offsetTop), and with respect to a target element (target, targetSide, targetVert, targetOffset). 
 
-## Width
+### width
 Default width is a breakpiont dependent percentage with percentages decreasing with screen size. Setting width (px/%) in options will force to a fixed width.
 
-## dkModalTrigger
+### dkModalTrigger
 Adding this directive to an element will cause it to trigger the specified modal. All options are available as data options with camelCase replaced with dashes: okEventName >> data-ok-event-name.  
 dk-modal-trigger="selector/templateUrl", If ends in .html assumed a templateUrl, otherwise assumed a selector. Or data-selector="xxx" data-template-url="xxx". .  
 ** data-target="this" is a special case that makes the trigger element the target as well.  
