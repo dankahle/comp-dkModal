@@ -52,7 +52,7 @@ inside an ngRepeat loop, editing that specific item in popup mode, placed to the
 <div ng-repeat="...">
 <a href="" dk-modal-trigger="user.html" data-popup="true" data-target="#user{{$index}}_name">edit</a>
 ```
-### configure 
+### config 
 ```js
 var defaults = {
 popup: undefined, // bool, adds popup class for .popup css values
