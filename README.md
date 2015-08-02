@@ -9,7 +9,7 @@ An angular module for creating modal windows. The modal can be any size and plac
 * supports DOM element (selector) and angular template modals (template, templateUrl)
 * default template option, all you need to supply is body and  optional header/footer (ok/okcancel/yesno) [go](#default-template-template-classes)
 * directive for auto-wiring element to trigger modal with all options as data attributes [go](#dkmodaltrigger-directive-1)
-* config: width/height/position to make any size and place anywhere
+* config: width/height/position to make any size and place anywhere [go](#configure)
 * positioning choices [go](#positioning)
   * mobile phone with input: full width, top of screen
   * default: horizontal/vertical center
