@@ -14,16 +14,18 @@
   "license": "MIT",
   "ignore": [
     "**/.*",
-    "node_modules",
     "bower_components",
-    "test",
-    "tests",
+		"demo/",
 		"DEVELOP.md",
 		"devServer.js",
     "gulpfile.js",
-    "jshingConfig.json",
+		"icomoon",
+		"js/",
+    "jshintConfig.json",
+		"node_modules",
+		"package.json",
     "src/",
-    "package.json"
+		"test"
   ],
   "dependencies": {
     "jquery": "^2.1.4",
