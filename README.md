@@ -6,7 +6,7 @@ An angular module for creating modal windows. The modal can be any size and plac
 [http://dankahle.github.io/dk-modal/](http://dankahle.github.io/dk-modal/)  
 
 ### features
-* supports DOM element and angular template modals
+* supports DOM element (selector) and angular template modals (template, templateUrl)
 * default template option, all you need to supply is body and  optional header/footer (ok/okcancel/yesno)
 * directive for auto-wiring element to trigger modal with all options as data attributes
 * config: width/height/position to make any size and place anywhere
@@ -57,8 +57,8 @@ inside an ngRepeat loop, editing that specific item in popup mode, placed to the
 var defaults = {
 popup: undefined, // bool, adds popup class for .popup css values
 selector: undefined, // selector string or jquery element representing the modal
-template: undefined, // string angular template
-templateUrl: undefined, // string angular template url
+template: undefined, // string, angular template
+templateUrl: undefined, // string, angular template url
 key: true, // bool, escape key can close modal
 click: true, // bool, mouse click can close modal
 offsetTop: undefined, // MUST HAVE BOTH TOP AND LEFT, string with px or %, css centers by default
@@ -97,6 +97,10 @@ By default, modal is positioned in center of viewport. Other options are: offset
 Default width is a breakpiont dependent percentage with percentages decreasing with screen size. Setting width (px/%) in options will force to a fixed width.
 
 ### dkModalTrigger directive
+```html
+<div ng-repeat="...">
+<a href="" dk-modal-trigger="user.html" data-popup="true" data-target="#user{{$index}}_name">edit</a>
+```
 Adding this directive to an element will cause it to trigger the specified modal. All options are available as data options with camelCase replaced with dashes: okEventName >> data-ok-event-name.  
 dk-modal-trigger="selector/templateUrl", If ends in .html assumed a templateUrl, otherwise assumed a selector. Or data-selector="xxx" data-template-url="xxx".  
 ** data-target="this" is a special case that makes the trigger element the target as well.  
