@@ -17,7 +17,7 @@ An angular module for creating modal windows. The modal can be any size and plac
   * px offset from target element with vertical choices of: top/middle/bottom
 * separate css settings for modal/popup modes
 * user defined ok/cancel scope and modal events
-* css opacity animation that's blur and jank free
+* css opacity animation that's blur and jank free [go](#opacity-animation-vs-transform-bug)
 * access to modal and any of its child scopes [go](#access-to-modalscopeevents)
 
 ### setup  
