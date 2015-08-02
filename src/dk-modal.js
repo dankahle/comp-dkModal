@@ -67,8 +67,8 @@
 		var defaults = {
 			popup: undefined, // bool, adds popup class for .popup css values
 			selector: undefined, // selector string or jquery element representing the modal
-			template: undefined, // string angular template
-			templateUrl: undefined, // string angular template url
+			template: undefined, // string, angular template
+			templateUrl: undefined, // string, angular template url
 			key: true, // bool, escape key can close modal
 			click: true, // bool, mouse click can close modal
 			offsetTop: undefined, // MUST HAVE BOTH TOP AND LEFT, string with px or %, css centers by default
