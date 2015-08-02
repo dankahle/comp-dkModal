@@ -1,6 +1,6 @@
 {
   "name": "dk-modal",
-  "version": "0.8.0",
+  "version": "1.0.0",
 	"keywords": ["angular",	"modal", "dialog"],
 	"description": "angular modal dialog and edit popup, with config width/height/position, trigger directive, ok/cancel events.",
 	"author": "Dan Kahle <dan.kahle@gmail.com>",
