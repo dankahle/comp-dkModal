@@ -1,25 +1,18 @@
 {
   "name": "dk-modal",
   "version": "0.8.0",
-  "description": "angular modal dialog",
-  "main": "gulpfile.js",
-  "scripts": {
-    "test": "test"
-  },
+	"keywords": ["angular",	"modal", "dialog"],
+	"description": "angular modal dialog and edit popup, with config width/height/position, trigger directive, ok/cancel events.",
+	"author": "Dan Kahle <dan.kahle@gmail.com>",
+	"homepage": "https://github.com/dankahle/dk-modal",
   "repository": {
     "type": "git",
     "url": "https://github.com/dankahle/dk-modal.git"
   },
-  "keywords": [
-    "angular",
-    "modal"
-  ],
-  "author": "Dan kahle",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/dankahle/dk-modal/issues"
   },
-  "homepage": "https://github.com/dankahle/dk-modal",
   "devDependencies": {
     "del": "^1.2.0",
     "express": "^4.13.0",
