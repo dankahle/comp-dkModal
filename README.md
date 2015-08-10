@@ -30,7 +30,11 @@ An angular module for creating modal windows. The modal can be any size and plac
 
 ### use
 #### code
-firing it up from a controller with an options object, and handling the jquery and scope broadcast events for ok button
+Add the module to your app:
+```js
+angular.module('app', ['dkModal']);
+```
+Firing it up from a controller with an options object, and handling the jquery and scope broadcast events for ok button:
 ```js
 // dkModal exposes 2 methods: show(), hide()
 dkModal({
@@ -48,7 +52,7 @@ dkModal({
 	$rootScope.modalInstance.hide('ok'); // hide modal from anywhere, 'ok' sends ok event, else get cancel event
 ````
 #### dkModalTrigger directive
-inside an ngRepeat loop, editing that specific item in popup mode, placed to the right/middle of a specified element
+Inside an ngRepeat loop, editing that specific item in popup mode, placed to the right/middle of a specified element:
 ```html
 <div ng-repeat="...">
 <a href="" dk-modal-trigger="user.html" data-popup="true" data-target="#user{{$index}}_name">edit</a>
